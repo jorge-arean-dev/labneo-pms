@@ -3,11 +3,7 @@
 import { Alert, AlertTitle } from "@/components/ui/alert"
 import { CheckCircle2, XCircle, AlertCircle } from "lucide-react"
 import { SmtpSettingsCard } from "./smtp-settings-card"
-import { ReminderSettingsCard } from "./reminder-settings-card"
-import { EmailTemplatesCard } from "./email-templates-card"
-import { TestEmailCard } from "./test-email-card"
 import type { EmailConfig } from "@/lib/email/types"
-import type { EmailTemplates } from "../actions"
 
 function getEmailStatus(emailConfig: EmailConfig | null) {
   if (!emailConfig) {
@@ -31,13 +27,6 @@ function getEmailStatus(emailConfig: EmailConfig | null) {
       className: "bg-yellow-50 text-yellow-700 border-yellow-200 dark:bg-yellow-950 dark:text-yellow-300 dark:border-yellow-800",
     }
   }
-  if (emailConfig.last_test_status === "failed") {
-    return {
-      label: "Error al enviar — verificar configuración",
-      icon: XCircle,
-      className: "bg-red-50 text-red-700 border-red-200 dark:bg-red-950 dark:text-red-300 dark:border-red-800",
-    }
-  }
   return {
     label: "Emails activos",
     icon: CheckCircle2,
@@ -47,10 +36,9 @@ function getEmailStatus(emailConfig: EmailConfig | null) {
 
 interface EmailTabContentProps {
   emailConfig: EmailConfig | null
-  emailTemplates: EmailTemplates | null
 }
 
-export function EmailTabContent({ emailConfig, emailTemplates }: EmailTabContentProps) {
+export function EmailTabContent({ emailConfig }: EmailTabContentProps) {
   const status = getEmailStatus(emailConfig)
   const StatusIcon = status.icon
 
@@ -71,17 +59,8 @@ export function EmailTabContent({ emailConfig, emailTemplates }: EmailTabContent
         <AlertTitle>{status.label}</AlertTitle>
       </Alert>
 
-      {/* Card 1: SMTP Settings */}
+      {/* SMTP Settings */}
       <SmtpSettingsCard emailConfig={emailConfig} />
-
-      {/* Card 2: Reminder Settings */}
-      <ReminderSettingsCard emailConfig={emailConfig} />
-
-      {/* Card 3: Email Templates */}
-      <EmailTemplatesCard emailTemplates={emailTemplates} />
-
-      {/* Card 4: Test Email */}
-      <TestEmailCard emailConfig={emailConfig} />
     </div>
   )
 }

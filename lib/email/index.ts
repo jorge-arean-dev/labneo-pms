@@ -1,8 +1,8 @@
 /**
- * Email service module
+ * Email service module — Portal Labneo
  *
- * Provides email sending capabilities for the PMS system.
- * Supports Gmail SMTP (default) with future support for Resend.
+ * Provides email sending capabilities.
+ * Supports Gmail SMTP.
  */
 
 // Re-export types
@@ -16,35 +16,21 @@ export {
   getEmailConfig,
   isEmailConfigured,
   getClinicInfo,
-  prepareEmailTemplateData,
   sendEmail,
   testEmailConnection,
-  scheduleReminder,
-  cancelRemindersForConsulta,
-  getPendingReminders,
-  markReminderSent,
-  markReminderFailed,
 } from "./service"
 
-// Re-export Gmail provider (for direct access if needed)
+// Re-export Gmail provider
 export {
   createGmailTransporter,
   verifyGmailConnection,
   sendEmailViaGmail,
 } from "./providers/gmail"
 
-// Re-export email templates
+// Re-export base template utilities
 export {
-  generateEmailContent,
-  generateTestEmailContent,
-  confirmacionTemplate,
-  recordatorioTemplate,
-  cancelacionTemplate,
+  baseTemplate,
+  formatDateSpanish,
+  formatTimeSpanish,
+  capitalize,
 } from "./templates"
-
-// Re-export appointment email functions
-export {
-  sendConfirmationEmail,
-  sendCancellationEmail,
-  sendReminderEmail,
-} from "./appointment-emails"

@@ -26,7 +26,7 @@ type UsuarioFormData = z.infer<typeof usuarioSchema>
 interface UsuarioInfoContentProps {
   usuario: UsuarioPms
   isEditMode: boolean
-  onFormChange: (hasChanges: boolean) => void
+  onFormChange?: (hasChanges: boolean) => void
   role: UserRole
 }
 
@@ -38,7 +38,7 @@ export function UsuarioInfoContent({
 }: UsuarioInfoContentProps) {
   const [isResettingPassword, setIsResettingPassword] = useState(false)
 
-  const isAdmin = role === "administrador"
+  const isAdmin = role === "administracion"
 
   const form = useForm<UsuarioFormData>({
     resolver: zodResolver(usuarioSchema),
@@ -77,7 +77,7 @@ export function UsuarioInfoContent({
   const { formState: { isDirty } } = form
 
   useEffect(() => {
-    onFormChange(isDirty)
+    onFormChange?.(isDirty)
   }, [isDirty, onFormChange])
 
   // Expose getFormValues via ref pattern (called by parent)

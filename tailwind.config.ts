@@ -9,39 +9,29 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   safelist: [
-    // Estado badges - always include these classes to prevent purging
-    // Programada (blue)
+    // Estado badges - Solicitudes & Citas fotogrametría
+    // Enviada / Pendiente (blue)
     'bg-blue-100', 'text-blue-700', 'dark:bg-blue-950', 'dark:text-blue-300',
-    // En Curso (yellow)
+    // En proceso (yellow)
     'bg-yellow-100', 'text-yellow-700', 'dark:bg-yellow-950', 'dark:text-yellow-300',
-    // Completada (green)
+    // Alta generada / Aceptada (green)
     'bg-green-100', 'text-green-700', 'dark:bg-green-950', 'dark:text-green-300',
-    // Cancelada (red)
+    // Rechazada (red)
     'bg-red-100', 'text-red-700', 'dark:bg-red-950', 'dark:text-red-300',
-    // Ausente (gray)
+    // Finalizada (gray)
     'bg-gray-100', 'text-gray-700', 'dark:bg-gray-950', 'dark:text-gray-300',
-    // Email status alert bar (green/yellow/red -50 shades for shell background)
-    'bg-green-50', 'border-green-200', 'dark:bg-green-950', 'dark:border-green-800',
-    'bg-yellow-50', 'border-yellow-200', 'dark:bg-yellow-950', 'dark:border-yellow-800',
-    'bg-red-50', 'border-red-200', 'dark:bg-red-950', 'dark:border-red-800',
-    // Patient arrived indicator - uses CSS variables (bg-patient-arrived, border-patient-arrived-border, bg-patient-arrived-sample)
-    // Note: These amber text classes are still used for Estado Horario column
-    'text-amber-600', 'dark:text-amber-400',
+    // Solicitudes en_proceso (amber)
+    'bg-amber-100', 'text-amber-700', 'dark:bg-amber-950', 'dark:text-amber-300',
+    // Citas pendiente (sky)
+    'bg-sky-100', 'text-sky-700', 'dark:bg-sky-950', 'dark:text-sky-300',
+    // Citas aceptada (emerald)
+    'bg-emerald-100', 'text-emerald-700', 'dark:bg-emerald-950', 'dark:text-emerald-300',
+    // Citas finalizada (slate)
+    'bg-slate-100', 'text-slate-600', 'dark:bg-slate-800', 'dark:text-slate-400',
     // Role colors - for sidebar user section
-    'text-amber-600', 'dark:text-amber-400',    // Administrador
-    'text-blue-600', 'dark:text-blue-400',      // Médico
-    'text-emerald-600', 'dark:text-emerald-400', // Recepcionista
-    // Médico badge colors - for recepcionista dashboard
-    'bg-slate-50', 'text-slate-600', 'dark:bg-slate-900', 'dark:text-slate-400',
-    // Pacientes en Espera banner (blue)
-    'border-blue-500', 'bg-blue-50', 'bg-blue-500', 'dark:bg-blue-950/20',
-    // Tipo Consulta letter badges
-    // Primera vez (indigo)
-    'bg-indigo-100', 'text-indigo-700', 'dark:bg-indigo-900', 'dark:text-indigo-300',
-    // Control (emerald)
-    'bg-emerald-100', 'text-emerald-700', 'dark:bg-emerald-900', 'dark:text-emerald-300',
-    // Urgencia (orange)
-    'bg-orange-100', 'text-orange-700', 'dark:bg-orange-900', 'dark:text-orange-300',
+    'text-amber-600', 'dark:text-amber-400',    // Administración
+    'text-sky-600', 'dark:text-sky-400',        // Odontólogo
+    'text-teal-600', 'dark:text-teal-400',      // Técnico
   ],
   theme: {
     extend: {
@@ -85,28 +75,6 @@ export default {
           "3": "hsl(var(--chart-3))",
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
-        },
-        "patient-arrived": {
-          DEFAULT: "hsl(var(--patient-arrived))",
-          border: "hsl(var(--patient-arrived-border))",
-          sample: "hsl(var(--patient-arrived-sample))",
-        },
-        "cal-available": {
-          DEFAULT: "hsl(var(--cal-available))",
-          fg: "hsl(var(--cal-available-fg))",
-          hover: "hsl(var(--cal-available-hover))",
-          ring: "hsl(var(--cal-available-ring))",
-        },
-        "cal-selected": {
-          DEFAULT: "hsl(var(--cal-selected))",
-          fg: "hsl(var(--cal-selected-fg))",
-          hover: "hsl(var(--cal-selected-hover))",
-        },
-        "cal-today": {
-          ring: "hsl(var(--cal-today-ring))",
-        },
-        "cal-disabled": {
-          fg: "hsl(var(--cal-disabled-fg))",
         },
       },
       borderRadius: {

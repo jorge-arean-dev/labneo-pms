@@ -2,20 +2,17 @@
 
 import { useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { EmailTabContent } from "./email-tab-content"
 import { ClinicInfoTabContent } from "./clinic-info-tab-content"
-import { AgentTabContent } from "./agent-tab-content"
+import { EmailTabContent } from "./email-tab-content"
 import type { EmailConfig, ClinicInfo } from "@/lib/email/types"
-import type { EmailTemplates } from "../actions"
 
 interface AdminPageProps {
   emailConfig: EmailConfig | null
   clinicInfo: ClinicInfo | null
-  emailTemplates: EmailTemplates | null
 }
 
-export function AdminPage({ emailConfig, clinicInfo, emailTemplates }: AdminPageProps) {
-  const [activeTab, setActiveTab] = useState("email")
+export function AdminPage({ emailConfig, clinicInfo }: AdminPageProps) {
+  const [activeTab, setActiveTab] = useState("lab")
 
   return (
     <div className="p-6 space-y-6">
@@ -30,21 +27,16 @@ export function AdminPage({ emailConfig, clinicInfo, emailTemplates }: AdminPage
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList>
+          <TabsTrigger value="lab">Información del Laboratorio</TabsTrigger>
           <TabsTrigger value="email">Notificaciones por Email</TabsTrigger>
-          <TabsTrigger value="clinic">Información del Consultorio</TabsTrigger>
-          <TabsTrigger value="agent">Agente WhatsApp</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="email" className="space-y-6">
-          <EmailTabContent emailConfig={emailConfig} emailTemplates={emailTemplates} />
-        </TabsContent>
-
-        <TabsContent value="clinic" className="space-y-6">
+        <TabsContent value="lab" className="space-y-6">
           <ClinicInfoTabContent clinicInfo={clinicInfo} />
         </TabsContent>
 
-        <TabsContent value="agent" className="space-y-6">
-          <AgentTabContent clinicInfo={clinicInfo} />
+        <TabsContent value="email" className="space-y-6">
+          <EmailTabContent emailConfig={emailConfig} />
         </TabsContent>
       </Tabs>
     </div>

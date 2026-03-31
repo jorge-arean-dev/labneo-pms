@@ -3,17 +3,15 @@ import { unstable_noStore as noStore } from "next/cache"
 import { createClient } from "@/lib/supabase/server"
 import { Sidebar } from "@/components/dashboard/sidebar"
 
-export default async function AdminLayout({
+export default async function FotogrametriaLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  // Disable caching to ensure fresh user data on each request
   noStore()
 
   const supabase = await createClient()
 
-  // Check if user is authenticated
   const {
     data: { user },
     error: authError,
@@ -23,7 +21,6 @@ export default async function AdminLayout({
     redirect("/")
   }
 
-  // Fetch user data from usuarios_pms table with role
   const { data: usuarioPms, error: userError } = await supabase
     .from("usuarios_pms")
     .select("nombre, apellido, email, foto_perfil_url, roles(nombre)")
@@ -31,28 +28,18 @@ export default async function AdminLayout({
     .single()
 
   if (userError || !usuarioPms) {
-    console.error("Error fetching user from usuarios_pms:", userError)
     redirect("/")
   }
 
-  // Extract role name from the joined roles table
   const roles = usuarioPms.roles as unknown as { nombre: string } | null
   const userRole = roles?.nombre || "Usuario"
 
-  // Only administracion can access admin pages
-  if (userRole.toLowerCase() !== "administracion") {
-    redirect("/")
-  }
-
-  // Fetch clinic name for sidebar branding
   const { data: clinicInfo } = await supabase
     .from("clinic_info")
     .select("nombre")
     .single()
 
   const clinicName = clinicInfo?.nombre || "Portal Labneo"
-
-  // Construct full name
   const fullName = `${usuarioPms.nombre} ${usuarioPms.apellido}`
 
   return (

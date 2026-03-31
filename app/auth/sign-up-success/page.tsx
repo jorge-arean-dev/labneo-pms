@@ -4,7 +4,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/ui/card"
 
 export default function Page() {
   return (
@@ -14,19 +14,21 @@ export default function Page() {
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl">
-                Thank you for signing up!
+                Cuenta creada exitosamente
               </CardTitle>
-              <CardDescription>Check your email to confirm</CardDescription>
+              <CardDescription>
+                Revisá tu email para confirmar tu cuenta
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                You&apos;ve successfully signed up. Please check your email to
-                confirm your account before signing in.
+                Tu cuenta fue creada correctamente. Revisá tu casilla de email
+                para confirmar tu cuenta antes de iniciar sesión.
               </p>
             </CardContent>
           </Card>
         </div>
       </div>
     </div>
-  );
+  )
 }

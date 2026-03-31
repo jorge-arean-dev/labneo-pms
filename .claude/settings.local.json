@@ -115,7 +115,8 @@
       "Bash(rm:*)",
       "Bash(node:*)",
       "Bash(pnpm:*)",
-      "Bash(git:*)"
+      "Bash(git:*)",
+      "Bash(gh api:*)"
     ],
     "deny": [],
     "ask": []

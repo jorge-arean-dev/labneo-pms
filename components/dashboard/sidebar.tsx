@@ -7,23 +7,19 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useTheme } from "next-themes"
 import {
-  Home,
-  Users,
-  Calendar,
-  Stethoscope,
-  Heart,
+  FileText,
+  Camera,
+  DollarSign,
   Settings,
   HelpCircle,
   ChevronLeft,
   ChevronRight,
   ChevronDown,
   LogOut,
-  UserCheck,
   Sun,
   Moon,
   Laptop,
   ShieldCheck,
-  CalendarOff,
 } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -57,32 +53,46 @@ interface NavItem {
   icon: React.ComponentType<{ className?: string }>
   label: string
   href: string
+  roles: string[] // roles that can see this item
 }
 
-const mainNavItems: NavItem[] = [
-  { icon: Home, label: "Home", href: "/" },
-  { icon: Users, label: "Pacientes", href: "/pacientes" },
-  { icon: Calendar, label: "Consultas", href: "/consultas" },
-  { icon: CalendarOff, label: "Bloqueos", href: "/bloqueos-agenda" },
-  { icon: Stethoscope, label: "Médicos", href: "/medicos" },
-  { icon: UserCheck, label: "Recepcionistas", href: "/recepcionistas" },
-  { icon: Heart, label: "Obras Sociales", href: "/obras-sociales" },
+const navItems: NavItem[] = [
+  {
+    icon: FileText,
+    label: "Solicitudes",
+    href: "/solicitudes",
+    roles: ["administracion", "odontologo"],
+  },
+  {
+    icon: Camera,
+    label: "Fotogrametría",
+    href: "/fotogrametria",
+    roles: ["administracion", "odontologo", "tecnico"],
+  },
+  {
+    icon: DollarSign,
+    label: "Tarifarios",
+    href: "/tarifarios",
+    roles: ["administracion"],
+  },
 ]
-
-// Items only visible to admin + recepcionista (not médicos)
-const adminRecepcionistaOnlyItems = ["/bloqueos-agenda"]
 
 const toolItems: NavItem[] = [
-  { icon: Settings, label: "Configuración", href: "/configuracion" },
+  {
+    icon: Settings,
+    label: "Configuración",
+    href: "/configuracion",
+    roles: ["administracion"],
+  },
 ]
 
-const adminNavItem: NavItem = {
+const adminNavItem = {
   icon: ShieldCheck,
   label: "Admin",
   href: "/admin",
 }
 
-const helpNavItem: NavItem = {
+const helpNavItem = {
   icon: HelpCircle,
   label: "Ayuda",
   href: "/help",
@@ -102,6 +112,8 @@ export function Sidebar({ userName, userEmail, userAvatar, userRole, clinicName 
   const [helpDialogOpen, setHelpDialogOpen] = useState(false)
   const pathname = usePathname()
   const { theme, setTheme } = useTheme()
+
+  const normalizedRole = userRole.toLowerCase()
 
   // Prevent hydration mismatch
   useEffect(() => {
@@ -158,6 +170,15 @@ export function Sidebar({ userName, userEmail, userAvatar, userRole, clinicName 
     }
   }
 
+  // Filter nav items by role
+  const visibleNavItems = navItems.filter((item) =>
+    item.roles.includes(normalizedRole)
+  )
+
+  const visibleToolItems = toolItems.filter((item) =>
+    item.roles.includes(normalizedRole)
+  )
+
   return (
     <div
       className={cn(
@@ -165,7 +186,7 @@ export function Sidebar({ userName, userEmail, userAvatar, userRole, clinicName 
         isCollapsed ? "w-16" : "w-64",
       )}
     >
-      {/* Header: Clinic Name + Toggle Button */}
+      {/* Header: Lab Name + Toggle Button */}
       <div className="flex h-14 items-center border-b border-border px-3">
         {!isCollapsed && (
           <span
@@ -187,18 +208,9 @@ export function Sidebar({ userName, userEmail, userAvatar, userRole, clinicName 
 
       {/* Main Navigation */}
       <nav className="flex-1 space-y-1 overflow-y-auto px-2 py-4">
-        {mainNavItems
-          .filter((item) => {
-            // Hide admin+recepcionista-only items from médicos
-            if (adminRecepcionistaOnlyItems.includes(item.href)) {
-              const role = userRole.toLowerCase()
-              return role === "administrador" || role === "recepcionista"
-            }
-            return true
-          })
-          .map((item) => {
+        {visibleNavItems.map((item) => {
           const Icon = item.icon
-          const isActive = pathname === item.href
+          const isActive = pathname === item.href || pathname.startsWith(item.href + "/")
 
           return (
             <Link
@@ -219,11 +231,13 @@ export function Sidebar({ userName, userEmail, userAvatar, userRole, clinicName 
           )
         })}
 
-        {/* Divider */}
-        <div className="my-4 border-t border-border" />
+        {/* Divider — only show if there are tool items or admin */}
+        {(visibleToolItems.length > 0 || normalizedRole === "administracion") && (
+          <div className="my-4 border-t border-border" />
+        )}
 
         {/* Tools Section */}
-        {toolItems.map((item) => {
+        {visibleToolItems.map((item) => {
           const Icon = item.icon
           const isActive = pathname === item.href
 
@@ -246,8 +260,8 @@ export function Sidebar({ userName, userEmail, userAvatar, userRole, clinicName 
           )
         })}
 
-        {/* Admin Section - Only visible to administrators */}
-        {userRole.toLowerCase() === "administrador" && (
+        {/* Admin Section - Only visible to administracion */}
+        {normalizedRole === "administracion" && (
           <Link
             href={adminNavItem.href}
             className={cn(
@@ -341,7 +355,7 @@ export function Sidebar({ userName, userEmail, userAvatar, userRole, clinicName 
             >
               <Avatar className="h-9 w-9 shrink-0">
                 <AvatarImage
-                  src={userAvatar || "/caring-doctor.png"}
+                  src={userAvatar || undefined}
                   alt={userName}
                 />
                 <AvatarFallback className="bg-primary text-primary-foreground text-xs">

@@ -1,8 +1,7 @@
 /**
- * Types Index
+ * Types Index — Portal Labneo
  *
- * Central export point for all TypeScript types used in the application
+ * Central export point for all TypeScript types
  */
 
-export * from './estados-consulta'
-export * from './medicos-parametros-agenda'
+export * from './entities'

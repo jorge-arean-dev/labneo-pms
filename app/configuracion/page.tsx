@@ -1,7 +1,7 @@
 import { redirect, notFound } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { ConfiguracionPage } from "./components/configuracion-page"
-import { fetchMedicoByUserId, fetchUsuarioPms } from "./actions"
+import { fetchUsuarioPms } from "./actions"
 import type { UserRole } from "@/app/components/entity-detail-layout/types"
 
 export const dynamic = "force-dynamic"
@@ -38,27 +38,7 @@ export default async function Page() {
     redirect("/auth/login")
   }
 
-  // Fetch role-specific data
-  if (role === "medico") {
-    // Fetch médico record by user_id
-    const { data: medico, error: medicoError } = await fetchMedicoByUserId(user.id)
-
-    if (medicoError || !medico) {
-      console.error("Error fetching medico data:", medicoError)
-      return notFound()
-    }
-
-    return (
-      <ConfiguracionPage
-        role={role}
-        userId={user.id}
-        medicoData={medico}
-        usuarioData={null}
-      />
-    )
-  }
-
-  // For recepcionista and administrador, use usuarios_pms data
+  // Fetch usuario_pms data for all roles
   const { data: usuarioData, error: usuarioError } = await fetchUsuarioPms(user.id)
 
   if (usuarioError || !usuarioData) {
@@ -70,7 +50,6 @@ export default async function Page() {
     <ConfiguracionPage
       role={role}
       userId={user.id}
-      medicoData={null}
       usuarioData={usuarioData}
     />
   )

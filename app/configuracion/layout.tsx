@@ -54,7 +54,7 @@ export default async function ConfiguracionLayout({
     .select("nombre")
     .single();
 
-  const clinicName = clinicInfo?.nombre || "Clínica Dermatológica";
+  const clinicName = clinicInfo?.nombre || "Portal Labneo";
 
   return (
     <div className="flex h-screen overflow-hidden">

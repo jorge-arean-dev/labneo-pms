@@ -114,6 +114,12 @@ export function LandingLoginForm({
                 )}
               </Button>
             </div>
+            <div className="mt-4 text-center text-sm">
+              ¿Sos odontólogo y no tenés cuenta?{" "}
+              <Link href="/auth/sign-up" className="text-primary hover:underline underline-offset-4">
+                Registrate
+              </Link>
+            </div>
           </form>
         </CardContent>
       </Card>

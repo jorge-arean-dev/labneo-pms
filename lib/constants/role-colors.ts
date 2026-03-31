@@ -3,11 +3,11 @@
  *
  * Colors are chosen to be:
  * - Visible in both light and dark modes
- * - Non-distracting (professional internal tool)
+ * - Non-distracting (professional portal)
  * - Semantically meaningful for each role
  */
 
-export type RoleName = "administrador" | "medico" | "recepcionista"
+export type RoleName = "administracion" | "odontologo" | "tecnico"
 
 /**
  * Returns Tailwind CSS classes for the role color
@@ -17,16 +17,18 @@ export function getRoleColor(role: string): string {
   const normalizedRole = role.toLowerCase()
 
   switch (normalizedRole) {
-    case "administrador":
-      // Amber/Gold - Premium, authority, full system access
+    case "administracion":
+    case "administración":
+      // Amber/Gold - Authority, full system access
       return "text-amber-600 dark:text-amber-400"
-    case "medico":
-    case "médico":
-      // Blue - Professional, medical, trustworthy
-      return "text-blue-600 dark:text-blue-400"
-    case "recepcionista":
-      // Emerald/Green - Approachable, operational support
-      return "text-emerald-600 dark:text-emerald-400"
+    case "odontologo":
+    case "odontólogo":
+      // Sky blue - Clinical, trustworthy, health professional
+      return "text-sky-600 dark:text-sky-400"
+    case "tecnico":
+    case "técnico":
+      // Teal - Technical, operational, hands-on
+      return "text-teal-600 dark:text-teal-400"
     default:
       return "text-muted-foreground"
   }
@@ -39,13 +41,15 @@ export function getRoleDisplayName(role: string): string {
   const normalizedRole = role.toLowerCase()
 
   switch (normalizedRole) {
-    case "administrador":
-      return "Administrador"
-    case "medico":
-    case "médico":
-      return "Médico"
-    case "recepcionista":
-      return "Recepcionista"
+    case "administracion":
+    case "administración":
+      return "Administración"
+    case "odontologo":
+    case "odontólogo":
+      return "Odontólogo"
+    case "tecnico":
+    case "técnico":
+      return "Técnico"
     default:
       return role
   }

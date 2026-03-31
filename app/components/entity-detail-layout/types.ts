@@ -1,10 +1,10 @@
 /**
- * Shared TypeScript interfaces for entity detail pages
+ * Shared TypeScript interfaces for entity detail pages — Portal Labneo
  */
 
-export type EntityType = "pacientes" | "medicos" | "recepcionistas" | "obras_sociales" | "consultas"
+export type EntityType = "solicitudes" | "citas_fotogrametria" | "tarifarios"
 
-export type UserRole = "administrador" | "medico" | "recepcionista"
+export type UserRole = "administracion" | "odontologo" | "tecnico"
 
 export interface EntityDetailLayoutProps {
   entityType: EntityType

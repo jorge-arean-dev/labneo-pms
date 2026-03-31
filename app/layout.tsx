@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
-import { PatientArrivalProvider } from "@/components/patient-arrival-provider";
 import { createClient } from "@/lib/supabase/server";
 import "./globals.css";
 
@@ -20,13 +19,13 @@ export async function generateMetadata(): Promise<Metadata> {
 
   const clinicName = clinicInfo?.nombre;
   const title = clinicName
-    ? `Sistema de Gestion - ${clinicName}`
-    : "Sistema de Gestion";
+    ? `Portal - ${clinicName}`
+    : "Portal Labneo";
 
   return {
     metadataBase: new URL(defaultUrl),
     title,
-    description: "Sistema de gestión de pacientes y consultas médicas",
+    description: "Portal de gestión para laboratorio dental Labneo",
   };
 }
 
@@ -50,7 +49,6 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <PatientArrivalProvider />
           {children}
           <Toaster />
         </ThemeProvider>

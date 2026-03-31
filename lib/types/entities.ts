@@ -101,7 +101,7 @@ export interface CitaFotogrametria {
   id: string
   odontologo_id: string
   direccion_consultorio: string
-  tipo_servicio: string | null
+  tipo_servicio: string[] | null
   fecha_propuesta: string
   observaciones: string | null
   estado: EstadoCita

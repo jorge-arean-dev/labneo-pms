@@ -37,6 +37,12 @@ yarn-error.log*
 # vercel
 .vercel
 
+# supabase temp files
+supabase/.temp/
+
+# n8n workflow exports with credentials
+backlog/ai-agent/new-whatsapp-chatbot-ycloud.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

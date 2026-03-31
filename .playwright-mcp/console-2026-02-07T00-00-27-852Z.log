@@ -1,0 +1,17 @@
+[    1012ms] [ERROR]  Note that 'script-src' was not explicitly set, so 'default-src' is used as a fallback. @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/ov2/av0/rch/fwvub/0x4AAAAAABWekJzQ9qXwuKYj/light/fbE/new/normal?lang=auto:0
+[    1222ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/pat/9c9e9b6efa7fe99c/1770422428423/156ac768433659bb6c66023c209721c7bbe7d5e455f8adbe806c61533a678e42/Ah6M2q0jYMtifSA:0
+[    1538ms] [ERROR] %c%d font-size:0;color:transparent NaN @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/ov2/av0/rch/fwvub/0x4AAAAAABWekJzQ9qXwuKYj/light/fbE/new/normal?lang=auto:0
+[    1538ms] [ERROR] %c%d font-size:0;color:transparent NaN @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/ov2/av0/rch/fwvub/0x4AAAAAABWekJzQ9qXwuKYj/light/fbE/new/normal?lang=auto:0
+[    1539ms] [WARNING] %c%d font-size:0;color:transparent NaN @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/ov2/av0/rch/fwvub/0x4AAAAAABWekJzQ9qXwuKYj/light/fbE/new/normal?lang=auto:0
+[    1539ms] [WARNING] %c%d font-size:0;color:transparent NaN @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/ov2/av0/rch/fwvub/0x4AAAAAABWekJzQ9qXwuKYj/light/fbE/new/normal?lang=auto:0
+[    7950ms] [WARNING] The resource https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/cmg/1 was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/f/ov2/av0/rch/fwvub/0x4AAAAAABWekJzQ9qXwuKYj/light/fbE/new/normal?lang=auto:0
+[    9296ms] [WARNING] The resource https://imgproxy.argentinaxp.com/41HQ28dtlkYo4kHVn7yvgdV10aChSGgOFnxNVNEtbtU/rs:fit:1000:640/wmu:aHR0cHM6Ly9hcmdlbnRpbmF4cC5jb20vd2F0ZXJtYXJrLnBuZw==/wm:0.9:ce:0:0:0.30/kcr:1/q:90/format:webp/aHR0cHM6Ly9hcmdl/bnRpbmF4cC5jb20v/d3AtY29udGVudC9i/YWNrdXAvNjg3NDg3/NWY0Yjc3NDEwODhl/ZTJlMTQ2Yzg0OGFk/NmE4MTAwYzM5ZS00/MDIzODEuanBn was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://argentinaxp.com/cielo-mio/#lg=1&slide=0:0
+[   10903ms] TypeError: Failed to execute 'exitFullscreen' on 'Document': Document not active
+    at c.exitFullscreen (https://argentinaxp.com/wp-content/themes/argentinaxp/inc/assets/js/lightgallery-all.min.js:720:48)
+    at c.destroy (https://argentinaxp.com/wp-content/themes/argentinaxp/inc/assets/js/lightgallery-all.min.js:734:18)
+    at c.<anonymous> (https://argentinaxp.com/wp-content/themes/argentinaxp/inc/assets/js/lightgallery-all.min.js:555:46)
+    at n.each (https://argentinaxp.com/wp-content/themes/argentinaxp/inc/assets/js/jquery.js:1:2931)
+    at b.destroy (https://argentinaxp.com/wp-content/themes/argentinaxp/inc/assets/js/lightgallery-all.min.js:554:15)
+    at HTMLSpanElement.<anonymous> (https://argentinaxp.com/wp-content/themes/argentinaxp/inc/assets/js/lightgallery-all.min.js:534:19)
+    at HTMLSpanElement.dispatch (https://argentinaxp.com/wp-content/themes/argentinaxp/inc/assets/js/jquery.js:2:12444)
+    at r.handle (https://argentinaxp.com/wp-content/themes/argentinaxp/inc/assets/js/jquery.js:2:9173)

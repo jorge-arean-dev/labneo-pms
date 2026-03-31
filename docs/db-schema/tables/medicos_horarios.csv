@@ -1,0 +1,11 @@
+Column,Type,Constraints,Description
+id,uuid,"PRIMARY KEY, DEFAULT gen_random_uuid()",Primary key
+medico_id,uuid,"NOT NULL, REFERENCES medicos(id) ON DELETE CASCADE",Foreign key to medicos.id
+dia_semana,integer,"NOT NULL, CHECK (dia_semana >= 0 AND dia_semana <= 6)","Day of week (0=Sunday, 1=Monday, 2=Tuesday, 3=Wednesday, 4=Thursday, 5=Friday, 6=Saturday)"
+hora_inicio,time,NOT NULL,"Start time of shift (e.g., 10:00:00)"
+hora_fin,time,"NOT NULL, CHECK (hora_fin > hora_inicio)","End time of shift (e.g., 15:00:00)"
+activo,boolean,"NOT NULL, DEFAULT true",Whether this schedule is currently active
+created_at,timestamptz,"NOT NULL, DEFAULT now()",Record creation timestamp
+updated_at,timestamptz,"NOT NULL, DEFAULT now()",Record update timestamp
+created_by,uuid,REFERENCES auth.users(id),User who created record
+updated_by,uuid,REFERENCES auth.users(id),User who last updated record

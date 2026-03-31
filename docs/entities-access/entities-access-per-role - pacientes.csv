@@ -1,0 +1,21 @@
+Column,Admin,Medico,Recepcionista
+id,Not visible or editable,Not visible or editable,Not visible or editable
+dni,Visible and editable,Visible and editable,Visible and editable
+nombre,Visible and editable,Visible and editable,Visible and editable
+apellido,Visible and editable,Visible and editable,Visible and editable
+fecha_nacimiento,Visible and editable,Visible and editable,Visible and editable
+genero,Visible and editable,Visible and editable,Visible and editable
+telefono,Visible and editable,Visible and editable,Visible and editable
+email,Visible and editable,Visible and editable,Visible and editable
+domicilio,Visible and editable,Visible and editable,Visible and editable
+obra_social_id,Visible and editable,Visible and editable,Visible and editable
+plan,Visible and editable,Visible and editable,Visible and editable
+numero_afiliado,Visible and editable,Visible and editable,Visible and editable
+foto_perfil_url,Visible and editable,Visible and editable,Visible and editable
+notas,Visible and editable,Not visible or editable,Not visible or editable
+estado,Visible and editable,Visible and editable,Visible and editable
+consentimiento_datos,Visible and editable,Not visible or editable,Not visible or editable
+created_at,Visible only,Not visible or editable,Not visible or editable
+updated_at,Visible only,Not visible or editable,Not visible or editable
+created_by,Visible only,Not visible or editable,Not visible or editable
+updated_by,Visible only,Not visible or editable,Not visible or editable

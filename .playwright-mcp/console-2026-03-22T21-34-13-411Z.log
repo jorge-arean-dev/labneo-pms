@@ -1,0 +1,5 @@
+[  357839ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/bloqueos-agenda:0
+[  357851ms] Error: An unexpected response was received from the server.
+    at fetchServerAction (http://localhost:3000/_next/static/chunks/837f3_next_dist_client_2ddce166._.js:9016:37)
+[ 1250037ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/bloqueos-agenda:0
+[ 1250246ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/favicon.ico:0

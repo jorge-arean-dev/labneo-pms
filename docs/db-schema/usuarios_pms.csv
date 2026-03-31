@@ -1,0 +1,9 @@
+Column Name,Data Type,Constraints,Default Value,Description
+id,UUID,PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,,"References auth.users.id - ensures 1:1 relationship"
+nombre,TEXT,NOT NULL,,User first name
+apellido,TEXT,NOT NULL,,User last name
+email,TEXT,NOT NULL,,User email (synced from auth.users)
+rol_id,UUID,NOT NULL REFERENCES public.roles(id) ON DELETE RESTRICT,,Foreign key to roles table
+foto_perfil_url,TEXT,,,URL to user profile photo (optional)
+created_at,TIMESTAMPTZ,NOT NULL,NOW(),Timestamp when the user profile was created
+updated_at,TIMESTAMPTZ,NOT NULL,NOW(),Timestamp when the user profile was last updated

@@ -1,0 +1,14 @@
+Column,Type,Constraints,Description,Mandatory
+id,uuid,"PRIMARY KEY, DEFAULT gen_random_uuid()",Primary key,yes
+nombre,text,"UNIQUE, NOT NULL","Insurance provider name (e.g., OSDE, Swiss Medical)",yes
+codigo,text,UNIQUE,Insurance provider code,no
+telefono,text,,Insurance provider contact phone,no
+email,text,,Insurance provider contact email,no
+direccion,text,,Insurance provider address,no
+sitio_web,text,,Insurance provider website,no
+estado,text,"DEFAULT 'activa', CHECK (estado IN ('activa', 'inactiva')) NOT NULL",Insurance provider status,no
+notas,text,,Additional notes about the provider,no
+created_at,timestamptz,"DEFAULT now(), NOT NULL",Record creation timestamp,yes
+updated_at,timestamptz,"DEFAULT now(), NOT NULL",Record update timestamp,yes
+created_by,uuid,REFERENCES auth.users(id),User who created record,no
+updated_by,uuid,REFERENCES auth.users(id),User who last updated record,no

@@ -1,0 +1,5 @@
+Column Name,Data Type,Constraints,Default Value,Description
+id,UUID,PRIMARY KEY,gen_random_uuid(),Unique identifier for the role
+nombre,TEXT,NOT NULL UNIQUE,,Role name (e.g. Recepcionista Medico Administrador)
+descripcion,TEXT,,,Optional description of the role
+created_at,TIMESTAMPTZ,NOT NULL,NOW(),Timestamp when the role was created

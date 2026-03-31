@@ -1,0 +1,12 @@
+Column,Admin,Medico,Recepcionista
+id,Not visible or editable,Not visible or editable,Not visible or editable
+nombre,Visible and editable,Visible only,"- Visible and editable for own control (recepcionista can only edit their own data)
+- Visible only for other users"
+apellido,Visible and editable,Visible only,"- Visible and editable for own control (recepcionista can only edit their own data)
+- Visible only for other users"
+email,Visible and editable,Visible only,"- Visible and editable for own control (recepcionista can only edit their own data)
+- Visible only for other users"
+rol_id,Not visible or editable,Not visible or editable,Not visible or editable
+foto_perfil_url,Not visible or editable,Not visible or editable,Not visible or editable
+created_at,Visible only,Not visible or editable,Not visible or editable
+updated_at,Visible only,Not visible or editable,Not visible or editable

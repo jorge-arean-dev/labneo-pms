@@ -1,0 +1,17 @@
+Column,Admin,Medico (Owner),Medico (Non-Owner),Recepcionista
+id,Not visible or editable,Not visible or editable,Not visible or editable,Not visible or editable
+paciente_id,Not visible or editable,Not visible or editable,Not visible or editable,Not visible or editable
+medico_id,Visible and editable,Visible and editable,Visible and editable,Visible and editable
+fecha_hora,Visible and editable,Visible and editable,Visible and editable,Visible and editable
+motivo,Visible and editable,Visible and editable,Visible only,Visible only
+estado_id,Visible and editable,Visible only (use action buttons),Visible only (use action buttons),Visible only (use action buttons)
+tipo_consulta,Visible and editable,Visible and editable,Visible and editable,Visible and editable
+informe,Visible and editable,Visible and editable,Visible only,Not visible or editable
+diagnostico,Visible and editable,Visible and editable,Visible only,Not visible or editable
+tratamiento,Visible and editable,Visible and editable,Visible only,Not visible or editable
+receta,Visible and editable,Visible and editable,Visible only,Not visible or editable
+notas_privadas,Visible and editable,Visible and editable,Visible only,Not visible or editable
+created_at,Visible only,Not visible or editable,Not visible or editable,Not visible or editable
+updated_at,Visible only,Not visible or editable,Not visible or editable,Not visible or editable
+created_by,Visible only,Not visible or editable,Not visible or editable,Not visible or editable
+updated_by,Visible only,Not visible or editable,Not visible or editable,Not visible or editable

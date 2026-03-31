@@ -1,0 +1,22 @@
+NOTE: Only admins can change estado via the dropdown in /consultas/[id] detail view. Medicos and recepcionistas must use the dedicated action buttons listed below.
+from,to,is it possible?,who can do it? (roles),how each role can do it?,confirmation dialog?
+programada,ausente,yes,"all roles","All: 'Marcar como ausente' action in /consultas table",no
+programada,completada,no,N/A,N/A,N/A
+programada,cancelada,yes,"all roles","All: 'Cancelar consulta' action in /consultas table",no
+programada,en_curso,yes,"admin, medico (owner only)","Admin: 'Iniciar consulta' action in /consultas table | Medico: 'Iniciar consulta' action in /consultas table (only for own consultas)",no
+ausente,programada,no,N/A,N/A,N/A
+ausente,completada,no,N/A,N/A,N/A
+ausente,cancelada,no,N/A,N/A,N/A
+ausente,en_curso,no,N/A,N/A,N/A
+completada,programada,no,N/A,N/A,N/A
+completada,ausente,no,N/A,N/A,N/A
+completada,cancelada,no,N/A,N/A,N/A
+completada,en_curso,no,N/A,N/A,N/A
+cancelada,programada,no,N/A,N/A,N/A
+cancelada,ausente,no,N/A,N/A,N/A
+cancelada,completada,no,N/A,N/A,N/A
+cancelada,en_curso,no,N/A,N/A,N/A
+en_curso,programada,no,N/A,N/A,N/A
+en_curso,ausente,no,N/A,N/A,N/A
+en_curso,completada,yes,"admin, medico (owner only)","Admin: 'Finalizar consulta' button in /consultas/[id] detail view | Medico: 'Finalizar consulta' button in /consultas/[id] detail view (only for own consultas). Requires diagnostico and informe fields.",yes
+en_curso,cancelada,"yes (special case)","admin, medico (owner only)","Admin: 'Cancelar consulta' button in /consultas/[id] detail view | Medico: 'Cancelar consulta' button in /consultas/[id] detail view (only for own consultas). Special case: this transition bypasses the standard transition rules which only allow en_curso → completada. It exists to handle situations where a consultation needs to be cancelled after being started.",yes

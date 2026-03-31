@@ -1,0 +1,102 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - button [ref=e5] [cursor=pointer]:
+        - img
+      - navigation [ref=e6]:
+        - link "Home" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img [ref=e8]
+          - generic [ref=e11]: Home
+        - link "Pacientes" [ref=e12] [cursor=pointer]:
+          - /url: /pacientes
+          - img [ref=e13]
+          - generic [ref=e18]: Pacientes
+        - link "Consultas" [ref=e19] [cursor=pointer]:
+          - /url: /consultas
+          - img [ref=e20]
+          - generic [ref=e22]: Consultas
+        - link "Médicos" [ref=e23] [cursor=pointer]:
+          - /url: /medicos
+          - img [ref=e24]
+          - generic [ref=e28]: Médicos
+        - link "Recepcionistas" [ref=e29] [cursor=pointer]:
+          - /url: /recepcionistas
+          - img [ref=e30]
+          - generic [ref=e34]: Recepcionistas
+        - link "Obras Sociales" [ref=e35] [cursor=pointer]:
+          - /url: /obras-sociales
+          - img [ref=e36]
+          - generic [ref=e38]: Obras Sociales
+        - link "Configuración" [ref=e40] [cursor=pointer]:
+          - /url: /configuracion
+          - img [ref=e41]
+          - generic [ref=e44]: Configuración
+        - link "Admin" [ref=e45] [cursor=pointer]:
+          - /url: /admin
+          - img [ref=e46]
+          - generic [ref=e49]: Admin
+        - link "Ayuda" [ref=e50] [cursor=pointer]:
+          - /url: /help
+          - img [ref=e51]
+          - generic [ref=e54]: Ayuda
+      - 'button "Tema: Claro" [ref=e220] [cursor=pointer]':
+        - img [ref=e57]
+        - generic [ref=e63]: "Tema: Claro"
+        - img [ref=e64]
+      - button "Admin Dev Admin Dev Administrador jorge.arean@gmail.com" [ref=e221] [cursor=pointer]:
+        - img "Admin Dev" [ref=e222]
+        - generic [ref=e70]:
+          - paragraph [ref=e71]: Admin Dev
+          - paragraph [ref=e72]: Administrador
+          - paragraph [ref=e73]: jorge.arean@gmail.com
+    - main [ref=e74]:
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - heading "Administración" [level=1] [ref=e78]
+            - paragraph [ref=e79]: Configure los ajustes del sistema y servicios
+          - generic [ref=e80]:
+            - img
+            - text: Sistema operativo
+        - generic [ref=e81]:
+          - tablist [ref=e82]:
+            - tab "Notificaciones por Email" [ref=e83] [cursor=pointer]
+            - tab "Información del Consultorio" [ref=e84] [cursor=pointer]
+            - tab "Agente WhatsApp" [active] [selected] [ref=e85] [cursor=pointer]
+          - tabpanel "Agente WhatsApp" [ref=e253]:
+            - generic [ref=e254]:
+              - generic [ref=e255]:
+                - generic [ref=e256]:
+                  - generic [ref=e257]:
+                    - img [ref=e258]
+                    - generic [ref=e260]: Control del Agente
+                  - generic [ref=e261]: Administre el estado del agente de WhatsApp.
+                - generic [ref=e262]:
+                  - generic [ref=e263]:
+                    - generic [ref=e264]:
+                      - paragraph [ref=e265]: Estado actual
+                      - generic [ref=e266]: Activado
+                    - button "Desactivar Agente" [ref=e267] [cursor=pointer]:
+                      - img
+                      - text: Desactivar Agente
+                  - paragraph [ref=e268]: El agente responde automáticamente a los mensajes de WhatsApp de los pacientes.
+              - generic [ref=e269]:
+                - generic [ref=e270]:
+                  - generic [ref=e271]:
+                    - img [ref=e272]
+                    - generic [ref=e275]: Base de Conocimientos
+                  - generic [ref=e276]: Este contenido es consultado por el agente de WhatsApp para responder preguntas de los pacientes. Incluya información sobre servicios, horarios, ubicación, políticas y preguntas frecuentes.
+                - generic [ref=e277]:
+                  - 'textbox "# Información del Consultorio ## Servicios - Dermatología clínica - Dermatología estética - Control de lunares ## Horarios de Atención - Lunes a Viernes: 9:00 a 18:00 - Sábados: 9:00 a 13:00 ## Ubicación - Dirección: Av. Ejemplo 1234, CABA - Cómo llegar: Subte línea B, estación... ## Preguntas Frecuentes ### ¿Necesito orden médica? No, podés sacar turno directamente. ### ¿Qué obras sociales aceptan? Aceptamos OSDE, Swiss Medical, Galeno... ### ¿Cuánto dura una consulta? Aproximadamente 30 minutos. ## Políticas - Cancelar con al menos 24 horas de anticipación - Llegar 10 minutos antes del turno" [ref=e278]':
+                    - /placeholder: "# Información del Consultorio\n\n## Servicios\n- Dermatología clínica\n- Dermatología estética\n- Control de lunares\n\n## Horarios de Atención\n- Lunes a Viernes: 9:00 a 18:00\n- Sábados: 9:00 a 13:00\n\n## Ubicación\n- Dirección: Av. Ejemplo 1234, CABA\n- Cómo llegar: Subte línea B, estación...\n\n## Preguntas Frecuentes\n\n### ¿Necesito orden médica?\nNo, podés sacar turno directamente.\n\n### ¿Qué obras sociales aceptan?\nAceptamos OSDE, Swiss Medical, Galeno...\n\n### ¿Cuánto dura una consulta?\nAproximadamente 30 minutos.\n\n## Políticas\n- Cancelar con al menos 24 horas de anticipación\n- Llegar 10 minutos antes del turno"
+                    - text: test
+                  - generic [ref=e279]:
+                    - paragraph [ref=e280]: Formato libre (Markdown soportado). El agente interpreta el contenido para responder consultas por WhatsApp.
+                    - button "Guardar" [disabled]:
+                      - img
+                      - text: Guardar
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e248] [cursor=pointer]:
+    - img [ref=e249]
+  - alert [ref=e252]

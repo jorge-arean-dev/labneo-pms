@@ -1,0 +1,6 @@
+route,authorized user (private access),unauthorized user (public access)
+/,description: what is currently displayed at /protected route,"description: page displaying a hero section with a login section, status: to do"
+/pacientes,description: what is currently displayed at /protected/pacientes route,No access - we must prevent unauth users to view this
+/consultas,description: will be equivalent to /pacientes,No access - we must prevent unauth users to view this
+/medicos,description: will be equivalent to /pacientes,No access - we must prevent unauth users to view this
+/obras-sociales,description: will be equivalent to /pacientes,No access - we must prevent unauth users to view this

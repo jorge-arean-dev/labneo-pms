@@ -1,0 +1,17 @@
+Column,Admin,Medico,Recepcionista
+id,Not visible or editable,Not visible or editable,Not visible or editable
+nombre,Visible and editable,"- Visible and editable for own control (medicos can only edit their own data)
+- Visible only for other medicos  ",Visible only
+apellido,Visible and editable,"- Visible and editable for own control (medicos can only edit their own data)
+- Visible only for other medicos  ",Visible only
+email,Visible and editable,"- Visible and editable for own control (medicos can only edit their own data)
+- Visible only for other medicos  ",Visible only
+telefono,Visible and editable,"- Visible and editable for own control (medicos can only edit their own data)
+- Visible only for other medicos  ",Visible only
+matricula,Visible and editable,"- Visible and editable for own control (medicos can only edit their own data)
+- Visible only for other medicos  ",Visible only
+user_id,Not visible or editable,Not visible or editable,Not visible or editable
+created_at,Visible only,Not visible or editable,Not visible or editable
+updated_at,Visible only,Not visible or editable,Not visible or editable
+created_by,Visible only,Not visible or editable,Not visible or editable
+updated_by,Visible only,Not visible or editable,Not visible or editable

@@ -1,0 +1,5505 @@
+{
+  "name": "Client Version [v7.6.5] [simple] [availability feature] [ycloud]",
+  "nodes": [
+    {
+      "parameters": {
+        "model": "gpt-4.1-mini",
+        "options": {
+          "maxTokens": 1500,
+          "temperature": 0.7
+        }
+      },
+      "id": "293df958-652a-46f8-ac9e-f6d427b81cb7",
+      "name": "OpenAI Model - Agent 1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -2432,
+        1104
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "iCPIT2cW1oKjg3mD",
+          "name": "OpenAi FSR"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "=consultar_base_conocimientos: Obtiene información del documento de conocimientos sobre servicios, precios, horarios, ubicación, masajistas y fotos de masajistas\n\n  CUANDO USAR:\n  - Cuando el paciente pregunta sobre servicios disponibles\n  - Para consultar precios de tratamientos\n  - Para obtener información de horarios de atención\n  - Para detalles sobre ubicación del centro\n  - Para información sobre profesionales/masajistas\n\n  PARAMETROS:\n  - Ninguno requerido (el documento se consulta automáticamente)\n\n  OUTPUT:\n  - Texto con información relevante del Google Doc\n\n  RESTRICCIONES:\n  - Podés invocar esta herramienta MULTIPLES VECES si es necesario\n  - Usá la información obtenida para responder al paciente de manera natural",
+        "authentication": "serviceAccount",
+        "operation": "get",
+        "documentURL": "1AMoqlW7D20-EqwyZofRq3mM3PzQAKElHNOn3aGqVXCU"
+      },
+      "type": "n8n-nodes-base.googleDocsTool",
+      "typeVersion": 2,
+      "position": [
+        -1888,
+        1216
+      ],
+      "id": "e0baf8e6-ae06-4321-8d26-14d950273b37",
+      "name": "consultar_base_conocimientos",
+      "credentials": {
+        "googleApi": {
+          "id": "7ofJPuxNnAAC5OPL",
+          "name": "Google Cred - Service Account Method"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "=consultar_paciente: Busca un paciente en la base de datos por número de teléfono.\n\n  CUANDO USAR:\n  - Al inicio del flujo de agendado de turnos para verificar si el paciente ya existe\n  - Cada vez que necesites confirmar datos de un paciente\n  - Antes de invocar agregar_paciente (para verificar que NO existe)\n\n  PARAMETROS:\n  - Telefono: Número de teléfono del paciente (string)\n\n  OUTPUT:\n  - Si existe: Devuelve datos del paciente (Nombre, Apellido, Telefono, Timestamp)\n  - Si NO existe: Devuelve resultado vacío o mensaje indicando que no se encontró\n\n  RESTRICCIONES:\n  - Podés invocar esta herramienta MULTIPLES VECES si es necesario\n  - Siempre usá esta herramienta ANTES de agregar_paciente",
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1TceRxk-cCY9mvY1_XV_whmGc6fiRFx_wJTc42pKZHmc",
+          "mode": "list",
+          "cachedResultName": "Base de datos - Punto Relax Hombres",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TceRxk-cCY9mvY1_XV_whmGc6fiRFx_wJTc42pKZHmc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 961188783,
+          "mode": "list",
+          "cachedResultName": "Pacientes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TceRxk-cCY9mvY1_XV_whmGc6fiRFx_wJTc42pKZHmc/edit#gid=961188783"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Telefono",
+              "lookupValue": "={{ $fromAI('Telefono', '', 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -1744,
+        1200
+      ],
+      "id": "2880566e-1442-4094-aa5a-7d654bd9a0c4",
+      "name": "consultar_paciente",
+      "credentials": {
+        "googleApi": {
+          "id": "7ofJPuxNnAAC5OPL",
+          "name": "Google Cred - Service Account Method"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "=agregar_paciente: Registra un NUEVO paciente en la base de datos de forma segura (operación idempotente).\n\n  COMPORTAMIENTO IDEMPOTENTE:\n  - Esta herramienta verifica automáticamente si el paciente existe antes de insertar\n  - Si el paciente YA existe (mismo teléfono): Actualiza sus datos sin crear duplicados\n  - Si el paciente NO existe: Crea una nueva entrada\n  - Es seguro invocar múltiples veces - NUNCA creará duplicados\n\n  CUANDO USAR:\n  - Después de obtener el nombre completo (nombre y apellido) Y teléfono del paciente\n  - Cuando necesites asegurar que el paciente está registrado en la base de datos\n  - No es necesario verificar con consultar_paciente antes (esta herramienta lo hace automáticamente)\n\n  PARAMETROS REQUERIDOS:\n  - Nombre: Nombre del paciente (string) - REQUERIDO\n  - Apellido: Apellido del paciente (string) - REQUERIDO\n  - Telefono: Número de teléfono (string) - usado como identificador único\n  - Timestamp: Fecha y hora actual del registro (string)\n\n  RESTRICCIONES:\n  - El campo Telefono debe ser único y válido\n  - Usar el mismo formato de teléfono siempre (ej: 5491146736891)\n  - Tanto Nombre como Apellido son campos obligatorios",
+        "authentication": "serviceAccount",
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1TceRxk-cCY9mvY1_XV_whmGc6fiRFx_wJTc42pKZHmc",
+          "mode": "list",
+          "cachedResultName": "Base de datos - Punto Relax Hombres",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TceRxk-cCY9mvY1_XV_whmGc6fiRFx_wJTc42pKZHmc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 961188783,
+          "mode": "list",
+          "cachedResultName": "Pacientes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TceRxk-cCY9mvY1_XV_whmGc6fiRFx_wJTc42pKZHmc/edit#gid=961188783"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Telefono": "={{ $fromAI('Telefono', '', 'string') }}",
+            "Nombre": "={{ $fromAI('Nombre', '', 'string') }}",
+            "Apellido": "={{ $fromAI('Apellido', '', 'string') }}",
+            "Timestamp": "={{ $fromAI('Timestamp', '', 'string') }}"
+          },
+          "matchingColumns": [
+            "Telefono"
+          ],
+          "schema": [
+            {
+              "id": "Telefono",
+              "displayName": "Telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Nombre",
+              "displayName": "Nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Apellido",
+              "displayName": "Apellido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -1600,
+        1152
+      ],
+      "id": "404a978e-5a2d-4234-85a4-7c8bd93aeb67",
+      "name": "agregar_paciente",
+      "credentials": {
+        "googleApi": {
+          "id": "7ofJPuxNnAAC5OPL",
+          "name": "Google Cred - Service Account Method"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "chat_id",
+              "name": "chat_id",
+              "value": "={{ $json.body.whatsappInboundMessage.from }}",
+              "type": "string"
+            },
+            {
+              "id": "phone_number",
+              "name": "phone_number",
+              "value": "={{ $json.body.whatsappInboundMessage.from.replace('+', '') }}",
+              "type": "string"
+            },
+            {
+              "id": "message_type",
+              "name": "message_type",
+              "value": "= {{ $json.body.whatsappInboundMessage.type }}",
+              "type": "string"
+            },
+            {
+              "id": "body",
+              "name": "body",
+              "value": "={{ $json.body.whatsappInboundMessage.type === 'audio' ? '(mensaje_audio)' : $json.body.whatsappInboundMessage.text.body }}",
+              "type": "string"
+            },
+            {
+              "id": "api_key",
+              "name": "api_key",
+              "value": "=b10618ca9e885031a926a789fa8ed6a2",
+              "type": "string"
+            },
+            {
+              "id": "c3d4dd2b-b1eb-4fd1-9daf-bb77ceb8d298",
+              "name": "business_number",
+              "value": "={{ $json.body.whatsappInboundMessage.to}}  ",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -6912,
+        912
+      ],
+      "id": "c997aad6-3e54-4a01-a5a3-327480e0b937",
+      "name": "Whatsapp Message Data"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message_type }}",
+                    "rightValue": "image",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "add4343c-7b78-41d1-9904-3606b8a56eb0"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Image"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message_type }}",
+                    "rightValue": "audio",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message_type }}",
+                    "rightValue": "text",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Text"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -2992,
+        880
+      ],
+      "id": "d18d9f5a-75f2-4965-b449-64bc8947484f",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Date Preprocessor v6.0 - Enhanced with Argentina timezone + Masajista data passthrough\n// Calculates current date/time PLUS next 7 days\n// Properly handles GMT-3 (America/Argentina/Buenos_Aires)\n// Passes through masajista data from upstream\n\n// Get UTC time\nconst utcNow = new Date();\n\n// Convert to Argentina time (GMT-3)\n// Method: Get UTC components, then adjust to Argentina\nconst argOffset = -3 * 60; // Argentina is UTC-3 (180 minutes behind UTC)\nconst argTime = new Date(utcNow.getTime() + argOffset * 60 * 1000);\n\n// Use Argentina time for all calculations\nconst now = argTime;\n\n// Spanish day names (without accents as per system requirements)\nconst dayNames = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];\nconst monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',\n                   'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];\n\n// Calculate next 7 days (including today) - ALL in Argentina time\nconst next7Days = [];\nfor (let i = 0; i < 7; i++) {\n  const date = new Date(now);\n  date.setDate(date.getDate() + i);\n\n  const dayName = dayNames[date.getDay()];\n  const dayNumber = date.getDate();\n  const monthName = monthNames[date.getMonth()];\n  const year = date.getFullYear();\n\n  // ISO format YYYY-MM-DD (using Argentina date)\n  const y = date.getFullYear();\n  const m = String(date.getMonth() + 1).padStart(2, '0');\n  const d = String(date.getDate()).padStart(2, '0');\n  const dateISO = `${y}-${m}-${d}`;\n\n  next7Days.push({\n    offset: i,\n    dayName: dayName,\n    dayNumber: dayNumber,\n    monthName: monthName,\n    year: year,\n    dateReadable: `${dayNumber} de ${monthName} de ${year}`,\n    dateISO: dateISO,\n    // Helper field for natural language\n    label: i === 0 ? 'hoy' : i === 1 ? 'mañana' : i === 2 ? 'pasado mañana' : dayName\n  });\n}\n\n// Current time info (Argentina time)\nconst currentHour = String(now.getHours()).padStart(2, '0');\nconst currentMinute = String(now.getMinutes()).padStart(2, '0');\n\n// Pass through all original data + preprocessed date fields + masajista data\nreturn {\n  ...items[0].json,\n\n  // Current date/time (Argentina)\n  current_day: next7Days[0].dayName,\n  current_date: next7Days[0].dayNumber,\n  current_month: next7Days[0].monthName,\n  current_year: next7Days[0].year,\n  current_date_readable: next7Days[0].dateReadable,\n  current_date_iso: next7Days[0].dateISO,\n  current_time: `${currentHour}:${currentMinute}`,\n  current_hour: parseInt(currentHour),\n  current_minute: parseInt(currentMinute),\n\n  // Tomorrow (Argentina)\n  tomorrow_day: next7Days[1].dayName,\n  tomorrow_date: next7Days[1].dayNumber,\n  tomorrow_month: next7Days[1].monthName,\n  tomorrow_year: next7Days[1].year,\n  tomorrow_date_readable: next7Days[1].dateReadable,\n  tomorrow_date_iso: next7Days[1].dateISO,\n\n  // 7-day array for lookups (all Argentina time)\n  next_7_days: next7Days,\n\n  // Helper: Create a quick lookup message for the AI\n  days_summary: `Hoy es ${next7Days[0].dayName}. Los próximos días: ${next7Days.slice(1, 7).map((d, i) => `${d.label}`).join(', ')}.`,\n\n  // Timestamps for debugging/reference\n  original_now_utc: utcNow.toISOString(),  // Original UTC time\n  original_now_argentina: now.toISOString(), // Argentina time (for verification)\n  timezone_info: \"America/Argentina/Buenos_Aires (GMT-3)\"\n};"
+      },
+      "id": "0a954259-f45e-4d8b-a002-f77af518790c",
+      "name": "Date_preprocessor",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3216,
+        896
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body }}",
+        "options": {
+          "systemMessage": "=Sos la recepcionista virtual de *Punto Relax Hombres*, un centro de estetica masculina ubicado en Nordelta, Buenos Aires. El centro de estetica ofrece diferentes servicios que se otorgan a traves de turnos agendados\n\n## INFORMACION DE CONTEXTO (SIEMPRE DISPONIBLE)\n\n**Fecha y hora actual:**\n- Dia actual: ={{ $json.current_day }}\n- Fecha: ={{ $json.current_date_readable }}\n- Hora: ={{ $json.current_time }}\n- Mañana sera: ={{ $json.tomorrow_day }}, ={{ $json.tomorrow_date_readable }}\n\n## TU ROL\n1. Responder consultas generales de pacientes sobre el centro de estetica (servicios, precios, horarios, ubicacion)\n2. Derivar la conversacion en caso que el paciente quiera agendar un turno para un servicio\n\n## TU OBJETIVO \n- El objetivo principal del agente es **Responder Consultas Generales** de pacientes sobre el centro de estetica (servicios, precios, horarios, ubicacion)\n- En caso que se detecte una **Intencion De Agendar Turno**, el agente debera generar derivar esta conversacion a un humano\n- En caso que el agente, ante un mensaje de un paciente detecte el escenario **Responder Consultas Generales** , la salida a generar por el agente debera tener esta estructura:\n\t```\n\t\t{ \"tipo\": \"consulta\", \"mensaje\": \"[respuesta a la consulta del paciente]\" }\n\t```\n- En caso que el agente, ante un mensaje de un paciente detecte el escenario **Intencion De Agendar Turno**, la salida a generar por el agente debera tener esta estructura:\n\t```\n\t\t{ \"tipo\": \"turno\", \"mensaje\": \"[respuesta al mensaje del paciente para dar continuidad a la conversacion]\", \"contexto\": \"[cualquier informacion que haya brindado el paciente sobre intencion o servicio de interes]\" }\n\t```\n- En caso que el agente, ante un mensaje de un paciente detecte el escenario **Consulta de Disponibilidad de Masajista**, la salida a generar por el agente debera tener esta estructura:\n        ```\n                { \"tipo\": \"disponibilidad_masajista\", \"search_key_type\": \"[dia|masajista]\", \"key_type_value\": \"[valor a buscar]\" }\n        ```\n\n- Ejemplo de salida para escenario **Responder Consultas Generales**\n\t```\n\t\t{ \"tipo\": \"consulta\", \"mensaje\": \"Estamos ubicados en José M Paiva 1539 Piso 1 Of. B102, Nordelta, Buenos Aires.\" }\n\t```\n- Ejemplo de salida para escenario **Intencion De Agendar Turno**\n\t```\n\t\t{ \"tipo\": \"turno\", \"mensaje\": \"Ya te comento\", \"contexto\": \"El paciente pregunto por masajes terapeuticos\" }\n\t```\n- Otro ejemplo de salida para escenario **Intencion De Agendar Turno**\n\t```\n\t\t{ \"tipo\": \"turno\", \"mensaje\": \"Ya te digo\", \"contexto\": \"El paciente pregunto que masajista esta disponible en este momento\" }\n\n\t```\t\n- Ejemplo de salida para escenario **Consulta de Disponibilidad de Masajista** (búsqueda por día):\n\t```\n\t\t\t{ \"tipo\": \"disponibilidad_masajista\", \"search_key_type\": \"dia\", \"key_type_value\": \"Lunes\" }\n\t```\n- Ejemplo de salida para escenario **Consulta de Disponibilidad de Masajista** (búsqueda por masajista):\n\t```\n\t\t\t{ \"tipo\": \"disponibilidad_masajista\", \"search_key_type\": \"masajista\", \"key_type_value\": \"Nayla\" }\n\t```\n\nIMPORTANTE: La salida debera seguir exclusivamente la estructura indicada. No añadas nada adicional a la estructura descripta.\n\n## REGLA CRÍTICA DE SALIDA\n\n**IMPORTANTE:** Tu salida debe contener **UN SOLO objeto JSON**, nunca múltiples objetos JSON separados.\n\n  **Si el mensaje del paciente contiene múltiples intenciones, seguí esta prioridad:**\n  1. `turno` → Si hay CUALQUIER indicio de querer agendar, pasar, o reservar un turno\n  2. `disponibilidad_masajista` → Si SOLO pregunta por disponibilidad sin intención de agendar\n  3. `consulta` → Para consultas generales\n\n  **Ejemplo de mensaje con múltiples intenciones:**\n  - Mensaje: \"estoy a unas cuadras, quienes estan disponibles hoy? tenes turno para las 17?\"\n  - Intenciones detectadas: disponibilidad + turno\n  - Salida correcta (prioridad turno):\n          ```\n                { \"tipo\": \"turno\", \"mensaje\": \"Ya te digo!\", \"contexto\": \"El paciente está cerca, preguntó quiénes están disponibles hoy y si hay turno para las 17hs\" }\n        ```\n\n## HERRAMIENTAS DISPONIBLES\n\n### Herramientas de Consulta (podes invocar MULTIPLES VECES):\n1. **consultar_base_conocimientos** - Para informacion sobre servicios, precios, horarios, ubicacion\n2. **consultar_paciente** - Buscar paciente por el numero de telefono\n\n### Herramientas de Registro (invocar UNA SOLA VEZ por conversacion):\n3. **agregar_paciente** - Registrar nuevo paciente (solo si consultar_paciente no lo encontro)\n\n\n## COMO MANEJAR LA CONVERSACION\n\n### Objetivo 1 - Mensaje Inicial de Saludo y Reconocimiento de Paciente\n- Invocar la tool `consultar_paciente` usando {{ $json.phone_number }} como parametro de entrada para obtener el nombre del paciente\n- Saluda amablemente usando este template:\n\t\t```\n\t\tHola ```[inclui el nombre del paciente si `consultar_paciente` te lo informo ]```👋 \n\t\t\n\t\tBienvenido a Punto Relax Hombres, tu espacio de cuidado personal y bienestar.\n\n\t\t⏰ DIAS Y HORARIOS DE ATENCIÓN 👉Lunes a Lunes de 12 a 21 horas (inclusive feriados).\n\n\t\t📌 UBICACION: 👉 Nordelta, Av Paiva 1539 (Edificio Delta Center, piso 1 of. B102). https://maps.app.goo.gl/KbcAhDw9xjPCNdkS6\n\n\t\t💆🏼‍♂️ SERVICIOS Y PRECIOS: \n\t\t👉 https://www.puntorelaxhombres.com/servicios\n\n\t\t👐 MASAJISTAS:  👉 https://www.puntorelaxhombres.com/about-1\n\n\t\t```[si encontraste al paciente mediante `consultar_paciente`]```\n\t\t📲 ¿Cómo reservo un turno? 👉 Indicanos día, horario y el tipo de servicio que quieras realizarte.\n\t\t\n\t\t¿Como te puedo ayudar?\n\t\t\n\t\t```[si NO encontraste al paciente mediante `consultar_paciente`]```\n\t\t📲 ¿Cómo reservo un turno? 👉 Por este medio, indicamos tu nombre, apellido, día, horario y el tipo de servicio que quieras realizarte.\n\t\t\n\t\t¿Me decis tu nombre asi te agendo?```\n\t\t\n\t\t\t\t\n- En caso el sea un nuevo cliente, en base a la respuesta a tu mensaje inicial, registra al paciente y sus datos mediante la tool `agregar_paciente` usando Telefono ({{ $json.phone_number }}), Nombre, Apellido, Timestamp.\n- Despues de averiguar/recolectar nombre y apellido, referite al paciente for su NOMBRE unicamente.\n- Despues de averiguar/recolectar nombre y apellido del paciente, no insinues ni preguntes constantemente fecha y hora del turno que desea. Solamente limitate a responder preguntas sobre Punto Relax.\n\n### Objetivo 2 - Identificacion del Escenario de la Conversacion Ante Cada Mensaje\n- Ante cada mensaje del paciente deberas identificar primeramente el escenario de conversacion y clasificarlo entre 3 posibles categorias: **Responder Consultas Generales**, **Intencion De Agendar Turno**, y **Consulta de Disponibilidad de Masajista**.\n- Por defecto, el escenario sera **Responder Consultas Generales**\n#### Como Detectar el Escenario **Intencion De Agendar Turno**\n- Cualquier referencia a turnos o posibilidad de acercarse al lugar, debe ser interpreatada como **Intencion De Agendar Turno**\n- IMPORTANTE: El hecho de que el paciente te haya compartido el nombre y apellido para que lo agendes mediante `agregar_paciente` no implica que necesariamente este buscando un turno. Espera a que el paciente de algun indicio/mensaje mas explicito de que quiere agendar un turno\n- Ejemplos de escenarios que pertenecen a **Intencion De Agendar Turno**: Ademas de los casos literales (eg: `quiero agendar un turno`), te comparto posibles ejemplos (ademas de considerar estos ejemplos, considerar mensajes de igual significado):\n    - `Estoy a 5 minutos del lugar, puedo pasar?`\n\t- `Puedo pasar en 10 minutos?`\n    - `Puedo pasar ahora?`\n\t- `Quiero un masaje`\n\n### Objetivo 3 - Manejo de la conversacion ante escenario **Responder Consultas Generales**\n- Manejar la conversacion naturalmente de manera amena, amistosa y cercana invocando la tool `consultar_base_conocimientos` para obtener la informacion adecuada.\n- En caso de que no encuentres informacion a la pregunta del paciente, redirigelo al sitio web: https://www.puntorelaxhombres.com/\n- Disponbilidad de Servicios : Si el paciente pregunta por disponibilidad de un servicio, usar `consultar_base_conocimiento`. Ejemplos: 'cuando esta disponible [nombre servicio]?', 'hoy hay [nombre servicio]?\n\n### Objetivo 4 - Manejo de la conversacion ante escenario **Intencion De Agendar Turno**\n- Una vez detectado este escenario, debes dar una respuesta logica que siga la linea de estos ejemplos: \"Dame un momento, que dia y hora quisieras para tu turno?\", \"Perfecto, me decis dia y horario que preferis?\", \"Genial, que fecha y horario te gustaria pasar?\"\n- En este punto de la conversacion, ya vas a tener el nombre y apellido del paciente, por lo tanto NO DEBES PREGUNTARLE EL NOMBRE Y APELLIDO AL PACIENTE EN ESTA INSTANCIA\n- Contexto: Como se menciono mas arriba, la salida contiene un elemento 'contexto' que debe contener un resumen de los ultimos mensajes. Chequea la memoria para averiguar el contexto de los ultimos mensajes. Si el paciente menciono algun servicio, debes incluir el servicio en el contexto. Ej: \"el paciente esta interesado en quiropraxia y menciono que esta disponible hoy\"\n\n\n### Objetivo 5 - Detección del Escenario **Consulta de Disponibilidad de Masajista**\nEste escenario se activa cuando el paciente pregunta específicamente sobre:\n\t- Qué masajistas están disponibles en un día específico\n\t- Cuándo trabaja una masajista específica\n\t- Si una masajista está disponible en un día particular\n**Ejemplos de mensajes que activan este escenario:**\n    - \"¿Quién está disponible hoy?\"\n    - \"¿Quién trabaja los lunes?\"\n    - \"¿Cuándo trabaja Nayla?\"\n    - \"¿Está Erica mañana?\"\n    - \"¿Qué días atiende Claudia?\"\n**Reglas para search_key_type:**\n\t- Usar `\"dia\"` cuando el paciente pregunta por un DÍA específico (ej: \"quién está el lunes\", \"quién hay hoy\")\n\t- Usar `\"masajista\"` cuando el paciente pregunta por una MASAJISTA específica (ej: \"cuándo trabaja [nombre masajista]\")\n**Reglas para key_type_value:**\n\t- Si search_key_type es \"dia\": usar el nombre del día en español con mayúscula inicial (Lunes, Martes, Miercoles, Jueves, Viernes, Sabado)\n\t- Si search_key_type es \"masajista\": usar el nombre exacto de la masajista (Agus, Nayla, Claudia, Erica, Sidney, Brisa)\n**IMPORTANTE - Conversión de fechas relativas:**\n  - Si el paciente dice \"hoy\" → usar el valor de {{ $json.current_day }}\n  - Si el paciente dice \"mañana\" → usar el valor de {{ $json.tomorrow_day }}\n  - Si el paciente dice un día de la semana → usar ese día directamente\n**IMPORTANTE:** Este escenario es DIFERENTE a **Intencion De Agendar Turno**. Aquí el paciente solo quiere INFORMACIÓN sobre disponibilidad, no está solicitando agendar un turno todavía.\n\n## FORMATO DE FECHAS\n\n**CRITICO:** Todas las fechas deben estar en formato ISO: `YYYY-MM-DD`\n\nCuando el usuario dice:\n- \"hoy\" -> usa `={{ $json.current_date_iso }}`\n- \"manana\" -> usa `={{ $json.tomorrow_date_iso }}`\n- \"pasado manana\" -> busca en `$json.next_7_days` con offset=2\n- \"miercoles\" -> busca en `$json.next_7_days` donde `dayName === \"Miercoles\"`\n\n## TONO Y ESTILO\n- Usa voseo argentino (\"vos\", \"tenes\", \"queres\")\n- Se Calida, amistosa, cercana\n- Se Clara y concisa, no uses emojis excesivos (maximo 1-2 por mensaje)\n- Dar respuestas cortas. Maximo 3 lineas. EXCEPCION: El mensaje de saludo inicial es el unico caso donde se permite un mensaje largo.\n- No insinues constantemente al paciente para que agende turno (por ejemplo: dsp de tener nombre y apellido, no preguntes directamente \"que dia y horario queres para tu turno\")\n- Antes de hablar de turnos, dia y horarios, espera a haber detectado el escenario **Intencion De Agendar Turno**\n\n\n"
+        }
+      },
+      "id": "983d5ca2-6ab2-43f5-abe2-9e15a9ab01bb",
+      "name": "Agent 1: Receptionist",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -2432,
+        928
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const output = $input.first().json.output;\n\n  // Find JSON object anywhere in the string\nconst jsonMatch = output.match(/\\{[\\s\\S]*\\}/);\n\n  if (!jsonMatch) {\n    return {\n      tipo: 'consulta',\n      mensaje: output,\n      contexto: null,\n      search_key_type: null,\n      key_type_value: null\n    };\n  }\n\n  try {\n    const parsed = JSON.parse(jsonMatch[0]);\n\n    return {\n      tipo: parsed.tipo || 'consulta',\n      mensaje: parsed.mensaje || null,\n      contexto: parsed.contexto || null,\n      search_key_type: parsed.search_key_type || null,\n      key_type_value: parsed.key_type_value || null\n    };\n  } catch (e) {\n    return {\n      tipo: 'consulta',\n      mensaje: output,\n      contexto: null,\n      search_key_type: null,\n      key_type_value: null\n    };\n  }"
+      },
+      "id": "122cd07e-b03c-45e6-803f-d2a1698175b7",
+      "name": "Check Conversation State",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1696,
+        800
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.tipo }}",
+                    "rightValue": "consulta",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "3dd1b1d1-4c06-4079-a516-7aff636ed7b1"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "consulta"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.tipo }}",
+                    "rightValue": "turno",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "33f1b5d8-7430-4473-a42d-6e64e00aeaa6"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "turno"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "730f7350-42e0-4532-8117-5fccf47a2db5",
+                    "leftValue": "={{ $json.tipo }}",
+                    "rightValue": "disponibilidad_masajista",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "disponibilidad_masajista"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b2082ac7-b736-48ef-8363-f81a831e0f24",
+      "name": "Switch by Stage",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -1504,
+        784
+      ]
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.phone_number }}",
+        "contextWindowLength": 30
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -576,
+        2496
+      ],
+      "id": "e7a9d94d-b3ed-41fb-a912-cba2912914e3",
+      "name": "Shared Memory"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=El paciente cuyo numero de telefono es {{ $json.phone_number }}, acaba de enviar un mensaje de audio.",
+        "options": {
+          "systemMessage": "=Sos un asistente de virtual de *Punto Relax Hombres*, un centro de estetica masculina ubicado en Nordelta, Buenos Aires. El centro de estetica ofrece diferentes servicios que se otorgan a traves de turnos agendados.\n\n## TU ROL\nDada la imposibilidad de interpretar mensajes de audio, ante la recepcion de un mensaje de audio es notificar esto al staff de Punto Relax y enviar contexto sobre el estado de la conversacion hasta el momento en que el paciente envia el audio. \n\n## OBJETIVO\nTu objetivo es, dado un numero de telefono, utilizar `consultar_paciente` para obtener Nombre y Apellido, luego obtener contexto del cliente chequeando la memoria (que contiene las conversaciones del paciente con el centro estetica) y en base eso generar un mensaje de salida siguiendo el formato indicado a continuacion:\n\n\t```\n\t\t{ \"paciente.nombre\": \"[nombre del paciente]\", \"paciente.apellido\": \"[apellido del paciente]\", \"telefono\":[telefono del paciente], \"contexto\": \"[resumen del estado de la conversacion haciendo foco en los mensajes mas recientes almacenadas en memoria ]\" }\n\t```\n\nIMPORTANTE: La salida debe contener unicamente un JSON y nada mas.\n\n## PASOS A SEGUIR PARA GENERAR LA SALIDA\n1. Utilizando {{ $json.phone_number }} invocar `consultar_paciente` para obtener Nombre y Apellido\n2. Utilizando {{ $json.chat_id }}, inspeccionar la memoria y obtener el contexto de la conversacion haciendo foco en los ultimos 4 mensajes\n3. Generar una salida siguiendo el formato indicado\n4. Escribir en la memoria que se recibio un mensaje audio\n\nEjemplo de salida:\n\t```\n\t\t{ \"paciente_nombre\": \"Juan\", \"paciente_apellido\": \"Perez\", \"telefono\":\"5491128796633\", contexto\": \"El cliente venia haciendo preguntas sobre Punto Relax y consulto por quiropraxia antes de enviar el audio \" }\n\t```\n\t\nEjemplo de salida si no se encuentra el paciente mediante `consultar_paciente`:\n\t```\n\t\t{ \"paciente_nombre\": \"\", \"paciente_apellido\": \"\", \"telefono\":\"5491128796633\", \"contexto\": \"Un nuevo cliente ha enviado un mensaje de audio\" }\n\t```\n\n## IMPORTANTE\nEl elemento 'contexto' de la salida, solo debe contener informacion del contexto de la conversacion y nada mas. No incluir nada relacionado al staff, como por ejemplo: \"Se le notifico al staff ...\""
+        }
+      },
+      "id": "b52dd327-8701-470c-8528-5c9fbd59d732",
+      "name": "Agent Audio Processor",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -2704,
+        480
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -2704,
+        720
+      ],
+      "id": "e691d800-15c3-4f95-a2b9-f5e484933591",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "iCPIT2cW1oKjg3mD",
+          "name": "OpenAi FSR"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1TceRxk-cCY9mvY1_XV_whmGc6fiRFx_wJTc42pKZHmc",
+          "mode": "list",
+          "cachedResultName": "Base de datos - Punto Relax Hombres",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TceRxk-cCY9mvY1_XV_whmGc6fiRFx_wJTc42pKZHmc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 961188783,
+          "mode": "list",
+          "cachedResultName": "Pacientes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TceRxk-cCY9mvY1_XV_whmGc6fiRFx_wJTc42pKZHmc/edit#gid=961188783"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Telefono",
+              "lookupValue": "={{ $('Date_preprocessor').item.json.phone_number }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -976,
+        1120
+      ],
+      "id": "d6c366f0-fcab-4651-b4d5-1e20c08bba6d",
+      "name": "Get paciente",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleApi": {
+          "id": "7ofJPuxNnAAC5OPL",
+          "name": "Google Cred - Service Account Method"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.ycloud.com/v2/whatsapp/messages/sendDirectly",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "={{ $('Whatsapp Message Data').first().json.api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{\n    {\n      \"from\": $('Whatsapp Message Data').first().json.business_number.trim(),\n      \"to\": $('Date_preprocessor').item.json.chat_id,\n      \"type\": \"text\",\n      \"text\": {\n        \"body\": $json.mensaje\n      }\n    }\n  }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -832,
+        768
+      ],
+      "id": "c926edfc-d483-42f8-8122-eb2a75a8171c",
+      "name": "Envio de respuesta - Consulta"
+    },
+    {
+      "parameters": {
+        "jsCode": "const output = $input.first().json.output;\n\n  // Find JSON object anywhere in the string\n  const jsonMatch = output.match(/\\{[\\s\\S]*\\}/);\n\n  if (!jsonMatch) {\n    return {\n      paciente_nombre: null,\n      paciente_apellido: null,\n      telefono: null,\n      contexto: null\n    };\n  }\n\n  try {\n    const parsed = JSON.parse(jsonMatch[0]);\n\n    return {\n      paciente_nombre: parsed.paciente_nombre || null,\n      paciente_apellido: parsed.paciente_apellido || null,\n      telefono: parsed.telefono || null,\n      contexto: parsed.contexto || null\n    };\n  } catch (e) {\n    return {\n      paciente_nombre: null,\n      paciente_apellido: null,\n      telefono: null,\n      contexto: null\n    };\n  }"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2336,
+        480
+      ],
+      "id": "469a34a2-b997-46ab-a44b-4cbe2e280ee2",
+      "name": "Extract"
+    },
+    {
+      "parameters": {
+        "path": "reactivar-bot",
+        "options": {
+          "responseData": "=Marcaste que completaste la solicitud. El asistente fue reactivado, puedes cerrar esta ventana."
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -7088,
+        1424
+      ],
+      "id": "d7e8cab9-7f30-4007-9e81-41e0fd45d766",
+      "name": "Reactivar Bot Webhook",
+      "webhookId": "8a865662-80e7-412d-8dd3-cdcecb0cfeaa"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "recepcionista-virtual",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -7104,
+        912
+      ],
+      "id": "24b79b8b-e82f-4c95-af05-bf2effbf9284",
+      "name": "Entrada de Mensajes - Whatsapp",
+      "webhookId": "d4edf058-7e32-4a9e-8ad2-64e630b58af0"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Extract').item.json.paciente_nombre }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "empty",
+                      "singleValue": true
+                    },
+                    "id": "666d7b1b-1f2a-4cc6-b60b-978879beb683"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Cliente Nuevo"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "268435bf-f51d-499e-8b16-88805c6258bd",
+                    "leftValue": "={{ $('Extract').item.json.paciente_nombre }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Cliente Existente"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -1744,
+        480
+      ],
+      "id": "86df0db3-99a0-4d45-b5d1-7405c62c3cb3",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.command }}",
+                    "rightValue": "on",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "d12dbd2c-460f-49c5-942f-a36f2c56b428"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "turnON"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c8f49a04-c381-47cf-882d-acbbe56993f5",
+                    "leftValue": "={{ $json.command }}",
+                    "rightValue": "off",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "turnOFF"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "db6a8df0-8d58-45a9-ac66-d605c10cece3",
+                    "leftValue": "={{ $json.command }}",
+                    "rightValue": "info",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "statusCheck"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0548ad93-37fb-4678-b5ce-f095d2a80f3d",
+                    "leftValue": "={{ $json.command }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "empty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "invalid"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "34b88e93-2879-44d7-bc49-b3c40006f6d2",
+                    "leftValue": "={{ $json.command }}",
+                    "rightValue": "blacklist",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "blacklist"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "92c3f9c5-91d7-4094-a756-030d953bda65",
+                    "leftValue": "={{ $json.command }}",
+                    "rightValue": "unblacklist",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "unblacklist"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -9536,
+        -1216
+      ],
+      "id": "4c4d8318-e2e9-4930-a3c0-dd85c1f78a95",
+      "name": "Check Command"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "adpTwRF2IeD3ksKI",
+          "mode": "list",
+          "cachedResultName": "control-asistente",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/adpTwRF2IeD3ksKI"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "variable",
+              "keyValue": "status"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -9312,
+        -2016
+      ],
+      "id": "ed51b0d7-7846-4332-bc65-3e8c03fe6927",
+      "name": "Get Asistente Status"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "adpTwRF2IeD3ksKI",
+          "mode": "list",
+          "cachedResultName": "control-asistente",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/adpTwRF2IeD3ksKI"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "variable",
+              "keyValue": "=status"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "valor": "off"
+          },
+          "matchingColumns": [
+            "status"
+          ],
+          "schema": [
+            {
+              "id": "variable",
+              "displayName": "variable",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "valor",
+              "displayName": "valor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -8864,
+        -1536
+      ],
+      "id": "f58e6cae-99c1-4277-ab2d-b07a752142db",
+      "name": "Turn Asistente OFF"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "84d766fa-3e91-407f-a36f-f5e8bf086cdf",
+              "leftValue": "={{ $json.valor}}",
+              "rightValue": "on",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -9088,
+        -2016
+      ],
+      "id": "59eb99ae-9d6a-4fcf-bc97-709fb24d4f27",
+      "name": "If Asistente is ON"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "84d766fa-3e91-407f-a36f-f5e8bf086cdf",
+              "leftValue": "={{ $json.valor }}",
+              "rightValue": "off",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -9088,
+        -1632
+      ],
+      "id": "3abad80d-72d8-4ec5-93b8-f393cf57f954",
+      "name": "If Asistente is OFF"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "84d766fa-3e91-407f-a36f-f5e8bf086cdf",
+              "leftValue": "={{ $json.valor }}",
+              "rightValue": "on",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -9088,
+        -1248
+      ],
+      "id": "5400065d-f53e-4f88-a1e7-d03588fd6f8e",
+      "name": "If Asistente is ON1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "84d766fa-3e91-407f-a36f-f5e8bf086cdf",
+              "leftValue": "={{ $json.valor }}",
+              "rightValue": "on",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -3920,
+        912
+      ],
+      "id": "119e576e-939f-4466-b9c0-8ebe73c69a72",
+      "name": "If Asistente is ON2"
+    },
+    {
+      "parameters": {
+        "jsCode": " const message = $('Telegram Trigger').first().json.message.text\n\n   let command = null;\n\n  if (message === '#on') {\n    command = 'on';\n  } else if (message === '#off') {\n    command = 'off';\n  } else if (message === '#info') {\n    command = 'info';\n  } else if (message.startsWith('#blacklist')) {\n    command = 'blacklist';\n  } else if (message.startsWith('#unblacklist')) {\n  command = 'unblacklist';\n  }\n\n  return {\n    ...$input.first().json,\n    command: command\n  };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -9760,
+        -1152
+      ],
+      "id": "10fbdb17-9a16-413e-83a3-6778467dea78",
+      "name": "Extract Control Command1"
+    },
+    {
+      "parameters": {
+        "content": "Cola de mensajes",
+        "height": 80
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -5984,
+        768
+      ],
+      "typeVersion": 1,
+      "id": "e47ad8d1-3885-4355-94f0-7ee167296fc7",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "Control de Asistente\n",
+        "height": 80
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -10448,
+        -1344
+      ],
+      "id": "4d4f0f60-894a-44fe-8c30-574589299bd8",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -10448,
+        -1136
+      ],
+      "id": "add144a4-0b78-41c2-8d93-f9773a0991e4",
+      "name": "Telegram Trigger",
+      "webhookId": "2b2a77aa-9053-4a81-8297-11629f5b09e6",
+      "credentials": {
+        "telegramApi": {
+          "id": "7sSdEAccPOHUL1nJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=✅ El asistente se ha activado satisfactoriamente.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -8864,
+        -1728
+      ],
+      "id": "6b77a003-8552-46dd-8f78-f7e451bfbd7a",
+      "name": "El asistente ya se encuentra *desactivado*",
+      "webhookId": "aa4ac8bd-5fdf-4eaf-9537-1777d902f8dc",
+      "credentials": {
+        "telegramApi": {
+          "id": "7sSdEAccPOHUL1nJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=✅ El asistente se ha activado satisfactoriamente.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -8640,
+        -1920
+      ],
+      "id": "36bdcdf7-e7fc-4cd1-9b10-ef51def180db",
+      "name": "Asistente se ha activado",
+      "webhookId": "a3a8e627-fe07-4ad9-9929-ade24b86f61f",
+      "credentials": {
+        "telegramApi": {
+          "id": "7sSdEAccPOHUL1nJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=El asistente ya se encuentra *activado*.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -8864,
+        -2112
+      ],
+      "id": "87a159c7-3b7a-4267-a4cd-8a07d67140c9",
+      "name": "El asistente ya se encuentra *activado*",
+      "webhookId": "70be1724-f6be-4354-8c62-4a683ea82cdb",
+      "credentials": {
+        "telegramApi": {
+          "id": "7sSdEAccPOHUL1nJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=⏹️ El asistente se ha desactivado satisfactoriamente y no intervendrá en ninguna conversacion.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -8640,
+        -1536
+      ],
+      "id": "b0a94425-8432-40e0-957d-ff92cbd81871",
+      "name": "El asistente se ha desactivado satisfactoriamente.",
+      "webhookId": "cbf1d34b-4d08-4a31-8c6d-5fa770e8c001",
+      "credentials": {
+        "telegramApi": {
+          "id": "7sSdEAccPOHUL1nJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=El asistente se encuentra *activado*.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -8864,
+        -1344
+      ],
+      "id": "0f70ba44-f7fa-4905-8ab9-a37303067405",
+      "name": "El asistente se encuentra *activado*",
+      "webhookId": "fbc65bbd-3eb9-45e0-9f86-1658dadb3d8c",
+      "credentials": {
+        "telegramApi": {
+          "id": "7sSdEAccPOHUL1nJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=El asistente se encuentra *desactivado*.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -8864,
+        -1152
+      ],
+      "id": "e51f4da2-49b6-4603-add3-12e48d68fb9c",
+      "name": "El asistente se encuentra *desactivado*",
+      "webhookId": "8043cb01-6f1d-4c45-a414-8f47a650c630",
+      "credentials": {
+        "telegramApi": {
+          "id": "7sSdEAccPOHUL1nJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=Comando invalido.\n\nUsa los siguientes comandos para conocer o activar/desactivar el asistente:\n\n- #info  👉  Recibir el estado actual del asistente\n- #on    👉  Activar el asistente\n- #off   👉  Desactivar el asistente\n- #blacklist <numero>    👉 Agregar un numero de telefono a la blacklist para evitar que el asistente intervenga en conversaciones con ese numero. \n- #unblacklist <numero>  👉 Eliminar un numero de telefono de la blacklist para que el asistente vuelva a tomar las conversaciones con ese numero.\n\n\nAl especificar telefonos, usar formato 549... (ej: 5491123456789)\n",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -9312,
+        -1056
+      ],
+      "id": "b7684d45-9f6e-455a-9360-e879b7060c3d",
+      "name": "Comando invalido",
+      "webhookId": "a24f443e-182d-48e9-b899-fe02deda1076",
+      "credentials": {
+        "telegramApi": {
+          "id": "7sSdEAccPOHUL1nJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "adpTwRF2IeD3ksKI",
+          "mode": "list",
+          "cachedResultName": "control-asistente",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/adpTwRF2IeD3ksKI"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "variable",
+              "keyValue": "status"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -9312,
+        -1632
+      ],
+      "id": "3831fea2-f83a-4f97-9f81-d8d2d1cc6aae",
+      "name": "Get Asistente Status1"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "adpTwRF2IeD3ksKI",
+          "mode": "list",
+          "cachedResultName": "control-asistente",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/adpTwRF2IeD3ksKI"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "variable",
+              "keyValue": "status"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -9312,
+        -1248
+      ],
+      "id": "7d0fb185-9439-407d-9885-c3ccbcdee757",
+      "name": "Get Asistente Status2"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "adpTwRF2IeD3ksKI",
+          "mode": "list",
+          "cachedResultName": "control-asistente",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/adpTwRF2IeD3ksKI"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "variable",
+              "keyValue": "=status"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "valor": "on"
+          },
+          "matchingColumns": [
+            "status"
+          ],
+          "schema": [
+            {
+              "id": "variable",
+              "displayName": "variable",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "valor",
+              "displayName": "valor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -8864,
+        -1920
+      ],
+      "id": "89c1004b-36cc-4822-991f-90c02b929346",
+      "name": "Turn Asistente ON"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "adpTwRF2IeD3ksKI",
+          "mode": "list",
+          "cachedResultName": "control-asistente",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/adpTwRF2IeD3ksKI"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "variable",
+              "keyValue": "status"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -4176,
+        912
+      ],
+      "id": "5524b59b-fbc8-4999-aaf6-de1d9b6ccd0c",
+      "name": "Check Asistente Status"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "adpTwRF2IeD3ksKI",
+          "mode": "list",
+          "cachedResultName": "control-asistente",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/adpTwRF2IeD3ksKI"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "variable",
+              "keyValue": "telegram_chat_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -1312,
+        240
+      ],
+      "id": "a8fe34f3-982c-4210-b46b-a206f747e986",
+      "name": "Get Telegram Chat Id1"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.valor }}",
+        "text": "=🔊 *NUEVO MENSAJE DE AUDIO RECIBIDO*\n\n- Paciente: Se trata de un nuevo paciente que nunca fue registrado en base de datos\n- Teléfono: {{ $('Extract').item.json.telefono }}\n- Contexto: {{ $('Extract').item.json.contexto }}\n\n- Estado: ⚠️ *Mensaje de Audio Pendiente*\n\n\n*Proximos pasos:*\n\n1) Continua la conversacion con el paciente siguiendo este link 👇\nhttps://api.whatsapp.com/send?phone={{ $('Extract').item.json.telefono }}\n\n2) Una vez terminada la conversacion, hace click en este link para que el asistente vuelva a manejar la conversacion la proxima vez que este paciente nos escriba 👇\nhttps://primary-production-d849.up.railway.app/webhook/reactivar-bot?id={{ $('Extract').item.json.telefono }}\n",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1104,
+        240
+      ],
+      "id": "20502cd9-67d7-477a-a80c-215712fdfeef",
+      "name": "Notificar Staff - Audio Nuevo Paciente",
+      "webhookId": "980eb655-0b02-442f-8e4f-f8c72ae9e4fb",
+      "credentials": {
+        "telegramApi": {
+          "id": "7sSdEAccPOHUL1nJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "bNqPfhwKEeQ320nO",
+          "mode": "list",
+          "cachedResultName": "solicitudes-tracker",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/bNqPfhwKEeQ320nO"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefono": "={{ $('Extract').item.json.telefono }}",
+            "motivo": "mensaje_audio",
+            "nombre": "={{ $('Extract').item.json.paciente_nombre }}",
+            "apellido": "={{ $('Extract').item.json.paciente_apellido }}",
+            "notificacion_id": "={{$json.result.message_id}}",
+            "estado": "pendiente",
+            "id_2": "={{ $('Extract').item.json.telefono }}_{{$json.result.message_id}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "motivo",
+              "displayName": "motivo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "apellido",
+              "displayName": "apellido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "notificacion_id",
+              "displayName": "notificacion_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "id_2",
+              "displayName": "id_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -896,
+        240
+      ],
+      "id": "28d79bfb-cac0-46d7-b37d-caeffe27a51d",
+      "name": "Agregar a solicitudes-tracker"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "adpTwRF2IeD3ksKI",
+          "mode": "list",
+          "cachedResultName": "control-asistente",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/adpTwRF2IeD3ksKI"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "variable",
+              "keyValue": "telegram_chat_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -1328,
+        480
+      ],
+      "id": "3e49cdc4-9870-4144-823b-c4c366c52218",
+      "name": "Get Telegram Chat Id3"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "bNqPfhwKEeQ320nO",
+          "mode": "list",
+          "cachedResultName": "solicitudes-tracker",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/bNqPfhwKEeQ320nO"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefono": "={{ $('Extract').item.json.telefono }}",
+            "motivo": "mensaje_audio",
+            "nombre": "={{ $('Extract').item.json.paciente_nombre }}",
+            "apellido": "={{ $('Extract').item.json.paciente_apellido }}",
+            "notificacion_id": "={{$json.result.message_id}}",
+            "estado": "pendiente",
+            "id_2": "={{ $('Extract').item.json.telefono }}_{{$json.result.message_id}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "motivo",
+              "displayName": "motivo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "apellido",
+              "displayName": "apellido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "notificacion_id",
+              "displayName": "notificacion_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "id_2",
+              "displayName": "id_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -896,
+        480
+      ],
+      "id": "5f2b6354-a588-4b99-bf55-3e260326effe",
+      "name": "Agregar a solicitudes-tracker1"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.valor }}",
+        "text": "=🔊 *NUEVO MENSAJE DE AUDIO RECIBIDO*\n\n- Paciente: {{ $('Extract').item.json.paciente_nombre }} {{ $('Extract').item.json.paciente_apellido }}\n- Teléfono: {{ $('Extract').item.json.telefono }}\n- Contexto: {{ $('Extract').item.json.contexto }}\n\n- Estado: ⚠️ *Mensaje de Audio Pendiente*\n\n\n*Proximos pasos:*\n\n1) Continua la conversacion con el paciente siguiendo este link 👇\nhttps://api.whatsapp.com/send?phone={{ $('Extract').item.json.telefono }}\n\n2) Una vez terminada la conversacion, hace click en este link para que el asistente vuelva a manejar la conversacion la proxima vez que este paciente nos escriba 👇\nhttps://primary-production-d849.up.railway.app/webhook/reactivar-bot?id={{ $('Extract').item.json.telefono }}\n",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -1104,
+        480
+      ],
+      "id": "8694c25a-386d-4c66-9b7e-557b6173b022",
+      "name": "Notificar Staff - Audio Paciente",
+      "webhookId": "a650d2a3-f25f-42d6-a530-c532f8effe1f",
+      "credentials": {
+        "telegramApi": {
+          "id": "7sSdEAccPOHUL1nJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "fht8H1GqegJ4257N",
+          "mode": "list",
+          "cachedResultName": "blacklist",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/fht8H1GqegJ4257N"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefono": "={{ $json.telefono }}",
+            "motivo": "system"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "motivo",
+              "displayName": "motivo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -2096,
+        480
+      ],
+      "id": "e0387fd5-a7b7-4847-93cc-10916861b338",
+      "name": "Add to Blacklist"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "fht8H1GqegJ4257N",
+          "mode": "list",
+          "cachedResultName": "blacklist",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/fht8H1GqegJ4257N"
+        },
+        "matchType": "allConditions"
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -3648,
+        896
+      ],
+      "id": "f9354288-7766-4f5c-8275-3f174edf4455",
+      "name": "Check Blacklist1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "fht8H1GqegJ4257N",
+          "mode": "list",
+          "cachedResultName": "blacklist",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/fht8H1GqegJ4257N"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefono",
+              "keyValue": "={{ $json.telefono }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -6656,
+        1424
+      ],
+      "id": "536c4027-a229-4864-8f5f-324b0bffed8e",
+      "name": "Unblacklist",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "adpTwRF2IeD3ksKI",
+          "mode": "list",
+          "cachedResultName": "control-asistente",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/adpTwRF2IeD3ksKI"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "variable",
+              "keyValue": "telegram_chat_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -6144,
+        1424
+      ],
+      "id": "b490e731-d1ed-4604-a8cf-2287d9c576cb",
+      "name": "Get Telegram Chat Id2"
+    },
+    {
+      "parameters": {
+        "operation": "editMessageText",
+        "chatId": "={{ $json.valor }}",
+        "messageId": "={{ $('Actualizar solicitudes-tracker').item.json.notificacion_id }}",
+        "replyMarkup": "inlineKeyboard",
+        "text": "=🔔 NUEVA SOLICITUD DE TURNO\n\n- Paciente: Paciente nuevo\n- Teléfono: {{ $('Check solicitudes-tracker').item.json.telefono }}\n- Contexto: Confirmaste manualmente que la solicitud fue completada  y que el asistente puede volver a tomar el control de futuras conversaciones con este paciente.\n\n- Estado: ✅ *Solicitud de Turno Completada*\n\n\n\n\n\n",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -5280,
+        1184
+      ],
+      "id": "d3deb871-97b9-4751-87f1-3b0d542245b4",
+      "name": "Solicitud Completada!",
+      "webhookId": "d68aa0df-a406-4cd4-abc5-fe0e73c1a815",
+      "credentials": {
+        "telegramApi": {
+          "id": "7sSdEAccPOHUL1nJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "bNqPfhwKEeQ320nO",
+          "mode": "list",
+          "cachedResultName": "solicitudes-tracker",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/bNqPfhwKEeQ320nO"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyValue": "={{ $('Check solicitudes-tracker').item.json.id }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "estado": "completada"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "motivo",
+              "displayName": "motivo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "apellido",
+              "displayName": "apellido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "notificacion_id",
+              "displayName": "notificacion_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "id_2",
+              "displayName": "id_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -6400,
+        1424
+      ],
+      "id": "a7e3e838-5deb-4a97-a1e6-7fcc1388f1a7",
+      "name": "Actualizar solicitudes-tracker"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "bNqPfhwKEeQ320nO",
+          "mode": "list",
+          "cachedResultName": "solicitudes-tracker",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/bNqPfhwKEeQ320nO"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefono",
+              "keyValue": "={{ $json.query.id }}"
+            },
+            {
+              "keyName": "estado",
+              "keyValue": "pendiente"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -6880,
+        1424
+      ],
+      "id": "b7d57d01-9e0b-4a83-8a27-2b69e39f86d2",
+      "name": "Check solicitudes-tracker"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "fht8H1GqegJ4257N",
+          "mode": "list",
+          "cachedResultName": "blacklist",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/fht8H1GqegJ4257N"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefono": "={{ $('Date_preprocessor').item.json.phone_number }}",
+            "motivo": "system"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "motivo",
+              "displayName": "motivo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -1152,
+        1120
+      ],
+      "id": "1cacf447-a892-4eb9-9c41-e934480cbe1b",
+      "name": "Add to Blacklist1"
+    },
+    {
+      "parameters": {
+        "mode": "delete",
+        "deleteMode": "all"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        1152,
+        1312
+      ],
+      "id": "ef728fda-9dc3-4eaf-91f8-a9e661d3893c",
+      "name": "Chat Memory Manager"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Check solicitudes-tracker').item.json.motivo }}",
+                    "rightValue": "turno",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "2ef9119d-4eee-4fb0-aeeb-f5596a5b92a3"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "turno"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "81165f74-7969-4e74-8e75-a96e3937408f",
+                    "leftValue": "={{ $('Check solicitudes-tracker').item.json.motivo }}",
+                    "rightValue": "mensaje_audio",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "mensaje_audio"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -5936,
+        1424
+      ],
+      "id": "bd612759-90a6-407a-a107-b4004170f705",
+      "name": "Switch2"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Check solicitudes-tracker').item.json.nombre }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "empty",
+                      "singleValue": true
+                    },
+                    "id": "666d7b1b-1f2a-4cc6-b60b-978879beb683"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Cliente Nuevo"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "268435bf-f51d-499e-8b16-88805c6258bd",
+                    "leftValue": "={{ $('Check solicitudes-tracker').item.json.nombre }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Cliente Existente"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -5600,
+        1584
+      ],
+      "id": "bc0080e4-7e0a-4bc0-bfc0-eb38106e337f",
+      "name": "Switch3"
+    },
+    {
+      "parameters": {
+        "operation": "editMessageText",
+        "chatId": "={{ $json.valor }}",
+        "messageId": "={{ $('Actualizar solicitudes-tracker').item.json.notificacion_id }}",
+        "text": "=🔊 *NUEVO MENSAJE DE AUDIO RECIBIDO*\n\n- Paciente: {{ $('Check solicitudes-tracker').item.json.nombre }} {{ $('Check solicitudes-tracker').item.json.apellido }}\n- Teléfono: {{ $('Check solicitudes-tracker').item.json.telefono }}\n- Contexto: Confirmaste manualmente que el audio fue respondido y que el asistente puede volver a tomar el control de futuras conversaciones con este paciente.\n\n- Estado: ✅ *Mensaje de Audio Respondido*",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -5280,
+        1712
+      ],
+      "id": "ec5441ee-c813-4d05-8218-19836aa85e2a",
+      "name": "Solicitud Completada!1",
+      "webhookId": "6d1b13db-cb43-49cd-983b-0a978a1ec522",
+      "credentials": {
+        "telegramApi": {
+          "id": "7sSdEAccPOHUL1nJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "editMessageText",
+        "chatId": "={{ $json.valor }}",
+        "messageId": "={{ $('Actualizar solicitudes-tracker').item.json.notificacion_id }}",
+        "text": "=🔊 *NUEVO MENSAJE DE AUDIO RECIBIDO*\n\n- Paciente: Se trata de un nuevo paciente que nunca fue registrado en base de datos\n- Teléfono: {{ $('Check solicitudes-tracker').item.json.telefono }}\n- Contexto: Confirmaste manualmente que el audio fue respondido y que el asistente puede volver a tomar el control de futuras conversaciones con este paciente.\n\n- Estado: ✅ *Mensaje de Audio Respondido*\n\n\n\n\n\n\n",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -5280,
+        1536
+      ],
+      "id": "d7f7c1f8-6c37-43d3-bfa2-7ca86c4d6676",
+      "name": "Solicitud Completada!2",
+      "webhookId": "934f8c76-2210-46c1-896c-0218613f7813",
+      "credentials": {
+        "telegramApi": {
+          "id": "7sSdEAccPOHUL1nJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1TceRxk-cCY9mvY1_XV_whmGc6fiRFx_wJTc42pKZHmc",
+          "mode": "list",
+          "cachedResultName": "Base de datos - Punto Relax Hombres",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TceRxk-cCY9mvY1_XV_whmGc6fiRFx_wJTc42pKZHmc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 961188783,
+          "mode": "list",
+          "cachedResultName": "Pacientes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TceRxk-cCY9mvY1_XV_whmGc6fiRFx_wJTc42pKZHmc/edit#gid=961188783"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Telefono",
+              "lookupValue": "={{ $json.telefono }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -8416,
+        -768
+      ],
+      "id": "c915b740-499f-4c05-b1da-efed36e3fdc2",
+      "name": "Get paciente1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleApi": {
+          "id": "7ofJPuxNnAAC5OPL",
+          "name": "Google Cred - Service Account Method"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "fht8H1GqegJ4257N",
+          "mode": "list",
+          "cachedResultName": "blacklist",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/fht8H1GqegJ4257N"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "motivo",
+              "keyValue": "user"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -9312,
+        -864
+      ],
+      "id": "0fae8955-d6f9-44ec-8210-4655edea2775",
+      "name": "Check Blacklist",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the phone number from the Telegram message (after \"#blacklist \")\n  const message = $('Telegram Trigger').first().json.message.text;\n  const phoneNumber = message.split(' ')[1] || '';\n\n  // Get blacklist entries from the previous DataTable node\n  const blacklistEntries = $input.all();\n\n  // Check if phoneNumber exists in blacklist\n  // Handle empty results: empty array OR array with empty object\n  const isAlreadyBlacklisted = blacklistEntries.some(entry =>\n    entry.json &&\n    entry.json.telefono &&\n    entry.json.telefono === phoneNumber\n  );\n\n  if (!phoneNumber) {\n    return {\n      status: 'invalid',\n      phoneNumber: '',\n      message: 'No se proporcionó un número de teléfono'\n    };\n  }\n\n  if (isAlreadyBlacklisted) {\n    return {\n      status: 'already_blacklisted',\n      phoneNumber: phoneNumber,\n      message: `El número ${phoneNumber} ya se encuentra anulado`\n    };\n  } else {\n    return {\n      status: 'not_blacklisted',\n      phoneNumber: phoneNumber\n    };\n  }"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -9088,
+        -864
+      ],
+      "id": "0ec688f1-eca8-4d13-8611-2d4c0d18ad96",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a9e59750-f83e-41f2-9766-08488343db47",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "=already_blacklisted",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -8864,
+        -864
+      ],
+      "id": "f17476c6-8edf-425a-bd71-90c1f75eeff3",
+      "name": "If already blacklisted"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=🚫 El paciente:\n\n- Nombre: {{ $json.Nombre }} {{ $json.Apellido }}\n- Telefono: {{ $json.Telefono }}\n\nfue incluido en la blacklist y el asistente no intervendrá en nuevas conversaciones.\n\nPara volver a incluir a este paciente utilizar el comando:\n'#unblacklist {{ $json.Telefono }}'",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -7968,
+        -864
+      ],
+      "id": "7e939761-3010-432e-8554-cc6626121a56",
+      "name": "Paciente existente fue blacklisteado",
+      "webhookId": "c62cada8-28a8-4290-8f88-f3ccfa0ea67c",
+      "credentials": {
+        "telegramApi": {
+          "id": "7sSdEAccPOHUL1nJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=🚫 El paciente cuyo numero de telefono es {{ $json.Telefono }} fue incluido en la blacklist y el asistente no intervendrá en nuevas conversaciones.\n\nEste paciente no estaba registrado en la base de datos.\n\nPara volver a incluir a este paciente utilizar el comando:\n'#unblacklist {{ $json.Telefono }}'",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -7968,
+        -672
+      ],
+      "id": "2cbd2f6c-9a33-40b7-be99-6c554ca70218",
+      "name": "Paciente no agendado fue blacklisteado",
+      "webhookId": "af5f3199-042d-417f-ba07-b184c4f06d82",
+      "credentials": {
+        "telegramApi": {
+          "id": "7sSdEAccPOHUL1nJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=⚠️ EL PACIENTE YA SE ENCUENTRA INCLUIDO EN LA BLACKLIST\n\nEl paciente cuyo numero de telefono es {{ $json.phoneNumber }} ya estaba incluido en la blacklist.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -8640,
+        -1152
+      ],
+      "id": "06543224-1f90-49e6-b026-94c0030446d5",
+      "name": "Paciente ya estaba blacklisteado",
+      "webhookId": "ea16552d-9251-4a27-a940-36a1d7b1ea33",
+      "credentials": {
+        "telegramApi": {
+          "id": "7sSdEAccPOHUL1nJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "fht8H1GqegJ4257N",
+          "mode": "list",
+          "cachedResultName": "blacklist",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/fht8H1GqegJ4257N"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "motivo",
+              "keyValue": "user"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -9312,
+        -288
+      ],
+      "id": "ca4e3781-3588-4a61-91f8-6786c474511d",
+      "name": "Check Blacklist2",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the phone number from the Telegram message (after \"#blacklist \")\n  const message = $('Telegram Trigger').first().json.message.text;\n  const phoneNumber = message.split(' ')[1] || '';\n\n  // Get blacklist entries from the previous DataTable node\n  const blacklistEntries = $input.all();\n\n  // Check if phoneNumber exists in blacklist\n  // Handle empty results: empty array OR array with empty object\n  const isAlreadyBlacklisted = blacklistEntries.some(entry =>\n    entry.json &&\n    entry.json.telefono &&\n    entry.json.telefono === phoneNumber\n  );\n\n  if (!phoneNumber) {\n    return {\n      status: 'invalid',\n      phoneNumber: '',\n      message: 'No se proporcionó un número de teléfono'\n    };\n  }\n\n  if (isAlreadyBlacklisted) {\n    return {\n      status: 'already_blacklisted',\n      phoneNumber: phoneNumber,\n      message: `El número ${phoneNumber} ya se encuentra anulado`\n    };\n  } else {\n    return {\n      status: 'not_blacklisted',\n      phoneNumber: phoneNumber\n    };\n  }"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -9088,
+        -288
+      ],
+      "id": "c13a2be8-4205-4545-af28-e22399c1bc40",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a9e59750-f83e-41f2-9766-08488343db47",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "=already_blacklisted",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -8864,
+        -288
+      ],
+      "id": "e11db5fb-acab-4b82-9518-eabf19561ee9",
+      "name": "If already blacklisted1"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "fht8H1GqegJ4257N",
+          "mode": "list",
+          "cachedResultName": "blacklist",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/fht8H1GqegJ4257N"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefono": "={{ $json.phoneNumber}}",
+            "motivo": "user"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "motivo",
+              "displayName": "motivo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -8640,
+        -768
+      ],
+      "id": "ef8fee7b-ec58-403b-8b94-917754b63fdd",
+      "name": "Add to Blacklist2"
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "fht8H1GqegJ4257N",
+          "mode": "list",
+          "cachedResultName": "blacklist",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/fht8H1GqegJ4257N"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefono",
+              "keyValue": "={{ $json.phoneNumber }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -8640,
+        -384
+      ],
+      "id": "cca59e72-8f6b-405c-93aa-30666de5073d",
+      "name": "Unblacklist1",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=⚠️ EL PACIENTE NO SE ENCUENTRA INCLUIDO EN LA BLACKLIST\n\nEl paciente cuyo numero de telefono es {{ $json.phoneNumber }} no estaba incluido en la blacklist.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -8640,
+        -192
+      ],
+      "id": "a0ee9f20-d38c-40f8-984a-0a2bbc23ee15",
+      "name": "Paciente ya estaba unblacklisteado",
+      "webhookId": "2e9dc57f-6035-4e5c-8879-009c49a4289f",
+      "credentials": {
+        "telegramApi": {
+          "id": "7sSdEAccPOHUL1nJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1TceRxk-cCY9mvY1_XV_whmGc6fiRFx_wJTc42pKZHmc",
+          "mode": "list",
+          "cachedResultName": "Base de datos - Punto Relax Hombres",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TceRxk-cCY9mvY1_XV_whmGc6fiRFx_wJTc42pKZHmc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 961188783,
+          "mode": "list",
+          "cachedResultName": "Pacientes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TceRxk-cCY9mvY1_XV_whmGc6fiRFx_wJTc42pKZHmc/edit#gid=961188783"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Telefono",
+              "lookupValue": "={{ $json.telefono }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -8416,
+        -384
+      ],
+      "id": "e76f27b1-9645-494e-aa7c-a6f692dc55b0",
+      "name": "Get paciente2",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "zTBSB8eOPvA768iU",
+          "name": "Gsheets Credential (jorge.arean@gmail.com)"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=✅ El paciente:\n\n- Nombre: {{ $json.Nombre }} {{ $json.Apellido }}\n- Telefono: {{ $json.Telefono }}\n\nfue removido de la blacklist y el asistente volverá a intervenir en nuevas conversaciones.",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -7968,
+        -480
+      ],
+      "id": "50ff9e52-cb34-4b7c-8b5c-5d5b72c12ea6",
+      "name": "Paciente existente fue unblacklisteado",
+      "webhookId": "1aac4c13-bc66-4644-9437-4e4b8ca69f8d",
+      "credentials": {
+        "telegramApi": {
+          "id": "7sSdEAccPOHUL1nJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=✅ El paciente cuyo numero de telefono es {{ $json.Telefono }} fue removido de la blacklist y el asistente volverá a intervenir en nuevas conversaciones.\n\nEste paciente no estaba registrado en la base de datos.\n\nPara volver a incluir a este paciente utilizar el comando:\n'#unblacklist {{ $json.Telefono }}'",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -7968,
+        -288
+      ],
+      "id": "4865ae67-3ad9-4ba4-9a2c-8181e74c5599",
+      "name": "Paciente no agendado fue unblacklisteado",
+      "webhookId": "8026d92b-7343-468c-89fc-8c7f46257573",
+      "credentials": {
+        "telegramApi": {
+          "id": "7sSdEAccPOHUL1nJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "04029a80-5b8a-4200-a459-843a21352c36",
+              "name": "phone_number",
+              "value": "={{ $json.telefono }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        320,
+        1184
+      ],
+      "id": "18928897-3437-4683-8417-500c26921fa2",
+      "name": "Extract phone_number"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        1376,
+        1648
+      ],
+      "id": "6362f2b7-6a65-4c79-b237-40cb0639b618",
+      "name": "Delete All Chat Memory"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1TceRxk-cCY9mvY1_XV_whmGc6fiRFx_wJTc42pKZHmc",
+          "mode": "list",
+          "cachedResultName": "Base de datos - Punto Relax Hombres",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TceRxk-cCY9mvY1_XV_whmGc6fiRFx_wJTc42pKZHmc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 961188783,
+          "mode": "list",
+          "cachedResultName": "Pacientes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TceRxk-cCY9mvY1_XV_whmGc6fiRFx_wJTc42pKZHmc/edit#gid=961188783"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1600,
+        1648
+      ],
+      "id": "b66b84fc-ad8a-42df-9763-fb64fd14bd6e",
+      "name": "Get paciente3",
+      "credentials": {
+        "googleApi": {
+          "id": "7ofJPuxNnAAC5OPL",
+          "name": "Google Cred - Service Account Method"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1904,
+        1648
+      ],
+      "id": "50c6e1ab-8dbd-4c7c-abb9-903731d4d99f",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "04029a80-5b8a-4200-a459-843a21352c36",
+              "name": "phone_number",
+              "value": "={{ $json.Telefono }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2208,
+        1664
+      ],
+      "id": "def7ac52-3895-4b72-880a-ad5842400457",
+      "name": "Extract phone_number1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1632,
+        1312
+      ],
+      "id": "b163995d-3b30-4291-9173-2e097b27323d",
+      "name": "Wait",
+      "webhookId": "772926e3-690d-4f27-b2f1-a78f97c52254"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "adpTwRF2IeD3ksKI",
+          "mode": "list",
+          "cachedResultName": "control-asistente",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/adpTwRF2IeD3ksKI"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "variable",
+              "keyValue": "telegram_chat_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -10208,
+        -1136
+      ],
+      "id": "67d8b66a-80d8-4247-85bf-4de31b5da366",
+      "name": "Get Telegram Chat Id4"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4db7ad53-8754-448f-aaa5-b797ab27ffd2",
+              "leftValue": "={{ $('Telegram Trigger').item.json.message.from.id.toString() }}",
+              "rightValue": "={{ $json.valor }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -10000,
+        -1136
+      ],
+      "id": "66b4e03f-497f-4982-88d9-4a250af070bd",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "lGQbElbLUzuY6ZRA",
+          "mode": "list",
+          "cachedResultName": "cola-mensajes",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/lGQbElbLUzuY6ZRA"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefono": "={{ $('Whatsapp Message Data').item.json.phone_number }}",
+            "mensaje": "={{ $('Whatsapp Message Data').item.json.body }}",
+            "timestamp": "={{ $now.toISO() }}",
+            "estado": "pendiente",
+            "tipo": "={{ $('Whatsapp Message Data').item.json.message_type }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "mensaje",
+              "displayName": "mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "tipo",
+              "displayName": "tipo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -6016,
+        560
+      ],
+      "id": "9cd2517b-7e27-48b4-aaa6-918dbd2e1925",
+      "name": "Agregar a cola-mensajes"
+    },
+    {
+      "parameters": {
+        "amount": 7
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -5824,
+        560
+      ],
+      "id": "8e3f4521-4f81-4b57-81ad-a870caf91f6e",
+      "name": "Esperar 7 segundos",
+      "webhookId": "ba98f288-e40e-4cb9-bf96-a8fb0e71a9f2"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "lGQbElbLUzuY6ZRA",
+          "mode": "list",
+          "cachedResultName": "cola-mensajes",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/lGQbElbLUzuY6ZRA"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefono",
+              "keyValue": "={{ $('Whatsapp Message Data').item.json.phone_number }}"
+            },
+            {
+              "keyName": "estado",
+              "keyValue": "pendiente"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -5648,
+        560
+      ],
+      "id": "f0e7dd28-c32f-454e-b336-b360a094888e",
+      "name": "Leer mensajes pendientes de cola-mensajes"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get all pending messages from previous node\n  const pendingMessages = $input.all();\n\n  // If no messages found, another execution already claimed them - exit\n  if (!pendingMessages || pendingMessages.length === 0) {\n    return [];\n  }\n\n  // Extract message data\n  const messages = pendingMessages.map(item => ({\n    id: item.json.id,\n    telefono: item.json.telefono,\n    mensaje: item.json.mensaje,\n    timestamp: item.json.timestamp,\n    tipo: item.json.tipo\n  }));\n\n  // Sort by timestamp\n  messages.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));\n\n  // Check if any message is audio\n  const has_audio = messages.some(m => ['audio', 'audioMessage'].includes(m.tipo));\n\n  // Shared data\n  const telefono = messages[0].telefono;\n  const mensaje_concatenado = messages.map(m => m.mensaje).join(' | ');\n  const mensaje_count = messages.length;\n  const all_ids = messages.map(m => m.id);\n\n  // Return one item per ID - no Split Out needed\n  return messages.map(m => ({\n    json: {\n      telefono,\n      mensaje_concatenado,\n      mensaje_count,\n      all_ids,\n      has_audio,\n      id_to_update: m.id\n    }\n  }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -5456,
+        560
+      ],
+      "id": "07f99755-fe84-4bd3-8ecb-9334c64dade4",
+      "name": "Claim"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "lGQbElbLUzuY6ZRA",
+          "mode": "list",
+          "cachedResultName": "cola-mensajes",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/lGQbElbLUzuY6ZRA"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyValue": "={{ $json.id_to_update }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "estado": "procesando"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "mensaje",
+              "displayName": "mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -5296,
+        560
+      ],
+      "id": "032eedc2-b69e-4ce2-adb7-a74de65e8811",
+      "name": "Marcar como procesando"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cea98153-6e21-47f6-9468-9ec60dbe2fa5",
+              "name": "telefono",
+              "value": "={{ $('Claim').first().json.telefono }}",
+              "type": "string"
+            },
+            {
+              "id": "7433a9d8-5914-443f-8c8d-1cdb886667fc",
+              "name": "mensaje_concatenado",
+              "value": "={{ $('Claim').first().json.mensaje_concatenado }}",
+              "type": "string"
+            },
+            {
+              "id": "1315800c-ce51-4a2e-be2f-bba9e71f4bfd",
+              "name": "mensaje_count",
+              "value": "={{ $('Claim').first().json.mensaje_count }}",
+              "type": "string"
+            },
+            {
+              "id": "bd89fa2c-dd89-4a1a-94bd-a264ab4aff7f",
+              "name": "id_to_update",
+              "value": "={{ $('Claim').first().json.id_to_update }}",
+              "type": "string"
+            },
+            {
+              "id": "49759637-820a-4587-8582-004b01814a4e",
+              "name": "all_ids",
+              "value": "={{ $('Claim').first().json.all_ids }}",
+              "type": "string"
+            },
+            {
+              "id": "a2b360b9-27b6-481d-8e0c-e1c44122c1d5",
+              "name": "has_audio",
+              "value": "={{ $('Claim').first().json.has_audio }}",
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -5120,
+        560
+      ],
+      "id": "58f02da7-482a-4db1-8a10-637bfd559021",
+      "name": "Restaurar contexto"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ef04fbbb-d978-4df3-8eb8-c868ac62e931",
+              "leftValue": "={{ $json.mensaje_concatenado }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -4928,
+        560
+      ],
+      "id": "cdcc3ca7-0807-4460-a370-73531d3dc349",
+      "name": "If tiene mensajes"
+    },
+    {
+      "parameters": {
+        "jsCode": "  // Get data from Restaurar contexto (coming through the subflow)\n  const contextoData = $('Restaurar contexto').first();\n\n  if (!contextoData) {\n    return [];\n  }\n\n  // Get phone number from the subflow\n  const telefono = contextoData.json.telefono || \"\";\n\n  // Get blacklist entries from previous node (Check Blacklist1)\n  const blacklistEntries = $input.all();\n\n  // Check if telefono appears in any blacklist entry\n  const isBlacklisted = blacklistEntries.some(entry =>\n    entry.json &&\n    entry.json.telefono &&\n    entry.json.telefono === telefono\n  );\n\n  // If blacklisted → stop workflow\n  if (isBlacklisted) {\n    return [];\n  }\n\n  // Otherwise → pass through with the concatenated message as body\n  return [{\n    json: {\n      chat_id: \"+\" + telefono,\n      phone_number: telefono,\n      body: contextoData.json.mensaje_concatenado,\n      mensaje_concatenado: contextoData.json.mensaje_concatenado,\n      mensaje_count: contextoData.json.mensaje_count,\n      all_ids: contextoData.json.all_ids,\n      message_type: contextoData.json.has_audio ? \"audio\" : \"text\",\n      has_audio: contextoData.json.has_audio\n    }\n  }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3440,
+        896
+      ],
+      "id": "fc322cec-2edb-4b87-86fa-d86bdb953f0d",
+      "name": "Check if Blacklisted-cola"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        304,
+        800
+      ],
+      "id": "862adcac-0e83-4920-93dd-b31a6406f1ee",
+      "name": "Merge",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get all_ids from Date_preprocessor (where it was passed through)\n  const allIds = $('Date_preprocessor').first().json.all_ids;\n\n  // Handle case where all_ids might be a string (from Restaurar contexto)\n  let idsArray;\n  if (typeof allIds === 'string') {\n    // Parse if it's a string like \"[6,7]\"\n    idsArray = JSON.parse(allIds);\n  } else if (Array.isArray(allIds)) {\n    idsArray = allIds;\n  } else {\n    // No IDs to update\n    return [];\n  }\n\n  // Return one item per ID\n  return idsArray.map(id => ({\n    json: {\n      id_to_complete: id\n    }\n  }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        592,
+        800
+      ],
+      "id": "121aa792-4d6e-4b57-b93b-fa50305775ed",
+      "name": "Preparar IDs para completar"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "lGQbElbLUzuY6ZRA",
+          "mode": "list",
+          "cachedResultName": "cola-mensajes",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/lGQbElbLUzuY6ZRA"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyValue": "={{ $json.id_to_complete }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "estado": "completado"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "mensaje",
+              "displayName": "mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        816,
+        816
+      ],
+      "id": "c0d5b682-6435-4733-a1de-7388521b286e",
+      "name": "Update row(s)"
+    },
+    {
+      "parameters": {
+        "content": "Borrar  manualmente memoria",
+        "height": 80
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1392,
+        1536
+      ],
+      "typeVersion": 1,
+      "id": "676e0691-9a07-46e3-9b9f-9d1b9e017d17",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "adpTwRF2IeD3ksKI",
+          "mode": "list",
+          "cachedResultName": "control-asistente",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/adpTwRF2IeD3ksKI"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "variable",
+              "keyValue": "whatsapp_number"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -6704,
+        912
+      ],
+      "id": "cfe364ef-2482-4ec1-b5bb-981b04e7b87f",
+      "name": "Get Whatsapp Own Number"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "0358efb4-f5f2-4ca6-b6c1-66d64a370d66",
+              "leftValue": "={{ $('Whatsapp Message Data').item.json.phone_number }}",
+              "rightValue": "={{ $json.valor }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -6480,
+        912
+      ],
+      "id": "2e6e952e-f032-4818-a958-9f46ef639a62",
+      "name": "If automensaje"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a9e59750-f83e-41f2-9766-08488343db47",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -8192,
+        -768
+      ],
+      "id": "a5efa095-d4e3-4b54-aede-dacfe22a17ac",
+      "name": "If paciente existente"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a9e59750-f83e-41f2-9766-08488343db47",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -8192,
+        -384
+      ],
+      "id": "5f1635be-a449-4f87-a399-522b3d696aa7",
+      "name": "If paciente existente1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a9e59750-f83e-41f2-9766-08488343db47",
+              "leftValue": "={{ $json }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -784,
+        1120
+      ],
+      "id": "e76b3c2d-bf9a-4b2f-b917-1450ad404eb6",
+      "name": "If paciente existente2"
+    },
+    {
+      "parameters": {
+        "content": "Cola de Mensajes:\nEsta parte del flujo, setea los mensajes en estado \"completado\". A futuro habria que directamente borrarlos para no ocupar espacio en memoria",
+        "height": 208,
+        "width": 352
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        704,
+        608
+      ],
+      "typeVersion": 1,
+      "id": "b7b15ae0-6218-435a-918c-0234cc2b65a5",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "adpTwRF2IeD3ksKI",
+          "mode": "list",
+          "cachedResultName": "control-asistente",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/adpTwRF2IeD3ksKI"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "variable",
+              "keyValue": "telegram_chat_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        1184
+      ],
+      "id": "dd5b97b7-b761-4ecd-9192-a1e289fe290d",
+      "name": "Get Telegram Chat Id5"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.valor }}",
+        "text": "=🔔 NUEVA SOLICITUD DE TURNO\n\n- Paciente: {{ $('Get paciente').item.json.Nombre }} {{ $('Get paciente').item.json.Apellido }}\n- Teléfono: {{ $('Get paciente').item.json.Telefono }}\n- Contexto: {{ $('Switch by Stage').item.json.contexto }}\n\n- Estado: ⚠️ *Solicitud de Turno Pendiente*\n\n*Proximos pasos:*\n\n1) Continuar la conversacion con el paciente y ayudarlo a agendar siguiendo este link:\n 👉 https://api.whatsapp.com/send?phone={{ $('Get paciente').item.json.Telefono }}\n\n2) Una vez confirmada la reserva, hacé click en este link para volver a activar el asistente para este paciente: \n 👉 https://primary-production-d849.up.railway.app/webhook/reactivar-bot?id={{ $('Get paciente').item.json.Telefono }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -208,
+        1184
+      ],
+      "id": "e3d30fac-59a3-436f-8185-8356cae93582",
+      "name": "Notificar Staff - Solicitud Turno1",
+      "webhookId": "dc26d2fc-7fd2-41b7-9289-7a002a4ec588",
+      "credentials": {
+        "telegramApi": {
+          "id": "7sSdEAccPOHUL1nJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "bNqPfhwKEeQ320nO",
+          "mode": "list",
+          "cachedResultName": "solicitudes-tracker",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/bNqPfhwKEeQ320nO"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefono": "={{ $('Get paciente').item.json.Telefono }}",
+            "motivo": "turno",
+            "nombre": "={{ $('Get paciente').item.json.Nombre }}",
+            "apellido": "={{ $('Get paciente').item.json.Apellido }}",
+            "notificacion_id": "={{$json.result.message_id}}",
+            "estado": "pendiente",
+            "id_2": "={{ $('Get paciente').item.json.Telefono }}_{{$json.result.message_id}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "motivo",
+              "displayName": "motivo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "apellido",
+              "displayName": "apellido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "notificacion_id",
+              "displayName": "notificacion_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "id_2",
+              "displayName": "id_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1184
+      ],
+      "id": "2cfc49f6-4250-460e-bc98-7bcfa6a8abfb",
+      "name": "Agregar a solicitudes-tracker3"
+    },
+    {
+      "parameters": {
+        "content": "Borrado de memoria",
+        "height": 80
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        912,
+        1232
+      ],
+      "typeVersion": 1,
+      "id": "61bc1c57-5189-4637-9709-e1153f0f3ab2",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "adpTwRF2IeD3ksKI",
+          "mode": "list",
+          "cachedResultName": "control-asistente",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/adpTwRF2IeD3ksKI"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "variable",
+              "keyValue": "telegram_chat_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        1408
+      ],
+      "id": "dd57f0e5-52a9-464e-829a-dc7abd7d4e78",
+      "name": "Get Telegram Chat Id6"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $json.valor }}",
+        "text": "=🔔 NUEVA SOLICITUD DE TURNO\n\n- Paciente: Se trata de un nuevo paciente que nunca fue registrado en base de datos\n- Teléfono: {{ $('Add to Blacklist1').item.json.telefono }}\n- Contexto: {{ $('Switch by Stage').item.json.contexto }}\n\n- Estado: ⚠️ *Solicitud de Turno Pendiente*\n\n*Proximos pasos:*\n\n1) Continuar la conversacion con el paciente y ayudarlo a agendar siguiendo este link:\n 👉 https://api.whatsapp.com/send?phone={{ $('Add to Blacklist1').item.json.telefono }}\n\n2) Una vez confirmada la reserva, hacé click en este link para volver a activar el asistente para este paciente: \n 👉 https://primary-production-d849.up.railway.app/webhook/reactivar-bot?id={{ $('Add to Blacklist1').item.json.telefono }}\n\n❗ Importante: Recorda agendar al paciente",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -208,
+        1408
+      ],
+      "id": "20df1c42-526c-4f2c-8637-b2288fab2f4d",
+      "name": "Notificar Staff - Solicitud Turno2",
+      "webhookId": "ce61993e-ab57-4670-bd72-c05c371f4870",
+      "credentials": {
+        "telegramApi": {
+          "id": "7sSdEAccPOHUL1nJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "bNqPfhwKEeQ320nO",
+          "mode": "list",
+          "cachedResultName": "solicitudes-tracker",
+          "cachedResultUrl": "/projects/9byUZdMTH9xVUmhb/datatables/bNqPfhwKEeQ320nO"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "telefono": "={{ $('Add to Blacklist1').item.json.telefono }}",
+            "motivo": "turno",
+            "nombre": "=",
+            "apellido": "=",
+            "notificacion_id": "={{$json.result.message_id}}",
+            "estado": "pendiente",
+            "id_2": "={{ $('Add to Blacklist1').item.json.telefono }}_{{$json.result.message_id}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "telefono",
+              "displayName": "telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "motivo",
+              "displayName": "motivo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "nombre",
+              "displayName": "nombre",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "apellido",
+              "displayName": "apellido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "notificacion_id",
+              "displayName": "notificacion_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "estado",
+              "displayName": "estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "id_2",
+              "displayName": "id_2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        0,
+        1408
+      ],
+      "id": "f5369398-31a8-4854-a092-13aa21c0f70c",
+      "name": "Agregar a solicitudes-tracker4"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Check solicitudes-tracker').item.json.nombre }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "empty",
+                      "singleValue": true
+                    },
+                    "id": "666d7b1b-1f2a-4cc6-b60b-978879beb683"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Cliente Nuevo"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "268435bf-f51d-499e-8b16-88805c6258bd",
+                    "leftValue": "={{ $('Check solicitudes-tracker').item.json.nombre }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEmpty",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Cliente Existente"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -5632,
+        1312
+      ],
+      "id": "101aed7f-0454-4bd1-997a-2aaa419da5fd",
+      "name": "Switch4"
+    },
+    {
+      "parameters": {
+        "operation": "editMessageText",
+        "chatId": "={{ $json.valor }}",
+        "messageId": "={{ $('Actualizar solicitudes-tracker').item.json.notificacion_id }}",
+        "replyMarkup": "inlineKeyboard",
+        "text": "=🔔 NUEVA SOLICITUD DE TURNO\n\n- Paciente: {{ $('Check solicitudes-tracker').item.json.nombre }} {{ $('Check solicitudes-tracker').item.json.apellido }}\n- Teléfono: {{ $('Check solicitudes-tracker').item.json.telefono }}\n- Contexto: Confirmaste manualmente que la solicitud fue completada  y que el asistente puede volver a tomar el control de futuras conversaciones con este paciente.\n\n- Estado: ✅ *Solicitud de Turno Completada*\n\n\n\n\n\n",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -5280,
+        1376
+      ],
+      "id": "53b22fe6-2a4c-4d60-aaa2-fc9c65b74b48",
+      "name": "Solicitud Completada!3",
+      "webhookId": "c598245c-a838-4f9f-8f5c-5377b4cdf44b",
+      "credentials": {
+        "telegramApi": {
+          "id": "7sSdEAccPOHUL1nJ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "1TceRxk-cCY9mvY1_XV_whmGc6fiRFx_wJTc42pKZHmc",
+          "mode": "list",
+          "cachedResultName": "Base de datos - Punto Relax Hombres",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TceRxk-cCY9mvY1_XV_whmGc6fiRFx_wJTc42pKZHmc/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 919707195,
+          "mode": "list",
+          "cachedResultName": "Cronograma Masajistas",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1TceRxk-cCY9mvY1_XV_whmGc6fiRFx_wJTc42pKZHmc/edit#gid=919707195"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1248,
+        1440
+      ],
+      "id": "e384c6d9-0df1-4318-a485-ffb0b13ca583",
+      "name": "Get Disponibilidad Masajistas",
+      "credentials": {
+        "googleApi": {
+          "id": "7ofJPuxNnAAC5OPL",
+          "name": "Google Cred - Service Account Method"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get availability data from Google Sheets (previous node)\n  const availabilityData = $input.all().map(item => item.json);\n\n  // Get search parameters - passed through the flow\n  // We need to get these from a node that's actually in our execution path\n  const switchByStageOutput = $('Switch by Stage').first().json;\n  const searchKeyType = switchByStageOutput.search_key_type;\n  const keyTypeValue = switchByStageOutput.key_type_value;\n\n  // Get date context - need to trace back through the flow\n  const datePreprocessor = $('Date_preprocessor').first().json;\n  const currentDay = datePreprocessor.current_day;\n  const tomorrowDay = datePreprocessor.tomorrow_day;\n  const currentDateReadable = datePreprocessor.current_date_readable;\n\n  // Day columns mapping (matching your sheet headers)\n  const dayColumns = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];\n\n  let result = {\n    search_key_type: searchKeyType,\n    key_type_value: keyTypeValue,\n    current_day: currentDay,\n    current_date_readable: currentDateReadable,\n    is_today: false,\n    is_tomorrow: false,\n    disponibles: [],\n    dias_disponibles: [],\n    found: false\n  };\n\n  if (searchKeyType === 'dia') {\n    // Search by day: find all masajistas available on that day\n    const searchDay = keyTypeValue;\n\n    result.is_today = (searchDay === currentDay);\n    result.is_tomorrow = (searchDay === tomorrowDay);\n\n    for (const row of availabilityData) {\n      const masajista = row.Masajista;\n      const isAvailable = row[searchDay];\n\n      if (isAvailable && isAvailable.toUpperCase() === 'SI') {\n        result.disponibles.push(masajista);\n      }\n    }\n\n    result.found = result.disponibles.length > 0;\n\n  } else if (searchKeyType === 'masajista') {\n    // Search by masajista: find all days they work\n    const searchMasajista = keyTypeValue;\n\n    const masajistaRow = availabilityData.find(\n      row => row.Masajista && row.Masajista.toLowerCase() === searchMasajista.toLowerCase()\n    );\n\n    if (masajistaRow) {\n      for (const day of dayColumns) {\n        if (masajistaRow[day] && masajistaRow[day].toUpperCase() === 'SI') {\n          result.dias_disponibles.push(day);\n        }\n      }\n      result.found = result.dias_disponibles.length > 0;\n    }\n  }\n\n  return {\n    ...result,\n    phone_number: datePreprocessor.phone_number\n  };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1040,
+        1440
+      ],
+      "id": "2ce507d6-3e8c-41e7-8699-a18893257104",
+      "name": "Lookup Disponibilidad"
+    },
+    {
+      "parameters": {
+        "model": "gpt-4.1-mini",
+        "options": {
+          "maxTokens": 1500,
+          "temperature": 0.7
+        }
+      },
+      "id": "f6b13e5c-975d-483d-bcf4-56852dff6a48",
+      "name": "OpenAI Model - Agent ",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        -896,
+        1648
+      ],
+      "credentials": {
+        "openAiApi": {
+          "id": "iCPIT2cW1oKjg3mD",
+          "name": "OpenAi FSR"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.ycloud.com/v2/whatsapp/messages/sendDirectly",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "={{ $('Whatsapp Message Data').first().json.api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "=  {\n    \"from\": \"{{ $('Whatsapp Message Data').first().json.business_number.trim() }}\",\n    \"to\": \"{{ $('Date_preprocessor').first().json.chat_id }}\",\n    \"type\": \"text\",\n    \"text\": {\n      \"body\": \"{{$json.output}}\"\n    }\n  }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -416,
+        1776
+      ],
+      "id": "ed8d3f7b-ff67-4bdf-afec-50f36a433fd2",
+      "name": "Envio de respuesta - Disponibilidad"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Genera una respuesta para el paciente sobre disponibilidad de masajistas.\n\n  **Datos de la búsqueda:**\n  - Tipo de búsqueda: {{ $json.search_key_type }}\n  - Valor buscado: {{ $json.key_type_value }}\n  - Día actual: {{ $json.current_day }} ({{ $json.current_date_readable }})\n  - ¿Es hoy?: {{ $json.is_today }}\n  - ¿Es mañana?: {{ $json.is_tomorrow }}\n  - Masajistas disponibles: {{ $json.disponibles.join(', ') || 'ninguna' }}\n  - Días disponibles: {{ $json.dias_disponibles.join(', ') || 'ninguno' }}\n  - ¿Se encontraron resultados?: {{ $json.found }}",
+        "options": {
+          "systemMessage": "=Sos un asistente virtual de Punto Relax Hombres, un centro de estética masculina.\n\nTu tarea es generar una respuesta BREVE y NATURAL sobre la disponibilidad de masajistas.\n\n## REGLAS:\n\n1. **Respuesta corta**: Máximo 2-3 líneas\n2. **Tono**: Amigable, usando voseo argentino (vos, tenés, etc.)\n3. **Contextual**:\n   - Si \"es_hoy\" es true → decir \"Hoy [día]...\"\n   - Si \"es_mañana\" es true → decir \"Mañana [día]...\"\n   - Si no es hoy ni mañana → decir \"El [día]...\" o \"Los [día]s...\"\n\n## FORMATOS DE RESPUESTA:\n\n**Búsqueda por día CON resultados:**\n- \"Hoy lunes están disponibles Nayla, Claudia y Sidney 💆‍♂️\"\n- \"Mañana martes tenemos a [nombres masajistas]\"\n- \"El jueves están disponibles a [nombre(s) masajista(s)]\"\n\n**Búsqueda por día SIN resultados:**\n- \"Lamentablemente hoy no tenemos masajistas disponibles 😔\"\n\n**Búsqueda por masajista CON resultados:**\n- \"Nayla atiende los lunes, martes, jueves, viernes y sábados\"\n- \"[nombre masajista] está disponible de miércoles a sábado\"\n\n## IMPORTANTE:\n- NO agregues información extra no solicitada\n- NO preguntes si quiere agendar turno (eso se maneja en otro flujo)\n- Solo responde la consulta de disponibilidad"
+        }
+      },
+      "id": "cda1ca0e-99e3-4ca3-8d9c-39a502f6ef28",
+      "name": "Agent 2: Disponibilidad Response",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -848,
+        1440
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.ycloud.com/v2/whatsapp/messages/sendDirectly",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "={{ $('Whatsapp Message Data').first().json.api_key }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "=  {\n    \"from\": \"{{ $('Whatsapp Message Data').first().json.business_number.trim()}}\",\n    \"to\": \"{{ $('Date_preprocessor').item.json.chat_id }}\",\n    \"type\": \"text\",\n    \"text\": {\n      \"body\": \"{{ $('Switch by Stage').item.json.mensaje }}\"\n    }\n  }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -368,
+        944
+      ],
+      "id": "41851449-b26b-49e1-9301-9216f6ad4490",
+      "name": "Envio de respuesta - Turno"
+    }
+  ],
+  "pinData": {
+    "Reactivar Bot Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "primary-production-d849.up.railway.app",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "es-US,es;q=0.9,es-419;q=0.8,en;q=0.7,pt;q=0.6",
+            "cookie": "rl_page_init_referrer=RudderEncrypt%3AU2FsdGVkX1%2BX2YFwxOgWWEeVHj5EerGIlMh%2Bdo%2FrbAI%3D; rl_page_init_referring_domain=RudderEncrypt%3AU2FsdGVkX1%2FTRUBHNOBnU4hlIQT63%2B5x6QpyPufE5rk%3D; rl_anonymous_id=RudderEncrypt%3AU2FsdGVkX19IPoT3m6emqxNSOHwuKC%2FdTkgKT9G4ZLAJqSF3yDOQI645wz5e2blmlF4fZEqHHfBmaB0R4cOXuQ%3D%3D; rl_user_id=RudderEncrypt%3AU2FsdGVkX19wc%2BM3vnTRjptUHsm7IRwlJaubQWJyZpzz8lovM7YVFF%2F9u9ARqo260m%2FwGTK0SvxxJLaIOTtMBUzVSWtFYYH3IAxSHnw9XjjsIszqhYGSWbDUpehjP49MlGwymFC2%2BRhltYj48xTiQebMQwrHjdQsyfWkI0QFCr8%3D; rl_trait=RudderEncrypt%3AU2FsdGVkX19C%2B4Zoooc%2F%2BZF0wqH%2BX1B%2Fj7DRM3X%2B97BvrBHGyl%2FRZ1aCu1W7Il2DpsuxrzXF5tXPhvdLLDGvxGgX2Rd8TsQzkcPbtnAESiHMlYBsLUa7tfYQZhRnEHc0cCmtL4yEARhxGJ4DItW55%2B2qCDR%2BurTlhS4AUUzQeVQ%3D; rl_session=RudderEncrypt%3AU2FsdGVkX1%2Bu%2BxiGooyifEHjk4yX9DDPMTL7whH2Oe8whQxIL6sepl3wzH3X3nTtbtne9XizJj2agI9dkzA%2B6QgfqLhzIc4i32yGzrP56ntLZMidHdOcjggH9IRkO9zoObj%2BpfoC4vzBQ7Rn61FBGg%3D%3D; ph_phc_4URIAm1uYfJO7j8kWSe0J8lc8IqnstRLS7Jx8NcakHo_posthog=%7B%22distinct_id%22%3A%22c62336873b5e3934d395a56cd995e9fefa2bc45c2adfb9d56cc1164b4cc69b88%23d523157f-ac87-4445-9eec-e845115422fd%22%2C%22%24sesid%22%3A%5B1764610086151%2C%22019adae8-cf53-787c-8efc-1f4a59a43f74%22%2C1764609281874%5D%2C%22%24epp%22%3Atrue%2C%22%24initial_person_info%22%3A%7B%22r%22%3A%22%24direct%22%2C%22u%22%3A%22https%3A%2F%2Fprimary-production-1438.up.railway.app%2Fsetup%22%7D%7D",
+            "priority": "u=0, i",
+            "sec-ch-ua": "\"Chromium\";v=\"142\", \"Google Chrome\";v=\"142\", \"Not_A Brand\";v=\"99\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "document",
+            "sec-fetch-mode": "navigate",
+            "sec-fetch-site": "none",
+            "sec-fetch-user": "?1",
+            "upgrade-insecure-requests": "1",
+            "x-forwarded-for": "181.2.110.3",
+            "x-forwarded-host": "primary-production-d849.up.railway.app",
+            "x-forwarded-proto": "https",
+            "x-railway-edge": "railway/us-east4-eqdc4a",
+            "x-railway-request-id": "lD_BFmqHSeGz5Z4WPvyhXg",
+            "x-real-ip": "181.2.110.3",
+            "x-request-start": "1764610087281"
+          },
+          "params": {},
+          "query": {
+            "id": "5491128796633"
+          },
+          "body": {},
+          "webhookUrl": "https://primary-production-d849.up.railway.app/webhook-test/reactivar-bot",
+          "executionMode": "test"
+        }
+      }
+    ],
+    "Entrada de Mensajes - Whatsapp": [
+      {
+        "json": {
+          "headers": {
+            "host": "primary-production-d849.up.railway.app",
+            "user-agent": "Go-http-client/2.0",
+            "content-length": "469",
+            "accept-encoding": "gzip",
+            "baggage": "Eagleeye-Prpc=,Eagleeye-Pappname=1fof0zltrv1@d3b96e44a5c9fa6",
+            "content-type": "application/json",
+            "traceparent": "00-eba72ed8c488eeb805e90d4df2f82c16-a92f65a94ee16ec5-01",
+            "x-forwarded-for": "8.219.65.77",
+            "x-forwarded-host": "primary-production-d849.up.railway.app",
+            "x-forwarded-proto": "https",
+            "x-railway-edge": "railway/asia-southeast1-eqsg3a",
+            "x-railway-request-id": "QwZXCeUOSNa1f0ZdacI7Nw",
+            "x-real-ip": "8.219.65.77",
+            "x-request-start": "1767190416953",
+            "x-webhook-endpoint-id": "69552f5912a0771b1d80602b",
+            "ycloud-signature": "t=1767190416,s=302a4c4cadd7a867f22bfe715e0793f945539a274b1e1f638dc30fbc86f5e4f2"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "id": "evt_69552f90e3a3ef7a4365efea",
+            "type": "whatsapp.inbound_message.received",
+            "apiVersion": "v2",
+            "createTime": "2025-12-31T14:13:36.912Z",
+            "whatsappInboundMessage": {
+              "id": "69552f90ca8c552b2e6caff1",
+              "wamid": "wamid.HBgNNTQ5MTEyODc5NjYzMxUCABIYIEFDRjgzMzBCMjhBMzRGMDQ5NkUxRjU2REIzOTIzRjc5AA==",
+              "wabaId": "356250967579882",
+              "from": "+5491128796633",
+              "customerProfile": {
+                "name": "."
+              },
+              "to": "+5491170659003",
+              "sendTime": "2025-12-31T14:13:35.000Z",
+              "type": "text",
+              "text": {
+                "body": "Hola"
+              }
+            }
+          },
+          "webhookUrl": "https://primary-production-d849.up.railway.app/webhook-test/recepcionista-virtual",
+          "executionMode": "test"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Whatsapp Message Data": {
+      "main": [
+        [
+          {
+            "node": "Get Whatsapp Own Number",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Agent Audio Processor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Agent Audio Processor",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Agent 1: Receptionist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date_preprocessor": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent 1: Receptionist": {
+      "main": [
+        [
+          {
+            "node": "Check Conversation State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Conversation State": {
+      "main": [
+        [
+          {
+            "node": "Switch by Stage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch by Stage": {
+      "main": [
+        [
+          {
+            "node": "Envio de respuesta - Consulta",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Add to Blacklist1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Disponibilidad Masajistas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "consultar_base_conocimientos": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent 1: Receptionist",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "consultar_paciente": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent 1: Receptionist",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "Agent Audio Processor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "agregar_paciente": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent 1: Receptionist",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Model - Agent 1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent 1: Receptionist",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Shared Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agent 1: Receptionist",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Agent Audio Processor",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Chat Memory Manager",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Agent 2: Disponibilidad Response",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent Audio Processor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent Audio Processor": {
+      "main": [
+        [
+          {
+            "node": "Extract",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get paciente": {
+      "main": [
+        [
+          {
+            "node": "If paciente existente2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract": {
+      "main": [
+        [
+          {
+            "node": "Add to Blacklist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reactivar Bot Webhook": {
+      "main": [
+        [
+          {
+            "node": "Check solicitudes-tracker",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Entrada de Mensajes - Whatsapp": {
+      "main": [
+        [
+          {
+            "node": "Whatsapp Message Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Get Telegram Chat Id1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Telegram Chat Id3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Command": {
+      "main": [
+        [
+          {
+            "node": "Get Asistente Status",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Asistente Status1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Asistente Status2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Comando invalido",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Check Blacklist",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Check Blacklist2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Asistente Status": {
+      "main": [
+        [
+          {
+            "node": "If Asistente is ON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Turn Asistente OFF": {
+      "main": [
+        [
+          {
+            "node": "El asistente se ha desactivado satisfactoriamente.",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Asistente is ON": {
+      "main": [
+        [
+          {
+            "node": "El asistente ya se encuentra *activado*",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Turn Asistente ON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Asistente is OFF": {
+      "main": [
+        [
+          {
+            "node": "El asistente ya se encuentra *desactivado*",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Turn Asistente OFF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Asistente is ON1": {
+      "main": [
+        [
+          {
+            "node": "El asistente se encuentra *activado*",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "El asistente se encuentra *desactivado*",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Asistente is ON2": {
+      "main": [
+        [
+          {
+            "node": "Check Blacklist1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Control Command1": {
+      "main": [
+        [
+          {
+            "node": "Check Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get Telegram Chat Id4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "El asistente ya se encuentra *activado*": {
+      "main": [
+        []
+      ]
+    },
+    "El asistente se encuentra *desactivado*": {
+      "main": [
+        []
+      ]
+    },
+    "Asistente se ha activado": {
+      "main": [
+        []
+      ]
+    },
+    "Get Asistente Status1": {
+      "main": [
+        [
+          {
+            "node": "If Asistente is OFF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Asistente Status2": {
+      "main": [
+        [
+          {
+            "node": "If Asistente is ON1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Turn Asistente ON": {
+      "main": [
+        [
+          {
+            "node": "Asistente se ha activado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Asistente Status": {
+      "main": [
+        [
+          {
+            "node": "If Asistente is ON2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Telegram Chat Id1": {
+      "main": [
+        [
+          {
+            "node": "Notificar Staff - Audio Nuevo Paciente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notificar Staff - Audio Nuevo Paciente": {
+      "main": [
+        [
+          {
+            "node": "Agregar a solicitudes-tracker",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Telegram Chat Id3": {
+      "main": [
+        [
+          {
+            "node": "Notificar Staff - Audio Paciente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notificar Staff - Audio Paciente": {
+      "main": [
+        [
+          {
+            "node": "Agregar a solicitudes-tracker1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Blacklist1": {
+      "main": [
+        [
+          {
+            "node": "Check if Blacklisted-cola",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Unblacklist": {
+      "main": [
+        [
+          {
+            "node": "Actualizar solicitudes-tracker",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Telegram Chat Id2": {
+      "main": [
+        [
+          {
+            "node": "Switch2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Actualizar solicitudes-tracker": {
+      "main": [
+        [
+          {
+            "node": "Get Telegram Chat Id2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check solicitudes-tracker": {
+      "main": [
+        [
+          {
+            "node": "Unblacklist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add to Blacklist1": {
+      "main": [
+        [
+          {
+            "node": "Get paciente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agregar a solicitudes-tracker1": {
+      "main": [
+        [
+          {
+            "node": "Extract phone_number",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agregar a solicitudes-tracker": {
+      "main": [
+        [
+          {
+            "node": "Extract phone_number",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch2": {
+      "main": [
+        [
+          {
+            "node": "Switch4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch3": {
+      "main": [
+        [
+          {
+            "node": "Solicitud Completada!2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Solicitud Completada!1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get paciente1": {
+      "main": [
+        [
+          {
+            "node": "If paciente existente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Blacklist": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "If already blacklisted",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If already blacklisted": {
+      "main": [
+        [
+          {
+            "node": "Paciente ya estaba blacklisteado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Add to Blacklist2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Blacklist2": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "If already blacklisted1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add to Blacklist2": {
+      "main": [
+        [
+          {
+            "node": "Get paciente1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If already blacklisted1": {
+      "main": [
+        [
+          {
+            "node": "Unblacklist1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Paciente ya estaba unblacklisteado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get paciente2": {
+      "main": [
+        [
+          {
+            "node": "If paciente existente1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Unblacklist1": {
+      "main": [
+        [
+          {
+            "node": "Get paciente2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract phone_number": {
+      "main": [
+        [
+          {
+            "node": "Chat Memory Manager",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete All Chat Memory": {
+      "main": [
+        [
+          {
+            "node": "Get paciente3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get paciente3": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Extract phone_number1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract phone_number1": {
+      "main": [
+        [
+          {
+            "node": "Chat Memory Manager",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Memory Manager": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Telegram Chat Id4": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Extract Control Command1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agregar a cola-mensajes": {
+      "main": [
+        [
+          {
+            "node": "Esperar 7 segundos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Esperar 7 segundos": {
+      "main": [
+        [
+          {
+            "node": "Leer mensajes pendientes de cola-mensajes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer mensajes pendientes de cola-mensajes": {
+      "main": [
+        [
+          {
+            "node": "Claim",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claim": {
+      "main": [
+        [
+          {
+            "node": "Marcar como procesando",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar como procesando": {
+      "main": [
+        [
+          {
+            "node": "Restaurar contexto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Restaurar contexto": {
+      "main": [
+        [
+          {
+            "node": "If tiene mensajes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If tiene mensajes": {
+      "main": [
+        [
+          {
+            "node": "Check Asistente Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check if Blacklisted-cola": {
+      "main": [
+        [
+          {
+            "node": "Date_preprocessor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Envio de respuesta - Consulta": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Preparar IDs para completar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar IDs para completar": {
+      "main": [
+        [
+          {
+            "node": "Update row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Whatsapp Own Number": {
+      "main": [
+        [
+          {
+            "node": "If automensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If automensaje": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Agregar a cola-mensajes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add to Blacklist": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If paciente existente": {
+      "main": [
+        [
+          {
+            "node": "Paciente existente fue blacklisteado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Paciente no agendado fue blacklisteado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If paciente existente1": {
+      "main": [
+        [
+          {
+            "node": "Paciente existente fue unblacklisteado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Paciente no agendado fue unblacklisteado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If paciente existente2": {
+      "main": [
+        [
+          {
+            "node": "Envio de respuesta - Turno",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Telegram Chat Id5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Telegram Chat Id6",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Envio de respuesta - Turno",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Telegram Chat Id5": {
+      "main": [
+        [
+          {
+            "node": "Notificar Staff - Solicitud Turno1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notificar Staff - Solicitud Turno1": {
+      "main": [
+        [
+          {
+            "node": "Agregar a solicitudes-tracker3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Telegram Chat Id6": {
+      "main": [
+        [
+          {
+            "node": "Notificar Staff - Solicitud Turno2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notificar Staff - Solicitud Turno2": {
+      "main": [
+        [
+          {
+            "node": "Agregar a solicitudes-tracker4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agregar a solicitudes-tracker3": {
+      "main": [
+        [
+          {
+            "node": "Extract phone_number",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agregar a solicitudes-tracker4": {
+      "main": [
+        [
+          {
+            "node": "Extract phone_number",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch4": {
+      "main": [
+        [
+          {
+            "node": "Solicitud Completada!",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Solicitud Completada!3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Disponibilidad Masajistas": {
+      "main": [
+        [
+          {
+            "node": "Lookup Disponibilidad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lookup Disponibilidad": {
+      "main": [
+        [
+          {
+            "node": "Agent 2: Disponibilidad Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Model - Agent ": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent 2: Disponibilidad Response",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Envio de respuesta - Disponibilidad": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent 2: Disponibilidad Response": {
+      "main": [
+        [
+          {
+            "node": "Envio de respuesta - Disponibilidad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Envio de respuesta - Turno": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": false,
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "a12e3ca0-0972-4ad7-96e8-c11425427eb2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c62336873b5e3934d395a56cd995e9fefa2bc45c2adfb9d56cc1164b4cc69b88"
+  },
+  "id": "c9WX03l4qSaZw9SO",
+  "tags": []
+}

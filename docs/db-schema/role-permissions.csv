@@ -1,0 +1,25 @@
+Table,Permission Type,Recepcionista,Medico,Administrador,Notes
+pacientes,CREATE,YES,YES,YES,
+pacientes,READ,ALL,ALL,ALL,All roles can read all patient records
+pacientes,UPDATE,YES,YES,YES,
+pacientes,DELETE,NO,NO,YES,Only admins can delete
+medicos,CREATE,NO,NO,YES,
+medicos,READ,ALL,ALL,ALL,All roles can read doctor profiles
+medicos,UPDATE,NO,OWN_ONLY,YES,Doctors can only update their own profile
+medicos,DELETE,NO,NO,YES,
+obras_sociales,CREATE,NO,NO,YES,
+obras_sociales,READ,ALL,ALL,ALL,All roles can read insurance providers
+obras_sociales,UPDATE,NO,NO,YES,
+obras_sociales,DELETE,NO,NO,YES,
+medicos_obras_sociales,CREATE,NO,OWN_ONLY,YES,Doctors can create their own insurance relationships
+medicos_obras_sociales,READ,ALL,ALL,ALL,
+medicos_obras_sociales,UPDATE,NO,OWN_ONLY,YES,Doctors can only update their own relationships
+medicos_obras_sociales,DELETE,NO,OWN_ONLY,YES,Doctors can remove their own relationships
+consultas,CREATE,YES,YES,YES,Schedule appointments
+consultas,READ,ALL,ALL,ALL,All roles can read all consultations
+consultas,UPDATE,YES,YES,YES,
+consultas,DELETE,YES,YES,YES,Cancel appointments (soft delete via estado)
+medicos_horarios,CREATE,NO,OWN_ONLY,YES,Doctors can create their own schedules
+medicos_horarios,READ,ALL,ALL,ALL,All roles can read schedules (needed for appointment booking)
+medicos_horarios,UPDATE,NO,OWN_ONLY,YES,Doctors can only update their own schedules
+medicos_horarios,DELETE,NO,OWN_ONLY,YES,Doctors can remove their own schedule blocks

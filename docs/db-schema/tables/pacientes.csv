@@ -1,0 +1,21 @@
+Column,Type,Constraints,Description,Mandatory
+id,uuid,"PRIMARY KEY, DEFAULT gen_random_uuid()",Primary key,yes
+dni,text,"UNIQUE, NOT NULL",Patient national ID,yes
+nombre,text,NOT NULL,Patient first name,yes
+apellido,text,NOT NULL,Patient last name,yes
+fecha_nacimiento,date,NOT NULL,Date of birth,yes
+genero,text,"M, F, Otro",Gender,no
+telefono,text,,Phone number,no
+email,text,UNIQUE,Email address,no
+domicilio,text,,Home address,no
+obra_social_id,uuid,REFERENCES obras_sociales(id) ON DELETE SET NULL,Foreign key to obras_sociales.id,yes
+plan,text,,Insurance plan name,no
+numero_afiliado,text,,Insurance member number,no
+foto_perfil_url,text,,Profile photo URL - should point to respective storage bucket,no
+notas,text,,General notes about patient,no
+estado,text,"DEFAULT 'activo', CHECK (estado IN ('activo', 'inactivo'))",Patient status,no
+consentimiento_datos,boolean,"DEFAULT false, NOT NULL",Data privacy consent,no
+created_at,timestamptz,"DEFAULT now(), NOT NULL",Record creation timestamp,yes
+updated_at,timestamptz,"DEFAULT now(), NOT NULL",Record update timestamp,yes
+created_by,uuid,REFERENCES auth.users(id),User who created record,no
+updated_by,uuid,REFERENCES auth.users(id),User who last updated record,no

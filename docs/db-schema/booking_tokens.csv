@@ -1,0 +1,10 @@
+Column Name,Data Type,Constraints,Default Value,Description
+id,UUID,PRIMARY KEY,gen_random_uuid(),Primary key
+token,TEXT,UNIQUE NOT NULL,gen_random_uuid()::text,Unique token for booking link (UUID string)
+paciente_id,UUID,NOT NULL REFERENCES pacientes(id) ON DELETE CASCADE,,Patient who will book the appointment
+medico_id,UUID,NOT NULL REFERENCES medicos(id) ON DELETE CASCADE,,Doctor selected by patient via WhatsApp
+phone_number,TEXT,,,WhatsApp phone number for reference
+expires_at,TIMESTAMPTZ,NOT NULL,,Token expiration (typically 24h after creation)
+used_at,TIMESTAMPTZ,,,Timestamp when token was used to complete booking
+consulta_id,UUID,REFERENCES consultas(id) ON DELETE SET NULL,,Reference to created appointment after successful booking
+created_at,TIMESTAMPTZ,NOT NULL,NOW(),Record creation timestamp

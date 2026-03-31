@@ -1,0 +1,111 @@
+[  792783ms] ReferenceError: Cannot access 'programadaEstadoId' before initialization
+    at ConsultasTable (http://localhost:3000/_next/static/chunks/app_consultas_components_b44cf78c._.js?id=%255Bproject%255D%252Fapp%252Fconsultas%252Fcomponents%252Fconsultas-table.tsx+%255Bapp-client%255D+%2528ecmascript%2529:440:9)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:13072:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:4091:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:5523:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:6111:24)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:886:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8298:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8190:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8173:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:7932:56)
+    at performSyncWorkOnRoot (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8890:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8809:316)
+    at flushSyncWork$1 (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8048:86)
+    at Object.scheduleRefresh (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:294:13)
+    at http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:391:33
+    at Set.forEach (<anonymous>)
+    at Object.performReactRefresh (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:384:38)
+    at applyUpdate (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:878:31)
+    at http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:886:13
+[  800265ms] [WARNING] [Fast Refresh] performing full reload because your application had an unrecoverable error @ http://localhost:3000/_next/static/chunks/837f3_next_dist_client_2ddce166._.js:6282
+[  800435ms] ReferenceError: Cannot access 'programadaEstadoId' before initialization
+    at ConsultasTable (http://localhost:3000/_next/static/chunks/app_consultas_components_b44cf78c._.js?id=%255Bproject%255D%252Fapp%252Fconsultas%252Fcomponents%252Fconsultas-table.tsx+%255Bapp-client%255D+%2528ecmascript%2529:440:9)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:13072:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:4091:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:5523:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:6090:639)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:886:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8298:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8190:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8173:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:7932:56)
+    at performSyncWorkOnRoot (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8890:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8809:316)
+    at flushSyncWork$1 (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8048:86)
+    at Object.scheduleRefresh (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:294:13)
+    at http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:391:33
+    at Set.forEach (<anonymous>)
+    at Object.performReactRefresh (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:384:38)
+    at applyUpdate (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:878:31)
+    at http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:886:13
+[  800470ms] [WARNING] [Fast Refresh] performing full reload because your application had an unrecoverable error @ http://localhost:3000/_next/static/chunks/837f3_next_dist_client_2ddce166._.js:6282
+[  800637ms] ReferenceError: Cannot access 'programadaEstadoId' before initialization
+    at ConsultasTable (http://localhost:3000/_next/static/chunks/app_consultas_components_b44cf78c._.js?id=%255Bproject%255D%252Fapp%252Fconsultas%252Fcomponents%252Fconsultas-table.tsx+%255Bapp-client%255D+%2528ecmascript%2529:440:9)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:13072:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:4091:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:5523:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:6090:639)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:886:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8298:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8190:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8173:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:7932:56)
+    at performSyncWorkOnRoot (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8890:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8809:316)
+    at flushSyncWork$1 (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8048:86)
+    at Object.scheduleRefresh (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:294:13)
+    at http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:391:33
+    at Set.forEach (<anonymous>)
+    at Object.performReactRefresh (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:384:38)
+    at applyUpdate (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:878:31)
+    at http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:886:13
+[  807408ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/consultas:0
+[  808449ms] ReferenceError: Cannot access 'programadaEstadoId' before initialization
+    at ConsultasTable (http://localhost:3000/_next/static/chunks/app_consultas_components_b44cf78c._.js:3191:9)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:13072:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:4091:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:5523:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:6090:639)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:886:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8298:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8190:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8173:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:7932:56)
+    at performWorkOnRootViaSchedulerTask (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8882:9)
+    at MessagePort.performWorkUntilDeadline (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:2601:64)
+[  817817ms] [WARNING] [Fast Refresh] performing full reload because your application had an unrecoverable error @ http://localhost:3000/_next/static/chunks/837f3_next_dist_client_2ddce166._.js:6282
+[  823894ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/consultas:0
+[  824623ms] ReferenceError: Cannot access 'programadaEstadoId' before initialization
+    at ConsultasTable (http://localhost:3000/_next/static/chunks/app_consultas_components_b44cf78c._.js:3193:9)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:13072:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:4091:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:5523:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:6090:639)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:886:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8298:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8190:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8173:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:7932:56)
+    at performWorkOnRootViaSchedulerTask (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8882:9)
+    at MessagePort.performWorkUntilDeadline (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:2601:64)
+[  828613ms] [WARNING] [Fast Refresh] performing full reload because your application had an unrecoverable error @ http://localhost:3000/_next/static/chunks/837f3_next_dist_client_2ddce166._.js:6282
+[  834058ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/consultas:0
+[  834777ms] ReferenceError: Cannot access 'programadaEstadoId' before initialization
+    at ConsultasTable (http://localhost:3000/_next/static/chunks/app_consultas_components_b44cf78c._.js:3193:9)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:13072:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:4091:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:5523:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:6090:639)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:886:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8298:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8190:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8173:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:7932:56)
+    at performWorkOnRootViaSchedulerTask (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8882:9)
+    at MessagePort.performWorkUntilDeadline (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:2601:64)
+[  939386ms] [WARNING] [Fast Refresh] performing full reload because your application had an unrecoverable error @ http://localhost:3000/_next/static/chunks/837f3_next_dist_client_2ddce166._.js:6282
+[  946034ms] [WARNING] [Fast Refresh] performing full reload because your application had an unrecoverable error @ http://localhost:3000/_next/static/chunks/837f3_next_dist_client_2ddce166._.js:6282
+[  946055ms] [WARNING] [Fast Refresh] performing full reload because your application had an unrecoverable error @ http://localhost:3000/_next/static/chunks/837f3_next_dist_client_2ddce166._.js:6282
+[  947425ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/consultas:0
+[  947662ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/favicon.ico:0

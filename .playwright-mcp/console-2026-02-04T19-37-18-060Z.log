@@ -1,0 +1,59 @@
+[    2285ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/pacientes:0
+[    2871ms] Error: Cannot find module '../chunks/ssr/[turbopack]_runtime.js'
+Require stack:
+- C:\Users\jorge\coding\nexa-projects\pms\.next\server\pages\_document.js
+- C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\require.js
+- C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\load-components.js
+- C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\build\utils.js
+- C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\build\swc\options.js
+- C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\build\swc\index.js
+- C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\build\next-config-ts\transpile-config.js
+- C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\config.js
+- C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\next.js
+- C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\lib\start-server.js
+    at Function.<anonymous> (node:internal/modules/cjs/loader:1225:15)
+    at <unknown> (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\require-hook.js:57:36)
+    at Function._load (node:internal/modules/cjs/loader:1055:27)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1311:12)
+    at mod.require (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\require-hook.js:68:28)
+    at require (node:internal/modules/helpers:136:16)
+    at Object.<anonymous> (file://C:\Users\jorge\coding\nexa-projects\pms\.next\server\pages\_document.js:1:7)
+    at Module._compile (node:internal/modules/cjs/loader:1554:14)
+    at Object..js (node:internal/modules/cjs/loader:1706:10)
+    at Module.load (node:internal/modules/cjs/loader:1289:32)
+    at Function._load (node:internal/modules/cjs/loader:1108:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:220:24)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1311:12)
+    at mod.require (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\require-hook.js:68:28)
+    at require (node:internal/modules/helpers:136:16)
+    at requirePage (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\require.js:99:80)
+    at loadComponentsImpl (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\load-components.js:86:38)
+    at DevServer.findPageComponentsImpl (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\next-server.js:899:77)
+    at <unknown> (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\next-server.js:877:21)
+    at <unknown> (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\lib\trace\tracer.js:170:36)
+    at NoopContextManager.with (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:7062)
+    at ContextAPI.with (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:518)
+    at NoopTracer.startActiveSpan (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:18093)
+    at ProxyTracer.startActiveSpan (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:18854)
+    at <unknown> (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\lib\trace\tracer.js:152:103)
+    at NoopContextManager.with (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:7062)
+    at ContextAPI.with (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\compiled\@opentelemetry\api\index.js:1:518)
+    at NextTracerImpl.trace (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\lib\trace\tracer.js:152:28)
+    at DevServer.findPageComponents (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\next-server.js:872:41)
+    at DevServer.findPageComponents (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\dev\next-dev-server.js:705:28)
+    at async DevServer.renderErrorToResponseImpl (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\base-server.js:1687:26)
+    at async pipe.req.req (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\base-server.js:1610:30)
+    at async DevServer.pipeImpl (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\base-server.js:1025:25)
+    at async NextNodeServer.handleCatchallRenderRequest (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\next-server.js:408:21)
+    at async DevServer.handleRequestImpl (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\base-server.js:916:17)
+    at async (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\dev\next-dev-server.js:399:20)
+    at async Span.traceAsyncFn (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\trace\trace.js:157:20)
+    at async DevServer.handleRequest (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\dev\next-dev-server.js:395:24)
+    at async invokeRender (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\lib\router-server.js:240:21)
+    at async handleRequest (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\lib\router-server.js:437:24)
+    at async requestHandlerImpl (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\lib\router-server.js:485:13)
+    at async Server.requestListener (file://C:\Users\jorge\coding\nexa-projects\pms\node_modules\.pnpm\next@15.5.7_react-dom@19.2.0_react@19.2.0__react@19.2.0\node_modules\next\dist\server\lib\start-server.js:226:13)
+[    3015ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/favicon.ico:0

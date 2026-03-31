@@ -1,0 +1,502 @@
+
+ * ΓûÉΓû¢ΓûêΓûêΓûêΓû£Γûî *   Claude Code v2.0.76
+* Γû¥Γû£ΓûêΓûêΓûêΓûêΓûêΓû¢Γûÿ *  Opus 4.5 ┬╖ Claude Max
+ *  ΓûÿΓûÿ Γû¥Γû¥  *   ~\coding\nexa-projects\pms
+
+ ΓÜáLarge CLAUDE.md will impact performance (44.4k chars > 40.0k) ΓÇó /memory to edit
+
+> > Feature Request:
+I would like to implement a new feature that enables the app to send email 
+reminders to patients when a new appointment (consulta) is scheduled. Below 
+is 
+the expected behavior:
+
+- When a consulta is scheduled, an email should be sent to the patient's 
+email 
+address with the appointment details, including the date and time.
+- A reminder email should be sent 24 hours before the scheduled appointment.
+- All emails must be sent from a single email address specified by the admin
+ 
+user.
+- I need guidance on how to design the part of the app where the 
+administrator 
+can configure this email address. At a high level, the administrator should 
+be 
+able to set the email address that will serve as the clinicΓÇÖs/medical 
+institutionΓÇÖs central contact. Also, the admin must be able to turn this 
+feature on/off.
+- I plan to use gmail (and eventually gmail api) to send emails. im 
+wondering if we should use gmail api within the google console OR a n8n 
+workflow using gmail nodes. can you help me determine what to pick?
+
+ ΓÜá∩╕Å **Before writing any output:**
+- Confirm your understanding 
+- Ask any necessary clarification questions.
+- Do not make assumptions.
+- Wait for confirmation that all requirements are fully understood. 
+
+ΓùÅ I understand you want to implement an email notification system for appointments. Let me confirm my understanding and ask some clarification questions before proceeding.
+
+  My Understanding
+
+  1. Immediate notification: Email sent when a consulta is created with status programada
+  2. 24-hour reminder: Scheduled email sent 24 hours before fecha_hora
+  3. Admin configuration: Central settings page where admin can:
+    - Set the sender email address (clinic's contact)
+    - Enable/disable the entire feature
+  4. Email provider: Gmail-based solution (API or n8n workflow)
+
+  ---
+  Clarification Questions
+
+  1. Email Content
+
+  What information should be included in the emails?
+  - Patient name
+  - Doctor name
+  - Date and time
+  - Clinic address/location?
+  - Any preparation instructions?
+  - Contact phone for cancellations?
+
+  2. Patient Email Availability
+
+  Looking at the pacientes table, there's an email field. What should happen if:
+  - Patient has no email address?
+  - Email is invalid/bounces?
+
+  Should we log these failures somewhere?
+
+  3. 24-Hour Reminder Mechanism
+
+  The reminder requires a scheduled job. Options include:
+  - Supabase pg_cron + Edge Functions (runs within Supabase)
+  - Vercel Cron Jobs (runs serverless functions on schedule)
+  - n8n (external workflow automation)
+
+  Do you have a preference, or should I recommend one?
+
+  4. Gmail API vs n8n
+
+  | Aspect           | Gmail API (direct)                                        | n8n with Gmail node                        |
+  |------------------|-----------------------------------------------------------|--------------------------------------------|
+  | Setup complexity | Higher (OAuth, tokens, refresh handling)                  | Lower (visual config)                      |
+  | Infrastructure   | None extra                                                | Requires n8n server (self-hosted or cloud) |
+  | Cost             | Free (Gmail limits: 500/day personal, 2000/day workspace) | Free self-hosted or $20+/mo cloud          |
+  | Reliability      | You manage token refresh                                  | n8n handles it                             |
+  | Maintenance      | Code changes for email logic                              | Visual workflow changes                    |
+
+  Alternative suggestion: Have you considered Resend or SendGrid? They're designed for transactional emails, easier to set up than Gmail API, better deliverability, and have generous free tiers (Resend: 3000/mo free, SendGrid: 100/day free).
+
+  5. Admin Settings Location
+
+  Should the email configuration live:
+  - In a new dedicated "Settings" or "Configuraci├│n" page?
+  - Within an existing admin section?
+  - As part of a broader clinic configuration page?
+
+  6. Email Tracking
+
+  Should we maintain a log of sent emails (for debugging/auditing)?
+  - Table storing: patient_id, consulta_id, email_type, sent_at, status
+
+  7. Appointment Changes
+
+  What should happen if:
+  - An appointment is rescheduled? (Send updated email?)
+  - An appointment is cancelled? (Send cancellation email?)
+  - An appointment is confirmed by recepcionista? (Send confirmation email?)
+
+  ---
+  Please clarify these points and I'll proceed with a detailed implementation plan.
+
+> lets start with item 4: The thing is that the clinic that will use this 
+product has a gmail email address. What do you recommend here? 
+
+ΓùÅ Great question. Given that the clinic already has a Gmail address they want to use, here's my analysis:
+
+  Recommendation: Gmail SMTP with App Password
+
+  For a clinic starting with email notifications, this is the simplest and most practical approach.
+
+  Why This Over Other Options
+
+  | Approach                  | Verdict                                                               |
+  |---------------------------|-----------------------------------------------------------------------|
+  | Gmail SMTP + App Password | Γ£à Recommended ΓÇö Simple setup, uses existing Gmail, no extra services |
+  | Gmail API (OAuth)         | Γ¥î Overkill ΓÇö Complex token management for a straightforward use case |
+  | n8n + Gmail               | Γ¥î Overkill ΓÇö Adds infrastructure for something achievable in-app     |
+  | Resend/SendGrid           | ≡ƒöä Future option ΓÇö Better if clinic gets a custom domain later        |
+
+  How It Works
+
+  1. Clinic enables 2-Factor Authentication on their Gmail account
+  2. Generates an App Password (16-character password for apps)
+  3. We store this securely in the database (encrypted) or environment variables
+  4. Use Nodemailer in Next.js Server Actions/API routes to send emails
+
+  Technical Details
+
+  Sender: clinica@gmail.com (their actual Gmail)
+  Method: SMTP via smtp.gmail.com:587
+  Auth: App Password (not regular password)
+  Library: Nodemailer (well-maintained, works with Vercel)
+  Limits: 500 emails/day (personal) or 2,000/day (Google Workspace)
+
+  Considerations
+
+  | Aspect         | Detail                                                                   |
+  |----------------|--------------------------------------------------------------------------|
+  | Daily limit    | 500/day for personal Gmail ΓÇö Is this sufficient for the clinic's volume? |
+  | Deliverability | Good for transactional emails, but Gmail may throttle if volume spikes   |
+  | Cost           | Free                                                                     |
+  | Setup time     | ~30 minutes                                                              |
+
+  ---
+  Question for You
+
+  Expected email volume: Roughly how many appointments does the clinic schedule per day?
+
+  This helps confirm Gmail's limits are sufficient. If they schedule ~50-100 appointments/day, the 500/day limit works fine (confirmation + reminder = 2 emails per appointment).
+
+  ---
+  If you confirm this approach, I'll include it in the full implementation plan. We can always migrate to a more robust solution (like Resend with a custom domain) later if needed.
+
+> /agents 
+  ΓÄ┐  Agents dialog dismissed
+
+> Understood all. I think the daily limit is fine. 
+For this specific item let me make you some comments:
+- the email config details must be under the /configuracion route. Right 
+there, lets include a dedicated section (similar to informacion general) to 
+include:
+    - controls to turn this feat on/off
+    - any configuration required (we may need to design this) to set the 
+email that will be used as sender
+- Lets use the ui/ux engineer agent define how the UI from which the admin 
+will manage the email reminder features would look like. Ensuring it follows
+ same design principles.
+- please use the documentation-explorer agent to check the nodemailer 
+dcoumentation to ensure it works well: https://nodemailer.com/
+
+answers to questions from your prev message:
+1. lets include   
+  - Patient name
+  - Doctor name
+  - Date and time
+  - Clinic address/location (lets use a placeholder for this item for now)
+
+2. if patient email is not available or invalid lets directly omit the send.
+ lets start basic for now
+3. what do you recommend? i would pick supabase pg_Cron since we are already
+ workign iwht that stack, but open to your suggestions
+4. already discussed
+5. the email config details must be under the /configuracion route. Right 
+there, lets include a dedicated section (similar to informacion general)
+6.  what do you recommend? how the tracking you think about would work?
+7. 
+ - An appointment is rescheduled? (Send updated email?) - YES, LETS SEND 
+UPDATE EMAIL
+ - An appointment is cancelled? (Send cancellation email?) - YES, LETS SEND 
+CANCELATION EMAIL
+ - An appointment is SCHEDULED? - LETS SEND an scheduling information EMAIL
+ 
+ 
+ 
+DONT DO ANYTHING YET, JUST SHAER A PLAN BASED ON THIS 
+
+ΓùÅ I'll gather the necessary information first by launching the documentation explorer and UI/UX designer agents, then compile a comprehensive plan.
+
+ΓùÅ 2 agents finished (ctrl+o to expand)
+   Γö£ΓöÇ documentation-explorer (Explore nodemailer documentation) ┬╖ 2 tool uses ┬╖
+   33.1k tokens
+   Γöé  ΓÄ┐ ┬áDone
+   ΓööΓöÇ ui-ux-designer (Design email config UI section) ┬╖ 0 tool uses
+      ΓÄ┐ ┬áDone
+
+> wait, the desing agent purpose will be for analyzing the current 
+/configuracion layout. that cant be done after you gather info about the 
+nodemailer service? 
+
+ΓùÅ You're absolutely right. Let me do this sequentially:
+
+  1. First: Gather nodemailer documentation
+  2. Then: Have the UI/UX designer analyze the current /configuracion layout to ensure the new email section follows the same design patterns
+
+ΓùÅ documentation-explorer(Explore nodemailer documentation)
+  ΓÄ┐ ┬áDone (17 tool uses ┬╖ 111.9k tokens ┬╖ 1h 14m 15s)                      
+
+ΓùÅ Excellent! The nodemailer documentation has been reviewed and a guide was created. Now let me have the UI/UX designer analyze the current /configuracion page layout:
+
+ΓùÅ ui-ux-designer(Analyze /configuracion page layout)
+  ΓÄ┐ ┬áDone (13 tool uses ┬╖ 47.5k tokens ┬╖ 5m 24s)                           
+
+ΓùÅ I now have all the information needed. Let me compile a comprehensive implementation plan.
+
+  ---
+  Email Reminders Feature - Implementation Plan
+
+  Overview
+
+  Implement an email notification system that sends appointment-related emails to patients using Gmail SMTP with App Password authentication.
+
+  ---
+  Phase 1: Database Schema
+
+  1.1 Create email_reminder_settings table
+
+  Stores the admin-configured email settings (singleton pattern - only one row).
+
+  CREATE TABLE email_reminder_settings (
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    enabled boolean DEFAULT false,
+    smtp_email text NOT NULL,
+    smtp_password text NOT NULL,  -- Store encrypted
+    appointment_scheduled boolean DEFAULT true,
+    appointment_rescheduled boolean DEFAULT true,
+    appointment_cancelled boolean DEFAULT true,
+    reminder_24h boolean DEFAULT true,
+    clinic_name text NOT NULL,
+    clinic_address text,
+    clinic_phone text,
+    created_at timestamptz DEFAULT now(),
+    updated_at timestamptz DEFAULT now()
+  );
+
+  -- Singleton pattern: only one row allowed
+  CREATE UNIQUE INDEX single_email_settings ON email_reminder_settings ((true));
+
+  -- RLS: Only admins can read/write
+  ALTER TABLE email_reminder_settings ENABLE ROW LEVEL SECURITY;
+
+  1.2 Create email_logs table (for tracking)
+
+  Stores a record of all sent emails for debugging/auditing.
+
+  CREATE TABLE email_logs (
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    consulta_id uuid REFERENCES consultas(id) ON DELETE SET NULL,
+    paciente_id uuid REFERENCES pacientes(id) ON DELETE SET NULL,
+    email_type text NOT NULL,  -- 'scheduled', 'rescheduled', 'cancelled', 'reminder_24h'
+    recipient_email text NOT NULL,
+    status text NOT NULL,  -- 'sent', 'failed', 'skipped'
+    error_message text,
+    sent_at timestamptz DEFAULT now()
+  );
+
+  -- Index for querying by consulta
+  CREATE INDEX idx_email_logs_consulta ON email_logs(consulta_id);
+
+  1.3 Enable pg_cron extension (for 24h reminders)
+
+  -- Enable pg_cron extension
+  CREATE EXTENSION IF NOT EXISTS pg_cron;
+
+  -- Schedule job to run every hour, checking for appointments 24h away
+  SELECT cron.schedule(
+    'send-24h-reminders',
+    '0 * * * *',  -- Every hour at minute 0
+    $$SELECT send_24h_reminders()$$
+  );
+
+  ---
+  Phase 2: Backend Services
+
+  2.1 Install dependencies
+
+  pnpm add nodemailer
+  pnpm add -D @types/nodemailer
+
+  2.2 Create email service (lib/email/nodemailer.ts)
+
+  - Singleton transporter pattern
+  - Gmail SMTP configuration
+  - HTML email templates
+  - Error handling
+
+  lib/email/
+  Γö£ΓöÇΓöÇ nodemailer.ts        # Transporter setup, sendEmail function
+  Γö£ΓöÇΓöÇ templates/
+  Γöé   Γö£ΓöÇΓöÇ appointment-scheduled.ts
+  Γöé   Γö£ΓöÇΓöÇ appointment-rescheduled.ts
+  Γöé   Γö£ΓöÇΓöÇ appointment-cancelled.ts
+  Γöé   ΓööΓöÇΓöÇ reminder-24h.ts
+  ΓööΓöÇΓöÇ types.ts             # Email-related types
+
+  2.3 Create server actions (app/configuracion/email-actions.ts)
+
+  - fetchEmailReminderSettings() - Get current settings
+  - updateEmailReminderSettings() - Save settings
+  - testEmailConnection() - Send test email
+
+  2.4 Create email sending actions (lib/email/actions.ts)
+
+  - sendAppointmentScheduledEmail(consultaId)
+  - sendAppointmentRescheduledEmail(consultaId)
+  - sendAppointmentCancelledEmail(consultaId)
+  - logEmailAttempt() - Record in email_logs table
+
+  ---
+  Phase 3: UI Implementation
+
+  3.1 New component: email-reminders-content.tsx
+
+  Location: app/configuracion/components/email-reminders-content.tsx
+
+  Structure:
+  ΓöîΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÉ
+  Γöé Recordatorios por Email                                      Γöé
+  Γöé Configura el env├¡o autom├ítico de recordatorios de citas     Γöé
+  Γö£ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöñ
+  Γöé Habilitar recordatorios                          [Toggle]   Γöé
+  Γöé                                                              Γöé
+  Γöé ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ Configuraci├│n SMTP ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ                  Γöé
+  Γöé Email remitente *        [clinica@gmail.com]                Γöé
+  Γöé Contrase├▒a de aplicaci├│n [ΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇóΓÇó]                 Γöé
+  Γöé [≡ƒöî Probar Conexi├│n]                                        Γöé
+  Γöé                                                              Γöé
+  Γöé ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ Tipos de Emails ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ                     Γöé
+  Γöé Cita programada                                  [Toggle]   Γöé
+  Γöé Cita reprogramada                                [Toggle]   Γöé
+  Γöé Cita cancelada                                   [Toggle]   Γöé
+  Γöé Recordatorio 24 horas                            [Toggle]   Γöé
+  Γöé                                                              Γöé
+  Γöé ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ Informaci├│n de la Cl├¡nica ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ           Γöé
+  Γöé Nombre de la cl├¡nica *   [Cl├¡nica Dermatol├│gica]           Γöé
+  Γöé Direcci├│n               [Av. Principal 123]                 Γöé
+  Γöé Tel├⌐fono de contacto    [+54 11 1234-5678]                 Γöé
+  ΓööΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÿ
+
+  3.2 Modify existing files
+
+  - app/configuracion/page.tsx - Fetch email settings for admin
+  - app/configuracion/components/usuario-info-content.tsx - Add EmailRemindersContent (admin only)
+
+  ---
+  Phase 4: Integration with Appointment Flow
+
+  4.1 Modify consulta creation flow
+
+  When a consulta is created with status programada:
+  1. Check if email reminders are enabled
+  2. Check if appointment_scheduled is enabled
+  3. Check if patient has email
+  4. If all yes ΓåÆ send email, log result
+  5. If email fails ΓåÆ log error, don't block appointment creation
+
+  4.2 Modify consulta update flow
+
+  When fecha_hora changes (rescheduled):
+  1. Check settings
+  2. Send rescheduled email if enabled
+
+  When estado changes to cancelada:
+  1. Check settings
+  2. Send cancelled email if enabled
+
+  4.3 Files to modify
+
+  - app/consultas/actions.ts - Add email triggers to create/update actions
+
+  ---
+  Phase 5: 24-Hour Reminder System
+
+  5.1 Supabase Edge Function
+
+  Create supabase/functions/send-24h-reminders/index.ts:
+
+  1. Query consultas where:
+    - fecha_hora is between 23-25 hours from now
+    - estado is programada or confirmada
+    - No reminder already sent (check email_logs)
+  2. For each consulta:
+    - Get patient email
+    - Send reminder
+    - Log result
+
+  5.2 pg_cron scheduling
+
+  Runs the edge function every hour to check for appointments needing reminders.
+
+  ---
+  Phase 6: Email Templates
+
+  All templates in Spanish, HTML format with inline styles for email client compatibility.
+
+  Template data structure:
+
+  interface AppointmentEmailData {
+    patientName: string
+    doctorName: string
+    appointmentDate: string  // Formatted: "Lunes, 15 de Enero de 2026"
+    appointmentTime: string  // Formatted: "10:30 AM"
+    clinicName: string
+    clinicAddress: string
+    clinicPhone: string
+  }
+
+  Templates:
+
+  1. Cita Programada - Confirmation with all details
+  2. Cita Reprogramada - New date/time highlighted
+  3. Cita Cancelada - Cancellation notice
+  4. Recordatorio 24h - Reminder with same details
+
+  ---
+  File Structure Summary
+
+  lib/
+  Γö£ΓöÇΓöÇ email/
+  Γöé   Γö£ΓöÇΓöÇ nodemailer.ts           # SMTP transporter
+  Γöé   Γö£ΓöÇΓöÇ actions.ts              # Send email functions
+  Γöé   Γö£ΓöÇΓöÇ types.ts                # Email types
+  Γöé   ΓööΓöÇΓöÇ templates/
+  Γöé       Γö£ΓöÇΓöÇ base-template.ts    # Shared HTML wrapper
+  Γöé       Γö£ΓöÇΓöÇ scheduled.ts
+  Γöé       Γö£ΓöÇΓöÇ rescheduled.ts
+  Γöé       Γö£ΓöÇΓöÇ cancelled.ts
+  Γöé       ΓööΓöÇΓöÇ reminder.ts
+
+  app/configuracion/
+  Γö£ΓöÇΓöÇ page.tsx                    # (modify) Fetch email settings
+  Γö£ΓöÇΓöÇ email-actions.ts            # (new) Settings CRUD + test
+  ΓööΓöÇΓöÇ components/
+      Γö£ΓöÇΓöÇ usuario-info-content.tsx    # (modify) Add email section
+      ΓööΓöÇΓöÇ email-reminders-content.tsx # (new) Email config UI
+
+  supabase/
+  Γö£ΓöÇΓöÇ migrations/
+  Γöé   ΓööΓöÇΓöÇ [timestamp]_email_reminders.sql  # Tables + cron
+  ΓööΓöÇΓöÇ functions/
+      ΓööΓöÇΓöÇ send-24h-reminders/
+          ΓööΓöÇΓöÇ index.ts            # Edge function for reminders
+
+  ---
+  Implementation Order
+
+  | Step | Task                                          | Dependencies |
+  |------|-----------------------------------------------|--------------|
+  | 1    | Create database migration (tables + RLS)      | None         |
+  | 2    | Install nodemailer                            | None         |
+  | 3    | Create email service (lib/email/*)            | Step 2       |
+  | 4    | Create email templates                        | Step 3       |
+  | 5    | Create email config UI component              | None         |
+  | 6    | Create email settings server actions          | Step 1       |
+  | 7    | Integrate UI into /configuracion              | Steps 5, 6   |
+  | 8    | Integrate email sending into consulta actions | Steps 3, 4   |
+  | 9    | Create edge function for 24h reminders        | Steps 3, 4   |
+  | 10   | Set up pg_cron job                            | Step 9       |
+  | 11   | Testing & refinement                          | All          |
+
+  ---
+  Questions Before Proceeding
+
+  1. Password encryption: Should I encrypt the SMTP password in the database, or is storing it as plain text acceptable for this internal system? (I recommend encryption)
+  2. Email tracking UI: Should admins be able to view the email logs somewhere in the UI, or is database-only tracking sufficient for now?
+  3. Test email recipient: When testing the connection, should the test email go to the configured sender address, or should there be a field to specify a test recipient?
+
+  ---
+  Ready to proceed with implementation once you confirm the plan and answer these questions.
+
+
+

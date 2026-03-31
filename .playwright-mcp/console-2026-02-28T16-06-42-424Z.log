@@ -1,0 +1,43 @@
+[ 2193887ms] TypeError: (0 , __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$date$2d$format$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__.calculateAge) is not a function
+    at ConsultaDetailContent (http://localhost:3000/_next/static/chunks/app_acc30b47._.js:983:195)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:13072:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:4091:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:5523:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:6111:24)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:886:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8298:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8190:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8173:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:7932:56)
+    at performSyncWorkOnRoot (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8890:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8809:316)
+    at flushSyncWork$1 (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8048:86)
+    at Object.scheduleRefresh (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:294:13)
+    at http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:391:33
+    at Set.forEach (<anonymous>)
+    at Object.performReactRefresh (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:384:38)
+    at applyUpdate (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:878:31)
+    at http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:886:13
+[ 2193914ms] [WARNING] [Fast Refresh] performing full reload because your application had an unrecoverable error @ http://localhost:3000/_next/static/chunks/837f3_next_dist_client_2ddce166._.js:6282
+[ 2194032ms] TypeError: (0 , __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2f$date$2d$format$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__.calculateAge) is not a function
+    at ConsultaDetailContent (http://localhost:3000/_next/static/chunks/app_acc30b47._.js:983:195)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:13072:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:4091:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:5523:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:6111:24)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:886:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8298:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8190:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8173:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:7932:56)
+    at performSyncWorkOnRoot (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8890:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8809:316)
+    at flushSyncWork$1 (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8048:86)
+    at Object.scheduleRefresh (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:294:13)
+    at http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:391:33
+    at Set.forEach (<anonymous>)
+    at Object.performReactRefresh (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:384:38)
+    at applyUpdate (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:878:31)
+    at http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:886:13
+[ 2194058ms] [WARNING] [Fast Refresh] performing full reload because your application had an unrecoverable error @ http://localhost:3000/_next/static/chunks/837f3_next_dist_client_2ddce166._.js:6282
+[ 2194251ms] [WARNING] [Fast Refresh] performing full reload because your application had an unrecoverable error @ http://localhost:3000/_next/static/chunks/837f3_next_dist_client_2ddce166._.js:6282

@@ -1,0 +1,24 @@
+estado,admin,medico owner,medico,recepcionista
+programada,"- Registrar llegada
+- Iniciar consulta
+- Marcar como ausente
+- Transferir consulta
+- Cancelar consulta","- Registrar llegada
+- Iniciar consulta
+- Marcar como ausente
+- Transferir consulta
+- Cancelar consulta","- Registrar llegada
+- Marcar como ausente
+- Transferir consulta
+- Cancelar consulta","- Registrar llegada
+- Marcar como ausente
+- Transferir consulta
+- Cancelar consulta"
+ausente,N/A,N/A,N/A,N/A
+cancelada,N/A,N/A,N/A,N/A
+en_curso,"- Finalizar consulta
+- Salir sin finalizar
+- Cancelar consulta","- Finalizar consulta
+- Salir sin finalizar
+- Cancelar consulta",N/A,N/A
+completada,N/A,N/A,N/A,N/A

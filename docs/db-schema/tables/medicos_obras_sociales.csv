@@ -1,0 +1,16 @@
+Column,Type,Constraints,Description,Mandatory
+id,uuid,"PRIMARY KEY, DEFAULT gen_random_uuid()",Primary key,yes
+medico_id,uuid,"NOT NULL, REFERENCES medicos(id) ON DELETE CASCADE, UNIQUE(medico_id, obra_social_id)",Foreign key to medicos.id,yes
+obra_social_id,uuid,"NOT NULL, REFERENCES obras_sociales(id) ON DELETE CASCADE",Foreign key to obras_sociales.id,yes
+porcentaje_cobertura,"numeric(5,2)",CHECK (porcentaje_cobertura >= 0 AND porcentaje_cobertura <= 100),"Coverage percentage (e.g., 100%, 80%)",no
+copago,"numeric(10,2)",CHECK (copago >= 0),Patient copay amount,no
+requiere_autorizacion,boolean,DEFAULT false NOT NULL,Whether prior authorization is required,no
+numero_convenio,text,,Agreement/contract number,no
+fecha_inicio,date,,Agreement start date,no
+fecha_fin,date,,Agreement end date (null if ongoing),no
+notas,text,,Special conditions or notes,no
+estado,text,"DEFAULT 'activo', CHECK (estado IN ('activo', 'inactivo', 'suspendido')) NOT NULL",Agreement status,no
+created_at,timestamptz,"DEFAULT now(), NOT NULL",Record creation timestamp,yes
+updated_at,timestamptz,"DEFAULT now(), NOT NULL",Record update timestamp,yes
+created_by,uuid,REFERENCES auth.users(id),User who created record,no
+updated_by,uuid,REFERENCES auth.users(id),User who last updated record,no

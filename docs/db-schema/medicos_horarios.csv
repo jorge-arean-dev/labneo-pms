@@ -1,0 +1,13 @@
+Column Name,Data Type,Constraints,Default Value,Description
+id,UUID,PRIMARY KEY,gen_random_uuid(),Primary key
+medico_id,UUID,NOT NULL REFERENCES public.medicos(id) ON DELETE CASCADE,,Foreign key to medicos.id
+dia_semana,INTEGER,NOT NULL CHECK (dia_semana >= 0 AND dia_semana <= 6),,Day of week (0=Sunday 1=Monday 2=Tuesday 3=Wednesday 4=Thursday 5=Friday 6=Saturday)
+hora_inicio,TIME,NOT NULL,,Start time (e.g. 10:00:00)
+hora_fin,TIME,NOT NULL CHECK (hora_fin > hora_inicio),,End time (e.g. 15:00:00)
+duracion_consulta,INTEGER,NOT NULL CHECK (duracion_consulta > 0),30,Duration of appointment in minutes
+duracion_buffer,INTEGER,NOT NULL CHECK (duracion_buffer >= 0),5,Duration of buffer between appointments in minutes (can be 0)
+activo,BOOLEAN,NOT NULL,true,Whether this schedule is currently active
+created_at,TIMESTAMPTZ,NOT NULL,NOW(),Record creation timestamp
+updated_at,TIMESTAMPTZ,NOT NULL,NOW(),Record update timestamp
+created_by,UUID,REFERENCES auth.users(id),,User who created record
+updated_by,UUID,REFERENCES auth.users(id),,User who last updated record

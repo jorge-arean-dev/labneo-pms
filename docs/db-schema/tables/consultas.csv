@@ -1,0 +1,20 @@
+Column,Type,Constraints,Description,Mandatory
+id,uuid,"PRIMARY KEY, DEFAULT gen_random_uuid()",Primary key,yes
+paciente_id,uuid,"NOT NULL, REFERENCES pacientes(id) ON DELETE CASCADE",Foreign key to pacientes.id,yes
+medico_id,uuid,"NOT NULL, REFERENCES medicos(id) ON DELETE RESTRICT",Foreign key to medicos.id,yes
+fecha_hora,timestamptz,NOT NULL,Appointment date and time,yes
+duracion_minutos,integer,DEFAULT 30,Appointment duration,yes
+motivo,text,,Reason for consultation,no
+estado,text,"DEFAULT 'programada', CHECK (estado IN ('programada', 'confirmada', 'en_curso', 'completada', 'cancelada', 'ausente')) NOT NULL",Appointment status,no
+tipo_consulta,text,"CHECK (tipo_consulta IN ('primera_vez', 'control', 'urgencia'))",Type of consultation,no
+informe,text,,Medical report written by doctor,no
+diagnostico,text,,Diagnosis,no
+tratamiento,text,,Treatment plan,no
+receta,text,,Prescription details,no
+proxima_consulta,date,,Next recommended appointment date,no
+archivos_adjuntos,jsonb,DEFAULT '[]',URLs to photos/documents (important for dermatology!),no
+notas_privadas,text,,Private notes (not shown to patient),no
+created_at,timestamptz,"DEFAULT now(), NOT NULL",Record creation timestamp,yes
+updated_at,timestamptz,"DEFAULT now(), NOT NULL",Record update timestamp,yes
+created_by,uuid,REFERENCES auth.users(id),User who created record,no
+updated_by,uuid,REFERENCES auth.users(id),User who last updated record,no

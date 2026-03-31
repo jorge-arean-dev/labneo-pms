@@ -1,0 +1,2 @@
+[    2758ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/consultas/a321b048-ce82-4cff-b064-14ba4fd48789:0
+[    3252ms] [ERROR] %c%s%c Error fetching consulta: background: #e6e6e6;background: light-dark(rgba(0,0,0,0.1), rgba(255,255,255,0.25));color: #000000;color: light-dark(#000000, #ffffff);border-radius: 2px  Server   Cannot coerce the result to a single JSON object @ http://localhost:3000/_next/static/chunks/837f3_next_dist_3a6f06c8._.js:2359

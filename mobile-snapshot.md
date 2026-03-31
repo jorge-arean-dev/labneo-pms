@@ -1,0 +1,70 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - button [active] [ref=e5] [cursor=pointer]:
+        - img
+      - navigation [ref=e6]:
+        - link "Home" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img [ref=e8]
+        - link "Pacientes" [ref=e12] [cursor=pointer]:
+          - /url: /pacientes
+          - img [ref=e13]
+        - link "Consultas" [ref=e19] [cursor=pointer]:
+          - /url: /consultas
+          - img [ref=e20]
+        - link "Médicos" [ref=e23] [cursor=pointer]:
+          - /url: /medicos
+          - img [ref=e24]
+        - link "Recepcionistas" [ref=e29] [cursor=pointer]:
+          - /url: /recepcionistas
+          - img [ref=e30]
+        - link "Obras Sociales" [ref=e35] [cursor=pointer]:
+          - /url: /obras-sociales
+          - img [ref=e36]
+        - link "Configuración" [ref=e40] [cursor=pointer]:
+          - /url: /configuracion
+          - img [ref=e41]
+        - link "Admin" [ref=e45] [cursor=pointer]:
+          - /url: /admin
+          - img [ref=e46]
+        - link "Ayuda" [ref=e50] [cursor=pointer]:
+          - /url: /help
+          - img [ref=e51]
+      - button [ref=e248] [cursor=pointer]:
+        - img [ref=e221]
+      - button "Admin Dev" [ref=e249] [cursor=pointer]:
+        - img "Admin Dev" [ref=e224]
+    - main [ref=e74]:
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - heading "Administración" [level=1] [ref=e78]
+            - paragraph [ref=e79]: Configure los ajustes del sistema y servicios
+          - generic [ref=e80]:
+            - img
+            - text: Sistema operativo
+        - generic [ref=e81]:
+          - tablist [ref=e82]:
+            - tab "Notificaciones por Email" [ref=e83] [cursor=pointer]
+            - tab "Información del Consultorio" [ref=e84] [cursor=pointer]
+            - tab "Agente WhatsApp" [selected] [ref=e85] [cursor=pointer]
+          - tabpanel "Agente WhatsApp" [ref=e225]:
+            - generic [ref=e226]:
+              - generic [ref=e227]:
+                - generic [ref=e228]:
+                  - img [ref=e229]
+                  - generic [ref=e232]: Base de Conocimientos
+                - generic [ref=e233]: Este contenido es consultado por el agente de WhatsApp para responder preguntas de los pacientes. Incluya información sobre servicios, horarios, ubicación, políticas y preguntas frecuentes.
+              - generic [ref=e234]:
+                - 'textbox "# Información del Consultorio ## Servicios - Dermatología clínica - Dermatología estética - Control de lunares ## Horarios de Atención - Lunes a Viernes: 9:00 a 18:00 - Sábados: 9:00 a 13:00 ## Ubicación - Dirección: Av. Ejemplo 1234, CABA - Cómo llegar: Subte línea B, estación... ## Preguntas Frecuentes ### ¿Necesito orden médica? No, podés sacar turno directamente. ### ¿Qué obras sociales aceptan? Aceptamos OSDE, Swiss Medical, Galeno... ### ¿Cuánto dura una consulta? Aproximadamente 30 minutos. ## Políticas - Cancelar con al menos 24 horas de anticipación - Llegar 10 minutos antes del turno" [ref=e235]':
+                  - /placeholder: "# Información del Consultorio\n\n## Servicios\n- Dermatología clínica\n- Dermatología estética\n- Control de lunares\n\n## Horarios de Atención\n- Lunes a Viernes: 9:00 a 18:00\n- Sábados: 9:00 a 13:00\n\n## Ubicación\n- Dirección: Av. Ejemplo 1234, CABA\n- Cómo llegar: Subte línea B, estación...\n\n## Preguntas Frecuentes\n\n### ¿Necesito orden médica?\nNo, podés sacar turno directamente.\n\n### ¿Qué obras sociales aceptan?\nAceptamos OSDE, Swiss Medical, Galeno...\n\n### ¿Cuánto dura una consulta?\nAproximadamente 30 minutos.\n\n## Políticas\n- Cancelar con al menos 24 horas de anticipación\n- Llegar 10 minutos antes del turno"
+                - generic [ref=e236]:
+                  - paragraph [ref=e237]: Formato libre. El agente interpreta el contenido para responder consultas por WhatsApp.
+                  - button "Guardar" [disabled]:
+                    - img
+                    - text: Guardar
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e243] [cursor=pointer]:
+    - img [ref=e244]
+  - alert [ref=e247]

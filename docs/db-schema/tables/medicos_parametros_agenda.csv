@@ -1,0 +1,10 @@
+Column,Type,Constraints,Description
+id,uuid,"PRIMARY KEY, DEFAULT gen_random_uuid()",Primary key
+medico_id,uuid,"NOT NULL, UNIQUE, REFERENCES medicos(id) ON DELETE CASCADE",Foreign key to medicos.id (unique constraint enforces 1:1 relationship)
+duracion_consulta,integer,"NOT NULL, DEFAULT 30, CHECK (duracion_consulta > 0)",Duration of each appointment in minutes (must be greater than 0)
+duracion_buffer,integer,"NOT NULL, DEFAULT 0, CHECK (duracion_buffer >= 0)",Buffer time after each appointment in minutes (can be 0)
+max_consultas_concurrentes,integer,"NOT NULL, DEFAULT 1, CHECK (max_consultas_concurrentes > 0)",Maximum concurrent appointments allowed per time slot (must be greater than 0)
+created_at,timestamptz,"DEFAULT now(), NOT NULL",Record creation timestamp
+updated_at,timestamptz,"DEFAULT now(), NOT NULL",Record update timestamp
+created_by,uuid,REFERENCES auth.users(id),User who created record
+updated_by,uuid,REFERENCES auth.users(id),User who last updated record

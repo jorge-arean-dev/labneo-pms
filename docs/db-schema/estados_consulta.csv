@@ -1,0 +1,10 @@
+Column Name,Data Type,Constraints,Default Value,Description
+id,UUID,PRIMARY KEY,gen_random_uuid(),Primary key
+codigo,TEXT,UNIQUE NOT NULL,,Unique status code (programada en_curso completada cancelada ausente)
+nombre,TEXT,NOT NULL,,Display name for the status
+descripcion,TEXT,,,Detailed description of the status
+es_estado_final,BOOLEAN,NOT NULL,false,Indicates if this is a final state (cannot transition from it)
+orden,INTEGER,NOT NULL,,Sort order for UI display
+activo,BOOLEAN,NOT NULL,true,Whether this status is currently active
+created_at,TIMESTAMPTZ,NOT NULL,NOW(),Record creation timestamp
+updated_at,TIMESTAMPTZ,NOT NULL,NOW(),Record update timestamp

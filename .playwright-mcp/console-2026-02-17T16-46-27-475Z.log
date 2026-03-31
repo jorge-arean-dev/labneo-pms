@@ -1,0 +1,57 @@
+[  562579ms] ReferenceError: CheckCircle2 is not defined
+    at getSystemStatus (http://localhost:3000/_next/static/chunks/_8cfee3ab._.js?id=%255Bproject%255D%252Fapp%252Fadmin%252Fcomponents%252Fadmin-page.tsx+%255Bapp-client%255D+%2528ecmascript%2529:59:19)
+    at AdminPage (http://localhost:3000/_next/static/chunks/_8cfee3ab._.js?id=%255Bproject%255D%252Fapp%252Fadmin%252Fcomponents%252Fadmin-page.tsx+%255Bapp-client%255D+%2528ecmascript%2529:62:26)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:13072:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:4091:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:5523:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:6111:24)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:886:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8298:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8190:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8173:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:7932:56)
+    at performSyncWorkOnRoot (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8890:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8809:316)
+    at flushSyncWork$1 (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8048:86)
+    at Object.scheduleRefresh (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:294:13)
+    at http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:391:33
+    at Set.forEach (<anonymous>)
+    at Object.performReactRefresh (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:384:38)
+    at applyUpdate (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:878:31)
+    at http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:886:13
+[  573546ms] [WARNING] [Fast Refresh] performing full reload because your application had an unrecoverable error @ http://localhost:3000/_next/static/chunks/837f3_next_dist_client_2ddce166._.js:6282
+[  573877ms] ReferenceError: Badge is not defined
+    at AdminPage (http://localhost:3000/_next/static/chunks/_8cfee3ab._.js?id=%255Bproject%255D%252Fapp%252Fadmin%252Fcomponents%252Fadmin-page.tsx+%255Bapp-client%255D+%2528ecmascript%2529:56:351)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:13072:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:4091:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:5523:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:6090:639)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:886:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8298:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8190:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8173:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:7932:56)
+    at performSyncWorkOnRoot (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8890:9)
+    at flushSyncWorkAcrossRoots_impl (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8809:316)
+    at flushSyncWork$1 (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8048:86)
+    at Object.scheduleRefresh (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:294:13)
+    at http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:391:33
+    at Set.forEach (<anonymous>)
+    at Object.performReactRefresh (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:384:38)
+    at applyUpdate (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:878:31)
+    at http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:886:13
+[  577597ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/admin:0
+[  578607ms] ReferenceError: Badge is not defined
+    at AdminPage (http://localhost:3000/_next/static/chunks/_8cfee3ab._.js:5738:351)
+    at Object.react_stack_bottom_frame (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:13072:24)
+    at renderWithHooks (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:4091:24)
+    at updateFunctionComponent (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:5523:21)
+    at beginWork (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:6090:639)
+    at runWithFiberInDEV (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:886:74)
+    at performUnitOfWork (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8298:97)
+    at workLoopSync (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8190:40)
+    at renderRootSync (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8173:13)
+    at performWorkOnRoot (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:7932:56)
+    at performWorkOnRootViaSchedulerTask (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_react-dom_49bd6222._.js:8882:9)
+    at MessagePort.performWorkUntilDeadline (http://localhost:3000/_next/static/chunks/837f3_next_dist_compiled_8a0c982d._.js:2601:64)
+[  579896ms] [WARNING] [Fast Refresh] performing full reload because your application had an unrecoverable error @ http://localhost:3000/_next/static/chunks/837f3_next_dist_client_2ddce166._.js:6282

@@ -1,0 +1,108 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - button [ref=e5] [cursor=pointer]:
+        - img
+      - navigation [ref=e6]:
+        - link "Home" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img [ref=e8]
+          - generic [ref=e11]: Home
+        - link "Pacientes" [ref=e12] [cursor=pointer]:
+          - /url: /pacientes
+          - img [ref=e13]
+          - generic [ref=e18]: Pacientes
+        - link "Consultas" [ref=e19] [cursor=pointer]:
+          - /url: /consultas
+          - img [ref=e20]
+          - generic [ref=e22]: Consultas
+        - link "Médicos" [ref=e23] [cursor=pointer]:
+          - /url: /medicos
+          - img [ref=e24]
+          - generic [ref=e28]: Médicos
+        - link "Recepcionistas" [ref=e29] [cursor=pointer]:
+          - /url: /recepcionistas
+          - img [ref=e30]
+          - generic [ref=e34]: Recepcionistas
+        - link "Obras Sociales" [ref=e35] [cursor=pointer]:
+          - /url: /obras-sociales
+          - img [ref=e36]
+          - generic [ref=e38]: Obras Sociales
+        - link "Configuración" [ref=e40] [cursor=pointer]:
+          - /url: /configuracion
+          - img [ref=e41]
+          - generic [ref=e44]: Configuración
+        - link "Admin" [ref=e45] [cursor=pointer]:
+          - /url: /admin
+          - img [ref=e46]
+          - generic [ref=e49]: Admin
+        - link "Ayuda" [ref=e50] [cursor=pointer]:
+          - /url: /help
+          - img [ref=e51]
+          - generic [ref=e54]: Ayuda
+      - 'button "Tema: Claro" [ref=e133] [cursor=pointer]':
+        - img [ref=e57]
+        - generic [ref=e63]: "Tema: Claro"
+        - img [ref=e64]
+      - button "Admin Dev Admin Dev Administrador jorge.arean@gmail.com" [ref=e134] [cursor=pointer]:
+        - img "Admin Dev" [ref=e135]
+        - generic [ref=e70]:
+          - paragraph [ref=e71]: Admin Dev
+          - paragraph [ref=e72]: Administrador
+          - paragraph [ref=e73]: jorge.arean@gmail.com
+    - main [ref=e74]:
+      - generic [ref=e75]:
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - heading "Consultas" [level=1] [ref=e78]
+            - paragraph [ref=e79]: Visualiza y gestiona las consultas programadas
+          - button "Crear Consulta" [ref=e80] [cursor=pointer]:
+            - img
+            - text: Crear Consulta
+        - generic [ref=e81]:
+          - generic [ref=e82]:
+            - generic [ref=e83]:
+              - img [ref=e84]
+              - generic [ref=e86]: Período
+            - generic [ref=e87]:
+              - button "Hoy" [ref=e88] [cursor=pointer]
+              - button "Esta semana" [ref=e89] [cursor=pointer]
+              - button "Rango personalizado" [ref=e90] [cursor=pointer]
+          - generic [ref=e91]:
+            - generic [ref=e92]:
+              - generic [ref=e93]:
+                - img [ref=e94]
+                - generic [ref=e97]: Buscar paciente
+              - textbox "DNI, nombre o apellido..." [ref=e99]
+            - generic [ref=e100]:
+              - generic [ref=e101]:
+                - img [ref=e102]
+                - generic [ref=e106]: Médico
+              - button "Todos los médicos" [ref=e107] [cursor=pointer]:
+                - generic [ref=e108]: Todos los médicos
+                - img
+            - generic [ref=e109]:
+              - generic [ref=e110]:
+                - img [ref=e111]
+                - generic [ref=e114]: Estado
+              - button "Programada" [ref=e115] [cursor=pointer]:
+                - generic [ref=e116]: Programada
+                - img
+            - generic [ref=e117]:
+              - generic [ref=e118]:
+                - img [ref=e119]
+                - generic [ref=e122]: Ordenar por
+              - combobox "Ordenar consultas por" [ref=e123] [cursor=pointer]:
+                - generic: Hora Consulta ↓ (más recientes primero)
+                - img
+        - paragraph [ref=e127]: "Filas resaltadas: Paciente en consultorio"
+        - generic [ref=e129]:
+          - heading "No hay consultas para los filtros seleccionados" [level=3] [ref=e130]
+          - paragraph [ref=e131]: Intenta cambiar el período o los filtros, o crea una nueva consulta
+          - button "Crear Consulta" [ref=e132] [cursor=pointer]:
+            - img
+            - text: Crear Consulta
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e141] [cursor=pointer]:
+    - img [ref=e142]
+  - alert [ref=e145]

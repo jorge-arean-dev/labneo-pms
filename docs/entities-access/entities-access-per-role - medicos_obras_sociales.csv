@@ -1,0 +1,16 @@
+Column,Admin,Medico,Recepcionista
+id,Not visible or editable,Not visible or editable,Not visible or editable
+medico_id,Not visible or editable,Not visible or editable,Not visible or editable
+obra_social_id,Visible and editable,Visible and editable,Visible only
+porcentaje_cobertura,Visible and editable,Visible and editable,Visible only
+copago,Visible and editable,Visible and editable,Visible only
+requiere_autorizacion,Visible and editable,Visible and editable,Visible only
+numero_convenio,Visible and editable,Visible and editable,Visible only
+fecha_inicio,Visible and editable,Visible and editable,Visible only
+fecha_fin,Visible and editable,Visible and editable,Visible only
+notas,Visible and editable,Visible and editable,Visible only
+estado,Visible and editable,Visible and editable,Visible only
+created_at,Visible only,Not visible or editable,Not visible or editable
+updated_at,Visible only,Not visible or editable,Not visible or editable
+created_by,Visible only,Not visible or editable,Not visible or editable
+updated_by,Visible only,Not visible or editable,Not visible or editable

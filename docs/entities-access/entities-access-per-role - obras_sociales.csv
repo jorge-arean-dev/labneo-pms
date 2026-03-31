@@ -1,0 +1,14 @@
+Column,Admin,Medico,Recepcionista
+id,Not visible or editable,Not visible or editable,Not visible or editable
+nombre,Visible and editable,Visible only,Visible only
+codigo,Visible and editable,Visible only,Visible only
+telefono,Visible and editable,Visible only,Visible only
+email,Visible and editable,Visible only,Visible only
+direccion,Visible and editable,Visible only,Visible only
+sitio_web,Visible and editable,Visible only,Visible only
+estado,Visible and editable,Visible only,Visible only
+notas,Visible and editable,Not visible or editable,Not visible or editable
+created_at,Visible only,Not visible or editable,Not visible or editable
+updated_at,Visible only,Not visible or editable,Not visible or editable
+created_by,Visible only,Not visible or editable,Not visible or editable
+updated_by,Visible only,Not visible or editable,Not visible or editable

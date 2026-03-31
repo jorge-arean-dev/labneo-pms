@@ -1,0 +1,31 @@
+[    5472ms] [ERROR] In HTML, whitespace text nodes cannot be a child of <%s>. Make sure you don't have any extra whitespace between tags on each line of your source code.
+This will cause a hydration error.%s colgroup 
+
+  ...
+    <RedirectErrorBoundary router={{...}}>
+      <InnerLayoutRouter url="/bloqueos-..." tree={[...]} cacheNode={{lazyData:null, ...}} segmentPath={[...]}>
+        <SegmentViewNode type="page" pagePath="bloqueos-a...">
+          <SegmentTrieNode>
+          <Page>
+            <BloqueosAgendaPage initialBloqueos={[...]} medicos={[...]} role="administrador">
+              <div className="p-6 space-y-6">
+                <div>
+                <div>
+                <Card>
+                  <div data-slot="card" className="bg-card te...">
+                    <CardContent className="pt-6">
+                      <div data-slot="card-content" className="px-6 pt-6">
+                        <div className="hidden sm:...">
+                          <Table className="table-fixed">
+                            <div data-slot="table-cont..." className="relative w...">
+                              <table data-slot="table" className="w-full cap...">
+>                               <colgroup>
+                                  <col>
+>                                 {" "}
+                                  ...
+                                ...
+                        ...
+                ...
+        ...
+      ...
+ @ http://localhost:3000/_next/static/chunks/837f3_next_dist_3a6f06c8._.js:2359

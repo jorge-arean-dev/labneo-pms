@@ -1,0 +1,12 @@
+Column Name,Data Type,Constraints,Default Value,Description
+id,UUID,PRIMARY KEY,gen_random_uuid(),Primary key
+nombre,TEXT,NOT NULL,,Doctor first name
+apellido,TEXT,NOT NULL,,Doctor last name
+email,TEXT,UNIQUE NOT NULL,,Doctor email
+telefono,TEXT,,,Doctor phone number
+matricula,TEXT,UNIQUE NOT NULL,,Medical license number
+user_id,UUID,UNIQUE REFERENCES auth.users(id),,Link to authentication user (auth.users)
+created_at,TIMESTAMPTZ,NOT NULL,NOW(),Record creation timestamp
+updated_at,TIMESTAMPTZ,NOT NULL,NOW(),Record update timestamp
+created_by,UUID,REFERENCES auth.users(id),,User who created record
+updated_by,UUID,REFERENCES auth.users(id),,User who last updated record

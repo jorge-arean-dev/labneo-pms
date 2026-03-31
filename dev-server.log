@@ -1,0 +1,54 @@
+
+> @ dev C:\Users\jorge\coding\nexa-projects\pms
+> next dev --turbopack
+
+   ▲ Next.js 15.5.7 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://10.5.0.2:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Compiled middleware in 360ms
+ ✓ Ready in 2s
+AuthApiError: Invalid Refresh Token: Refresh Token Not Found
+    at handleError (C:\Users\jorge\coding\nexa-projects\pms\.next\server\edge\chunks\f7e70_@supabase_auth-js_dist_module_6f730f38._.js:867:11)
+    at async _handleRequest (C:\Users\jorge\coding\nexa-projects\pms\.next\server\edge\chunks\f7e70_@supabase_auth-js_dist_module_6f730f38._.js:917:9)
+    at async _request (C:\Users\jorge\coding\nexa-projects\pms\.next\server\edge\chunks\f7e70_@supabase_auth-js_dist_module_6f730f38._.js:897:18)
+    at async (C:\Users\jorge\coding\nexa-projects\pms\.next\server\edge\chunks\f7e70_@supabase_auth-js_dist_module_6f730f38._.js:4732:24)
+    at async (C:\Users\jorge\coding\nexa-projects\pms\.next\server\edge\chunks\f7e70_@supabase_auth-js_dist_module_6f730f38._.js:626:36) {
+  __isAuthError: true,
+  status: 400,
+  code: 'refresh_token_not_found'
+}
+AuthApiError: Invalid Refresh Token: Refresh Token Not Found
+    at handleError (C:\Users\jorge\coding\nexa-projects\pms\.next\server\edge\chunks\f7e70_@supabase_auth-js_dist_module_6f730f38._.js:867:11)
+    at async _handleRequest (C:\Users\jorge\coding\nexa-projects\pms\.next\server\edge\chunks\f7e70_@supabase_auth-js_dist_module_6f730f38._.js:917:9)
+    at async _request (C:\Users\jorge\coding\nexa-projects\pms\.next\server\edge\chunks\f7e70_@supabase_auth-js_dist_module_6f730f38._.js:897:18)
+    at async (C:\Users\jorge\coding\nexa-projects\pms\.next\server\edge\chunks\f7e70_@supabase_auth-js_dist_module_6f730f38._.js:4732:24)
+    at async (C:\Users\jorge\coding\nexa-projects\pms\.next\server\edge\chunks\f7e70_@supabase_auth-js_dist_module_6f730f38._.js:626:36) {
+  __isAuthError: true,
+  status: 400,
+  code: 'refresh_token_not_found'
+}
+ ○ Compiling /agendar ...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ ✓ Compiled /agendar in 4.8s
+ GET /agendar 200 in 5368ms
+ ✓ Compiled /favicon.ico in 279ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 665ms
+ GET /agendar?token=invalid123 200 in 1267ms
+ GET /favicon.ico?favicon.0b3bf435.ico 200 in 308ms
+ ✓ Compiled in 313ms
+ ✓ Compiled in 371ms
+ ✓ Compiled /agendar in 142ms
+ GET /agendar?token=invalid123 200 in 1321ms
+ ✓ Compiled in 348ms
+ ✓ Compiled in 526ms
+ ✓ Compiled /agendar in 145ms
+ GET /agendar?token=invalid123 200 in 964ms
+ ✓ Compiled in 308ms
+ ✓ Compiled in 488ms
+ ✓ Compiled in 321ms
+ ✓ Compiled in 370ms
+ ✓ Compiled in 405ms
+ ✓ Compiled in 320ms

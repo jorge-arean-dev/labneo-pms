@@ -1,0 +1,18 @@
+Column Name,Data Type,Constraints,Default Value,Description
+id,UUID,PRIMARY KEY,gen_random_uuid(),Primary key
+paciente_id,UUID,NOT NULL REFERENCES public.pacientes(id) ON DELETE CASCADE,,Foreign key to pacientes.id
+medico_id,UUID,NOT NULL REFERENCES public.medicos(id) ON DELETE RESTRICT,,Foreign key to medicos.id
+fecha_hora,TIMESTAMPTZ,NOT NULL,,Appointment date and time
+motivo,TEXT,,,Reason for consultation
+estado_id,UUID,NOT NULL REFERENCES public.estados_consulta(id) ON DELETE RESTRICT,public.get_default_estado_programada(),Foreign key to estados_consulta.id - Appointment status
+origen,TEXT,NOT NULL CHECK (origen IN ('web' 'whatsapp')),web,Source of appointment: web (staff created) or whatsapp (patient booking via agent)
+tipo_consulta,TEXT,CHECK (tipo_consulta IN ('primera_vez' 'control' 'urgencia')),,Type of consultation (primera_vez control urgencia)
+informe,TEXT,,,Medical report written by doctor
+diagnostico,TEXT,,,Diagnosis
+tratamiento,TEXT,,,Treatment plan
+receta,TEXT,,,Prescription details
+notas,TEXT,,,Internal notes about the consultation
+created_at,TIMESTAMPTZ,NOT NULL,NOW(),Record creation timestamp
+updated_at,TIMESTAMPTZ,NOT NULL,NOW(),Record update timestamp
+created_by,UUID,REFERENCES auth.users(id),,User who created record
+updated_by,UUID,REFERENCES auth.users(id),,User who last updated record

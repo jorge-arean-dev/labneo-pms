@@ -1,0 +1,189 @@
+# =============================================================================
+# PMS - Supabase Project Configuration Template
+# =============================================================================
+#
+# This file configures Supabase project settings that can be pushed with:
+#   supabase config push --project-ref [project-ref]
+#
+# Before pushing, update the placeholders marked with [CHANGE_ME]
+#
+# Reference: https://supabase.com/docs/guides/cli/config
+# =============================================================================
+
+[project]
+id = "pms-client"  # [CHANGE_ME] Unique identifier for this client
+
+# =============================================================================
+# API Configuration (PostgREST)
+# =============================================================================
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+# =============================================================================
+# Database Configuration
+# =============================================================================
+[db]
+port = 54322
+major_version = 17
+
+[db.pooler]
+enabled = true
+port = 54329
+pool_mode = "transaction"
+default_pool_size = 20
+max_client_conn = 100
+
+# =============================================================================
+# Authentication Configuration
+# =============================================================================
+[auth]
+enabled = true
+site_url = "https://your-client-app.vercel.app"  # [CHANGE_ME]
+
+# Additional redirect URLs (wildcards allowed)
+additional_redirect_urls = [
+  "https://your-client-app.vercel.app/**",  # [CHANGE_ME]
+  "http://localhost:3000/**"
+]
+
+# JWT Configuration
+jwt_expiry = 3600  # 1 hour
+enable_refresh_token_rotation = true
+refresh_token_reuse_interval = 10
+
+# Signup Configuration
+enable_signup = true
+enable_anonymous_sign_ins = false
+
+# Email Configuration
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = true
+secure_password_change = true
+max_frequency = "60s"
+
+# Password requirements
+[auth.email.password]
+min_length = 8
+required_characters = ""
+
+# OTP Configuration
+[auth.email.otp]
+length = 6
+expiry = 3600
+
+# SMS Configuration (disabled by default)
+[auth.sms]
+enable_signup = false
+enable_confirmations = false
+
+# MFA Configuration
+[auth.mfa]
+max_enrolled_factors = 10
+
+[auth.mfa.totp]
+enroll_enabled = false
+verify_enabled = false
+
+[auth.mfa.phone]
+enroll_enabled = false
+verify_enabled = false
+
+# =============================================================================
+# Email Templates (Supabase Auth emails)
+# =============================================================================
+# Note: These are for Supabase Auth emails (invite, password reset, etc.)
+# NOT the appointment reminder emails (those are in email_templates table)
+
+[auth.email.template.invite]
+subject = "Has sido invitado a PMS"
+content_path = "./supabase/templates/invite.html"  # Optional custom template
+
+[auth.email.template.confirmation]
+subject = "Confirma tu cuenta en PMS"
+content_path = "./supabase/templates/confirmation.html"
+
+[auth.email.template.recovery]
+subject = "Restablecer tu contraseña"
+content_path = "./supabase/templates/recovery.html"
+
+[auth.email.template.email_change]
+subject = "Confirma tu cambio de email"
+content_path = "./supabase/templates/email_change.html"
+
+# =============================================================================
+# Storage Configuration
+# =============================================================================
+[storage]
+enabled = true
+file_size_limit = "50MiB"
+
+# Note: Bucket-specific settings are configured in setup-project.sql
+# - avatars: 5MB, images only
+# - logo: 2MB, images only
+
+# =============================================================================
+# Realtime Configuration
+# =============================================================================
+[realtime]
+enabled = true
+ip_version = 4
+
+# Note: Table subscriptions are configured in setup-project.sql
+# - consultas table is added to supabase_realtime publication
+
+# =============================================================================
+# Edge Functions Configuration
+# =============================================================================
+[edge_functions]
+enabled = true
+
+# =============================================================================
+# Analytics Configuration
+# =============================================================================
+[analytics]
+enabled = true
+backend = "postgres"
+
+# =============================================================================
+# Dashboard / Studio Configuration
+# =============================================================================
+[studio]
+enabled = true
+port = 54323
+api_url = "http://127.0.0.1"
+
+# =============================================================================
+# Local Development Only (ignored when pushing to remote)
+# =============================================================================
+[inbucket]
+enabled = true
+port = 54324
+smtp_port = 54325
+pop3_port = 54326
+
+# =============================================================================
+# DEPLOYMENT CHECKLIST
+# =============================================================================
+# Before running `supabase config push`, ensure you have:
+#
+# 1. [ ] Updated [project].id with client identifier
+# 2. [ ] Updated [auth].site_url with Vercel deployment URL
+# 3. [ ] Updated [auth].additional_redirect_urls
+# 4. [ ] (Optional) Created custom email templates in ./supabase/templates/
+#
+# Then run:
+#   supabase link --project-ref [new-project-ref]
+#   supabase config push
+#
+# After pushing config, also run the SQL migrations:
+#   supabase db execute --file deployment/migrations/00000000000000_initial_schema.sql
+#   supabase db execute --file deployment/migrations/00000000000001_storage_setup.sql
+#   supabase db execute --file deployment/migrations/00000000000002_seed_required_data.sql
+#   supabase db execute --file deployment/setup-project.sql
+# =============================================================================

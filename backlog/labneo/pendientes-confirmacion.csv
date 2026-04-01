@@ -1,0 +1,20 @@
+ID,Categoría,Título,Pregunta / Descripción,Estado actual,Impacto / Acción,Prioridad,Bloqueante
+1,PRD — Cliente,Flujo del tarifario,¿El odontólogo selecciona un ítem de la lista de precios o es solo de referencia?,Implementado como informativo — se muestra tarifario al seleccionar localidad pero no se selecciona ítem,"Si el cliente quiere selección de ítem, modificar formulario de solicitud",Crítico,No
+2,PRD — Cliente,Mapa de localidades por tarifario,¿Qué localidades corresponden a cada lista de precios (A zona 1 / B zona 2 / C dólares)?,3 listas creadas en DB sin localidades asignadas. Formulario acepta texto libre como fallback,El cliente debe enviar el listado de localidades con su lista asignada,Alta,Sí
+3,PRD — Cliente,Formato de los tarifarios,¿En qué formato están los tarifarios actualmente? (PDF / Excel / Google Sheets),Estructura DB creada para ítems con servicio + precio. Sin ítems cargados,Define si se muestran como tabla / PDF descargable / link externo,Alta,Sí
+4,PRD — Cliente,Campos del formulario de fotogrametría,¿Cuáles son los campos exactos del formulario actual de Google Calendar?,Campos provisionales: dirección / tipo servicio / fecha-hora / observaciones,Solicitar link del formulario actual al cliente para comparar/ajustar,Media,No
+5,PRD — Cliente,Casilla de notificaciones,¿A qué email llegan las notificaciones? ¿Casilla única o múltiples destinatarios?,Infraestructura email existe (SMTP) pero sin notificaciones automáticas,Definir destinatarios antes de implementar notificaciones,Media,No
+6,PRD — Cliente,Acceso del técnico,¿El técnico tiene login propio o administración gestiona las citas en su nombre?,Implementado con login propio (rol Tecnico). Ve solo Fotogrametría,Pendiente confirmación del cliente,Media,No
+7,Decisión técnica,Tipo de servicio: simple vs múltiple,¿Puede un odontólogo solicitar más de un servicio por solicitud?,Multi-select con checkboxes implementado,Confirmar con cliente si debe ser selección simple (dropdown) o múltiple,Media,No
+8,Decisión técnica,Estados: CHECK constraints vs tablas dedicadas,¿Los estados deben ser configurables por admin en el futuro?,CHECK constraints implementados (más simple),Si el cliente necesita estados configurables migrar a tablas dedicadas,Baja,No
+9,Decisión técnica,Registro: abierto vs controlado,¿Cualquier odontólogo puede registrarse o el admin debe crear la cuenta?,Sign-up abierto implementado,Confirmar con cliente cuál modelo prefiere,Media,No
+10,Implementación,Cargar localidades y tarifarios,Cargar datos reales de localidades e ítems de tarifarios,Sin datos cargados — requiere respuesta de ítems #2 y #3,Bloqueado por confirmación del cliente,Alta,Sí
+11,Implementación,Notificaciones email — cambio de estado,Email automático al odontólogo cuando su solicitud cambia de estado,No implementado — infraestructura lista,Nice-to-have para demo,Media,No
+12,Implementación,Módulo Tarifarios CRUD,Panel admin para gestionar listas de precios y sus ítems,Página placeholder — sin funcionalidad,Post-demo,Media,No
+13,Implementación,Notificación nueva solicitud → admin,Email automático al admin cuando llega nueva solicitud,No implementado,Post-demo,Media,No
+14,Implementación,Notificación confirmación turno fotogrametría,Email al odontólogo cuando su turno es aceptado,No implementado,Post-demo,Media,No
+15,Implementación,Templates email configurables,Admin puede editar plantillas de email desde el panel,No implementado,Post-demo,Baja,No
+16,Implementación,Exportación de datos,Admin puede exportar solicitudes y citas,No implementado,Post-demo,Baja,No
+17,Futuro,Integración VEVI,Conexión directa con sistema interno del laboratorio,Fuera de alcance fase 1,Fase 2+,Baja,No
+18,Futuro,Automatización de cotización,Generación automática de presupuesto,Fuera de alcance fase 1,Fase 2+,Baja,No
+19,Futuro,Gestión de archivos clínicos,Escáneres y diseños de prótesis,Se maneja directamente en VEVI,Fase 2+,Baja,No

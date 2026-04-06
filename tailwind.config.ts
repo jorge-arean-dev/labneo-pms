@@ -31,7 +31,6 @@ export default {
     // Role colors - for sidebar user section
     'text-amber-600', 'dark:text-amber-400',    // Administración
     'text-sky-600', 'dark:text-sky-400',        // Odontólogo
-    'text-teal-600', 'dark:text-teal-400',      // Técnico
   ],
   theme: {
     extend: {

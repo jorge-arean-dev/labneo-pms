@@ -105,7 +105,7 @@ export interface CitaFotogrametria {
   fecha_propuesta: string
   observaciones: string | null
   estado: EstadoCita
-  notas_tecnico: string | null
+  notas: string | null
   created_at: string
   updated_at: string
 }

@@ -6,18 +6,13 @@
 -- Insert new roles first
 INSERT INTO roles (nombre) VALUES
   ('Administracion'),
-  ('Odontologo'),
-  ('Tecnico')
+  ('Odontologo')
 ON CONFLICT (nombre) DO NOTHING;
 
 -- Migrate existing users from old roles to new roles
 UPDATE usuarios_pms
   SET rol_id = (SELECT id FROM roles WHERE nombre = 'Administracion')
   WHERE rol_id IN (SELECT id FROM roles WHERE nombre = 'Administrador');
-
-UPDATE usuarios_pms
-  SET rol_id = (SELECT id FROM roles WHERE nombre = 'Tecnico')
-  WHERE rol_id IN (SELECT id FROM roles WHERE nombre = 'Medico');
 
 UPDATE usuarios_pms
   SET rol_id = (SELECT id FROM roles WHERE nombre = 'Odontologo')
@@ -58,16 +53,6 @@ STABLE
 SET search_path = ''
 AS $$
   SELECT public.get_user_role() = 'Odontologo'
-$$;
-
-CREATE OR REPLACE FUNCTION public.is_tecnico()
-RETURNS boolean
-LANGUAGE sql
-SECURITY DEFINER
-STABLE
-SET search_path = ''
-AS $$
-  SELECT public.get_user_role() = 'Tecnico'
 $$;
 
 -- Drop old helper functions
@@ -209,19 +194,18 @@ CREATE TABLE IF NOT EXISTS public.citas_fotogrametria (
   observaciones text DEFAULT NULL,
   estado text NOT NULL DEFAULT 'pendiente'
     CHECK (estado IN ('pendiente', 'aceptada', 'finalizada', 'rechazada')),
-  notas_tecnico text DEFAULT NULL,
+  notas text DEFAULT NULL,
   created_at timestamptz DEFAULT now() NOT NULL,
   updated_at timestamptz DEFAULT now() NOT NULL
 );
 
 ALTER TABLE public.citas_fotogrametria ENABLE ROW LEVEL SECURITY;
 
--- Odontólogos can read their own citas; admin and tecnico can read all
+-- Odontólogos can read their own citas; admin can read all
 CREATE POLICY "read_citas_fotogrametria" ON public.citas_fotogrametria
   FOR SELECT USING (
     auth.uid() = odontologo_id
     OR public.is_admin()
-    OR public.is_tecnico()
   );
 
 -- Odontólogos can create citas
@@ -230,11 +214,10 @@ CREATE POLICY "odontologo_create_citas" ON public.citas_fotogrametria
     auth.uid() = odontologo_id
   );
 
--- Admin and Tecnico can update citas (accept, reject, finalize)
-CREATE POLICY "staff_update_citas" ON public.citas_fotogrametria
+-- Admin can update citas (accept, reject, finalize)
+CREATE POLICY "admin_update_citas" ON public.citas_fotogrametria
   FOR UPDATE USING (
     public.is_admin()
-    OR public.is_tecnico()
   );
 
 -- Admin can delete citas

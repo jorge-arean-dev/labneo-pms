@@ -4,7 +4,7 @@
 
 export type EntityType = "solicitudes" | "citas_fotogrametria" | "tarifarios"
 
-export type UserRole = "administracion" | "odontologo" | "tecnico"
+export type UserRole = "administracion" | "odontologo"
 
 export interface EntityDetailLayoutProps {
   entityType: EntityType

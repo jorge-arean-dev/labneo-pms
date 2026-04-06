@@ -2,10 +2,10 @@
  * Permission Utilities — Portal Labneo
  *
  * Centralized permission logic for role-based access control
- * Roles: administracion, odontologo, tecnico
+ * Roles: administracion, odontologo
  */
 
-export type UserRole = "administracion" | "odontologo" | "tecnico"
+export type UserRole = "administracion" | "odontologo"
 
 export interface PermissionContext {
   role: UserRole
@@ -19,7 +19,6 @@ export function normalizeRole(role: string): UserRole {
   const r = role.toLowerCase()
   if (r === "administración" || r === "administracion") return "administracion"
   if (r === "odontólogo" || r === "odontologo") return "odontologo"
-  if (r === "técnico" || r === "tecnico") return "tecnico"
   return r as UserRole
 }
 
@@ -35,11 +34,4 @@ export function isAdmin(role: string): boolean {
  */
 export function isOdontologo(role: string): boolean {
   return normalizeRole(role) === "odontologo"
-}
-
-/**
- * Check if role is tecnico
- */
-export function isTecnico(role: string): boolean {
-  return normalizeRole(role) === "tecnico"
 }

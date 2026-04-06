@@ -7,7 +7,7 @@
  * - Semantically meaningful for each role
  */
 
-export type RoleName = "administracion" | "odontologo" | "tecnico"
+export type RoleName = "administracion" | "odontologo"
 
 /**
  * Returns Tailwind CSS classes for the role color
@@ -25,10 +25,6 @@ export function getRoleColor(role: string): string {
     case "odontólogo":
       // Sky blue - Clinical, trustworthy, health professional
       return "text-sky-600 dark:text-sky-400"
-    case "tecnico":
-    case "técnico":
-      // Teal - Technical, operational, hands-on
-      return "text-teal-600 dark:text-teal-400"
     default:
       return "text-muted-foreground"
   }
@@ -47,9 +43,6 @@ export function getRoleDisplayName(role: string): string {
     case "odontologo":
     case "odontólogo":
       return "Odontólogo"
-    case "tecnico":
-    case "técnico":
-      return "Técnico"
     default:
       return role
   }

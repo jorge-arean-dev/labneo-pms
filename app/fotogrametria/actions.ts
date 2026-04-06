@@ -45,7 +45,7 @@ export async function fetchCitas() {
     return { data: null, error: error.message }
   }
 
-  // For admin/tecnico, enrich with odontólogo names
+  // For admin, enrich with odontólogo names
   if (role !== "odontologo" && data && data.length > 0) {
     const odontologoIds = [...new Set(data.map((c) => c.odontologo_id))]
     const { data: usuarios } = await supabase
@@ -143,19 +143,19 @@ export async function createCita(formData: CreateCitaData) {
 }
 
 // ============================================================================
-// Update cita estado (admin / tecnico)
+// Update cita estado (admin)
 // ============================================================================
 
 export async function updateCitaEstado(
   id: string,
   estado: EstadoCita,
-  notas_tecnico?: string
+  notas?: string
 ) {
   const supabase = await createClient()
 
   const updateData: Record<string, unknown> = { estado }
-  if (notas_tecnico !== undefined) {
-    updateData.notas_tecnico = notas_tecnico
+  if (notas !== undefined) {
+    updateData.notas = notas
   }
 
   const { error } = await supabase

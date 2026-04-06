@@ -43,11 +43,10 @@ interface CitaDetailPageProps {
 export function CitaDetailPage({ cita, userRole }: CitaDetailPageProps) {
   const router = useRouter()
   const [isUpdating, setIsUpdating] = useState(false)
-  const [notasTecnico, setNotasTecnico] = useState(cita.notas_tecnico || "")
+  const [notas, setNotas] = useState(cita.notas || "")
 
   const isAdmin = userRole === "administracion"
-  const isTecnico = userRole === "tecnico"
-  const canManage = isAdmin || isTecnico
+  const canManage = isAdmin
 
   const handleEstadoChange = async (estado: EstadoCita) => {
     setIsUpdating(true)
@@ -55,7 +54,7 @@ export function CitaDetailPage({ cita, userRole }: CitaDetailPageProps) {
     const result = await updateCitaEstado(
       cita.id,
       estado,
-      notasTecnico || undefined
+      notas || undefined
     )
 
     if (result.success) {
@@ -74,7 +73,7 @@ export function CitaDetailPage({ cita, userRole }: CitaDetailPageProps) {
     const result = await updateCitaEstado(
       cita.id,
       cita.estado as EstadoCita,
-      notasTecnico
+      notas
     )
 
     if (result.success) {
@@ -176,12 +175,12 @@ export function CitaDetailPage({ cita, userRole }: CitaDetailPageProps) {
         </CardContent>
       </Card>
 
-      {/* Staff Controls (Admin + Técnico) */}
+      {/* Staff Controls (Admin) */}
       {canManage && (
         <Card>
           <CardHeader>
             <CardTitle className="text-base">
-              Gestión {isTecnico ? "(Técnico)" : "(Administración)"}
+              Gestión (Administración)
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -240,13 +239,13 @@ export function CitaDetailPage({ cita, userRole }: CitaDetailPageProps) {
               </div>
             </div>
 
-            {/* Notas técnico */}
+            {/* Notas internas */}
             <div className="space-y-2">
-              <Label htmlFor="notas-tecnico">Notas del técnico</Label>
+              <Label htmlFor="notas-internas">Notas internas</Label>
               <Textarea
-                id="notas-tecnico"
-                value={notasTecnico}
-                onChange={(e) => setNotasTecnico(e.target.value)}
+                id="notas-internas"
+                value={notas}
+                onChange={(e) => setNotas(e.target.value)}
                 placeholder="Observaciones sobre la visita, equipamiento necesario, etc."
                 rows={3}
               />
@@ -290,14 +289,14 @@ export function CitaDetailPage({ cita, userRole }: CitaDetailPageProps) {
         </Card>
       )}
 
-      {/* Notas técnico visible to odontólogo (read-only) */}
-      {!canManage && cita.notas_tecnico && (
+      {/* Notas internas visible to odontólogo (read-only) */}
+      {!canManage && cita.notas && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Notas del técnico</CardTitle>
+            <CardTitle className="text-base">Notas internas</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm">{cita.notas_tecnico}</p>
+            <p className="text-sm">{cita.notas}</p>
           </CardContent>
         </Card>
       )}

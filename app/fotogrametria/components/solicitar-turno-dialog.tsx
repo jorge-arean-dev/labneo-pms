@@ -81,7 +81,7 @@ export function SolicitarTurnoDialog({
         <DialogHeader>
           <DialogTitle>Solicitar Turno de Fotogrametría</DialogTitle>
           <DialogDescription>
-            Solicitá una visita del técnico a tu consultorio para realizar el escaneo.
+            Solicitá una visita del equipo a tu consultorio para realizar el escaneo.
           </DialogDescription>
         </DialogHeader>
 

@@ -40,8 +40,6 @@ export default async function HomePage() {
     switch (userRole) {
       case "odontologo":
         redirect("/solicitudes");
-      case "tecnico":
-        redirect("/fotogrametria");
       case "administracion":
         redirect("/solicitudes");
       default:

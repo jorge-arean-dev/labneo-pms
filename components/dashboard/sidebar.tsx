@@ -67,7 +67,7 @@ const navItems: NavItem[] = [
     icon: Camera,
     label: "Fotogrametría",
     href: "/fotogrametria",
-    roles: ["administracion", "odontologo", "tecnico"],
+    roles: ["administracion", "odontologo"],
   },
   {
     icon: DollarSign,

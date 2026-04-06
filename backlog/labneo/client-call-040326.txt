@@ -1,0 +1,689 @@
+Meeting Title: Reunion con Nexa (Malena Acevedo)
+Date: Apr 3
+Meeting participants: Recocontenidodigital
+
+Transcript:
+ 
+Them: Buenas.  
+Me: Buenas.  
+Them: Buenas. Buenas. Soy Jen.  
+Me: ¿Cómo andan? ¿Todo bien?  
+Them: Sí, ¿a qué tal?  
+Me: Buenísimo.  
+Them: ¿Y vos? ¿Todo bien?  
+Me: Bien, Sí, todo bien, por suerte. Perdón por las aulas reunirse en feriado.  
+Them: No, no, no, no, por eso también te preguntás vos si si trabajás estos días, por eso. Sí.  
+Me: Sí, sí, sí, sí, trabajo, así que no, no, no hay problema, pero bueno. Reconozco que hoy en día no invita calor, este, está soleado, bueno, está húmedo, pero bueno.  
+Them: Está esperoso. Sí. Es el  
+Me: Está asqueroso, la verdad que está asqueroso, está asqueroso, pero bueno, está el, yo pensé que iba a llover, me quedé esperando la lluvia, pero la verdad que no  
+Them: Es que, supuestamente, dicen que va a llover todo el día, pero ¿Dónde dónde está la  
+Me: Sí, sí, sí, sí, sí, sí, totalmente.  
+Them: que yo iba al dealer con el que yo iba dos horas y después no llovió más.  
+Me: Claro, es verdad, yo, no sé si acá no llovió tanto, porque noto que está muy cambiante... ¿Ustedes de dónde son?  
+Them: En cachito.  
+Me: ¿Qué qué parte están? Ah, no sé, yo también. Bueno, bien, estamos cerca.  
+Them: Sí, sí.  
+Me: Este, yo estoy por la zona del Plaza Irlanda, cerca, por ahí. No hay mucha, no noté mucha lluvia, digamos. Tal vez no me di cuenta, porque estoy encerrado acá adentro, pero pero no anoté, o sea, por ejemplo, el jueves escuché que llovió, pero  
+Them: No, no.  
+Me: tengo un amigo de zona norte que dijo que llovió, pero bueno, ahora es como que no  
+Them: No,  
+Me: no, y acá no llovió tanto, me parece, el jueves, pero bueno, no sé.  
+Them: No, no. Ayer no llovió. No, no llovió.  
+Me: Perdón, el miércoles, dije,  
+Them: Ah,  
+Me: ¿lluvió mucho?  
+Them: el miércoles cuando estábamos en la  
+Me: Algún momento,  
+Them: Sí, yo vi un rato a la tarde, pero un ratito, Al mediodía, como que refrescó, se puso todo horrible, tipo, empezó a ver viento, llovió un rato y después ya está, salió el sol.  
+Me: Claro, era cuando decían de la de la alerta que iba, como que iba a llover mucho.  
+Them: Claro.  
+Me: Claro. Entiendo, entiendo. Bueno, chicas, bueno, de nuevo, gracias por por juntarse un poco, les quería mostrar lo que había armado  
+Them: Dale.  
+Me: porque la idea está mejor siempre en lugar de hablar sobre el aire,  
+Them: Ajá.  
+Me: está bueno hablar sobre cosas con más concretas, entonces yo lo que hice fue armé como una especie de boceto, ahora se los comparto, y y, bueno, es parecido a lo que obviamente, no se fijen en los detalles, o sea, fíjense en lo que es la funcionalidad, un poco, para ver si cubre lo que habíamos lo que habíamos discutido. A ver, voy a hacer la sesión, así les muestro. Un segundito que estoy compartiendo. Y tarda a veces A ver, a ver, acá estamos.  
+Them: Sí. Sí, sí, sí.  
+Me: Más o menos, ¿no? Perfecto, bueno. Yo acá puse dos, dos accesos. De hecho, una de las preguntas que tenía era si si, bueno, si los técnicos... Ahora me lo respondo igual, no necesario que lo debastamos ahora, pero bueno,  
+Them: Ajá.  
+Me: por ahora hice dos accesos, uno de administración, que sería lo que la neo vendría, y después el del odontólogo, que sería el del lado del cliente. ¿Sí? Esto tiene dos tipos de accesos. Uno para cada uno. Entonces, bueno, yo este es un acceso de administración, la idea es que lo tenga no sé cuántas personas, eso también es otra otra que tenía, cuántas personas estarían manejando este esto desde el lado del apneo, digamos, los que reciben  
+Them: ¿Bueno? Buenas.  
+Me: las solicitudes y  
+Them: Por ahora son dos.  
+Me: Ah, ok, perfecto. Entonces, por ahí serían dos personas las que tendrían que tener, este, acceso a administración.  
+Them: Ajá.  
+Me: Bueno, tenemos este acceso de administración, donde acá es bastante sencillo, digamos, ¿no? Tenemos el acceso de solicitudes  
+Them: Sí.  
+Me: el acceso de fotogrametría, que es la segunda parte de lo que ustedes me me pidieron,  
+Them: Sí.  
+Me: Los tarifarios, esto es algo que ahora quería consultar con ustedes, parte de la pregunta que tenía. Y después son detalles de cuenta y y, bueno, administración también. Después esto lo son detalles de bueno, el logo del consultorio, los datos. Esto es más que nada por si hay que enviar mails o algo por el estilo,  
+Them: Perfecto, sí.  
+Me: Ejemplo, no sé, el odontólogo se registra, emite una solicitud, bueno, se le envía un mail cuando se se hace la solicitud, como para confirmarle, digamos, ¿no? Ver, aguárdeme un segundito que justo tenía anotadas unas preguntas, así ya más o menos lo las voy viendo. Bueno, ese sería un poco el el el flujo. En solicitudes, la primera parte o sea, esta parte del del del menú,  
+Them: Sí.  
+Me: obviamente, sería cubriría la primer parte del este, la primer parte del flujo que hablamos el otro día.  
+Them: Sí.  
+Me: Sería toda la parte de crear solicitudes. Acá la pregunta que yo tengo es, ¿es correcto decir que es solicitud de servicio, ¿no? Porque  
+Them: Sí,  
+Me: pedir cualquier tipo de servicio, ¿correcto?  
+Them: Sí. Sí, solo que sí. Sí, sí, sí.  
+Me: Ok. Perfecto. Y después, fotogrametría, bueno, acá yo había creado algo de algo algo algo, un dato de  
+Them: Mhmm.  
+Me: así, ficticio. Quería mostrarle los campos que se que aparecían en solicitud, así que me voy a loguear como odontólogo, porque eso se ve como odontólogo. Un segundito, Porque hay un botón que debería aparecer, Voy a de acá, cerrar sesión, y me voy a como odontólogo, Estas son cuentas, digamos, esto, la idea es que después venga el odontólogo realmente y se se loguee, digamos, ¿no?  
+Them: Sí.  
+Me: Perfecto. Bueno, este es el acceso de odontólogo, es exactamente lo mismo, nada más que es mucho más sencillo, porque acá la idea es que el odontólogo nada más se o sea, emita solicitudes y ve el estado, ¿no?  
+Them: Yeah.  
+Me: Acá acá se ve el rol también. Así que, bueno, lo que les decía, solicitud es la primer parte de la aplicación, nueva solicitud, ¿sí? Acá, por default, está cargado el nombre y apellido del odontólogo, No sé si se elogian por nombre y apellido, o es un tema de nombre de su consultorio, pero bueno, está bien que sea el nombre y apellido, porque es como lo tienen registrado ustedes en su base de datos, imagino yo. Perfecto. El mail el teléfono que aparece como requerido, localidad, Bueno, y después quit, situación frente al IVA, bueno, en fin. Y acá las el tipo de servicio. Esto quería consultarles a ustedes, Vamos vamos por partes. Lo que es el odontólogo o mejor dicho, lo que es la localidad,  
+Them: Sí. Sí, sí. Ajá. Ajá. Sí. Sí.  
+Me: acá ustedes me dijeron que en base a la localidad se le iba a enviar una lista de precios distinta, ¿puede ser?  
+Them: Sí, sí. En  
+Me: Puedes comentar un poco más cómo funciona eso?  
+Them: Es eso, literalmente, tipo,  
+Me: Ah, ok.  
+Them: desde administración. Claro. O sea, el el a las chicas de administración, administración, no sé, soy Zona Norte, tengo el consultorio en tal lugar y se le manda una lista de precio. Actualmente tenemos tres listas de precios. Dos que son en pesos Y por en dólares. Y una en dólares.  
+Me: Ok. Y las listas de precios son perdón, las listas de precios son vamos a suponer, incluye, ¿es una lista de precios general que incluye todo o es una lista de precios adaptada a lo que, al servicio que está pidiendo esta persona?  
+Them: Incluye todo, tipo, tiene todo.  
+Me: Ah, ok.  
+Them: ¿Vos la tenés acá?  
+Me: Okay, perfecto. Si pueden, no sé si la tienen en un link o me la pueden mandar por mail, genial. O sea, literal, o sea, el proceso manual sería, la chica de administración ve la localidad del odontólogo, en base a eso, se fija, lista de precios a, y manda la lista de precios a, y le manda un PDF  
+Them: Exacto.  
+Me: y y listo. Ok. Y  
+Them: Si querés, acá tengo la lista de precios para que partimos así para que vean rapidito. Después te lo pasamos bien igual. Pero para que veas.  
+Me: A ver, no sé, dejo compartir. Así, pueden compartir ustedes. Sí, para, más que nada, para verla, si es que la quieren compartir, así como para verla, para chusmear un poco el Ah, ok. Bien,  
+Them: Directamente dice todos los tipos de rehabilitaciones, que pueden haber  
+Me: Bien. Ok, perfecto. O sea, y los ítems que debería elegir el médico es uno de estos ítems.  
+Them: Claro.  
+Me: ¿No? Es uno o pueden ser más de uno.  
+Them: Pueden ser más de uno.  
+Me: Ok.  
+Them: Pueden porque, además, por ejemplo, esto está contemplado por unidades, por ejemplo, deja algún amigo. No, no, arriba. Arriba arriba. Por ejemplo, si elegís una sí. Me están poniendo, no me tengo veo. Acá, de PMA. Es por pieza, o sea, podés elegir más de una pieza. Híbriga, acrílico, solado, tipo, es es una prótesis entera.  
+Me: Bien, Okay.  
+Them: No es adicional central con lateral unitario, por pieza, pero podés elegir más de una pieza.  
+Me: Ok, ok, perfecto. Y en el proceso... Perfecto, entonces, suponiendo, reconstruyendo el proceso manual, el odontólogo recibe una recibe una, mejor dicho, emite una solicitud dice, che, quiero tres ítems de tal, ocho ítems de otro... Un ejemplo, ¿no? X cantidad de ítems de este de este ítem a, x  
+Them: No.  
+Me: cantidad de ítems de este ítem b, y  
+Them: Lo que se hace lo que se hace es, cuando sea, se le pasa la lista de precio,  
+Me: Sí.  
+Them: se le da de alta a ellos en el baby, y el odontólogo ya carga, tipo, la cantidad de piezas que quiere, ya sabiendo los costos.  
+Me: Ah, o sea, esto es netamente informativo, no es que  
+Them: Exactamente. No no se le no se le vuelve a En el caso de que sea, esto es lo que es la parte como administrativa de ser al cliente, se da de de alta, digamos, en la plataforma Bevi, y ahí ya el odontólogo carga tipos, le aparece como una boca, tipo, y va seleccionando las piezas que quiere, el material que necesita,  
+Me: Pero eso ya en el en esta plataforma, en esta segunda plataforma, Debi,  
+Them: este, Exacto, o sea, no,  
+Me: Ah, ok, ok, ok.  
+Them: o sea, lo que, por eso yo el otro día, cuando todavía no sé si ves, por ahí se entendió muy mal, igual, pues.  
+Me: No, no, no, se entendió, pero bueno, esta parte lo  
+Them: Pero lo de, lo de esto, tipo, cuando recepcionan, tipo, depende el lugar donde sea, se le mandan la lista de precios, y ahí ya lo de Ontoló le dice, bueno, ok, dale, tipo, y se le da de alta en el bebé. Y ya en el baby ya carga el caso de la cantidad de dientes que necesita, la tipo de prótesis.  
+Me: Y eso ya lo maneja Baby y es otra cosa que no nos tenemos que meter.  
+Them: Exacto.  
+Me: Ok, ok, perfecto. Bueno, mirá,  
+Them: Sí.  
+Me: yo lo estaba más cumpliendo porque yo decía, bueno, hagamos lo dinámico por ahí, esa lista de precios la podemos meter acá y el tipo que elija y ya directamente como que se gestiona la la compra, digamos. Pero bueno, adaptémonos a lo que lo que exista, digamos, ¿no?, así que lo hacemos más sencillo. Entonces, si les parece, podemos, en base a la localidad, tenemos dos opciones, o sea,  
+Them: Sí.  
+Me: sigo acá con la  
+Them: Sí, sí, sí. Granos.  
+Me: la compartiendo pantalla. A ver, un segundito. Ahí estamos.  
+Them: Yeah.  
+Me: Bueno, yo lo que  
+Them: Sí.  
+Me: lo que estaba pensando es decir, bueno, se elige una localidad, la localidad y esto, bueno, se completa los datos,  
+Them: Ajá.  
+Me: no sé si quit y situación frente al lío, esto después lo vamos a poner bien, porque tendrían que ser dos campos distintos, ¿no?  
+Them: Sí, sí.  
+Me: Pero bueno, se completa esto. Y acá en el tipo de servicio, esto esto es algo que también deberíamos incluir, así de de esta manera,  
+Them: Para mí, para mí no.  
+Me: no sé si llegan a ver Ok, perfecto, es algo que recién va en baby, mi ¿no?, en base lo que me decís.  
+Them: Yo que saco lo dejaría, sacaría el full arch.  
+Me: O sea, es muy  
+Them: Pero esto así como de prótesis, quizás sí lo Claro. Como más genérico. Sí, por ahí dejaría, sí, tipo, en realidad, tipo, prótesis también está bien igual por Dejaría por ahí lo general, tipo prótesis, alquiler de escáner, tipo fotodrometría, soldadura de titanio, más que nada, tipo, porque son por ahí tipo, dentro de prótesis, después, obviamente la escuela. Porque full apps es como una técnica dentro para, o sea, es una técnica para hacer una prótesis dental.  
+Me: Es un subtipo de  
+Them: Claro.  
+Me: ponele, o un un... Ok, perfecto. Entonces, ¿ustedes cuáles dejarían prótesis?  
+Them: Estás dejarían prótesis, alquiler de escáner, fotogrametría y soldadura de El de soldadura de titanium, igual por ahora, lo dejaríamos, pero  
+Me: Ok, perfecto.  
+Them: tendríamos que preguntar.  
+Me: Perfecto, bueno, perfecto. Bien, y eso debería ser uno de los de, uno solo es la la, ¿cuántas opciones serían válidas? Sería una sola o se pueden seleccionar varios servicios?  
+Them: Podría  
+Me: O sea, puede en una solicitud meter quiroprótesis y el escáner o es algo  
+Them: Yo lo dejaría, tipo, con con con uno solo.  
+Me: Okay.  
+Them: Os  
+Me: Okay, perfecto.  
+Them: O sea, no no sé. Pienso.  
+Me: Ok, no importa, por ahora lo dejamos mal con varios y vemos.  
+Them: Sí.  
+Me: Este, perfecto. Y una pregunta más, se me acaba de ir la pregunta. Ah, ¿la elección de tipo de servicio es algo mandatorio, digamos, es es requerido, es algo opcional, digamos, ¿no? Puede dejarse esto en blanco o no, ¿o sí? La, o sea, cuando el tipo está con  
+Them: Porque así saben bien también qué es lo que le van a consultar, creo yo. ¿O no? Para mí, no. ¿Por qué?  
+Me: Okay.  
+Them: Porque, tipo, el el costo va más que nada la localidad, no por el tipo de el el tipo de prótesis o el tipo de servicio que sea O sea, yo creo que hay, o sea, que hay que priorizar tipo localidad, lista de precios antes de tipo, como matchear eso eso, más que la las, o sea, al al administrador le va a  
+Me: Entiendo.  
+Them: igual o sea, sí está.  
+Me: Perfecto.  
+Them: Porque otra vez vas a tener que hablar con él, Optimiza, hablar con el con el administrador y explicarle qué es lo que querés. No, porque vas a recibir la lista de precios. En la lista de precios está todo.  
+Me: O sea,  
+Them: Están todos los servicios. No están separados por la tesis, alquiler de escáner o fotona de meter, está todo.  
+Me: O sea, acá yo lo que lo que sugería, o sea, creo que entiendo a lo que a lo que van, porque tal vez si yo pongo dos, vamos a suponer que esto lo dejamos  
+Them: Sí.  
+Me: libre, o sin sin que sea requerido y lo dejamos en blanco,  
+Them: Sí.  
+Me: Después, el tipo va a tener  
+Them: Ajá.  
+Me: o la tipa o el odontólogo va a tener que que, de alguna manera, confirmarlo, de todas formas, en el ítem, digamos, ¿no?, en el ítem del de la lista de precios, ¿no?  
+Them: Sí, y si la Sí, y si lo hacemos, si no, como un espacio para que puedan completar la gente,  
+Me: Eso, y  
+Them: como un comentario de lo que de lo que necesita. No, porque es lo mismo. ¿Es lo mismo? Ajá. Porque así no, y no puede leer, ¿entendés?, y sabe  
+Me: Lo lo que se podría hacer  
+Them: qué cosas mandarle. Porque, por ejemplo, yo calculo que el servicio de fotogrametría no va no sé si va a estar incluida dentro de la lista de precios. Pero se puede hacer una lista de precios aparte para ese tipo de servicios. Ya sé. Pero si vos le pones como opcional, la idea de que no seleccionan nada, igualmente Noé le va a tener que preguntar. Qué tipo de servicio quiere para pasarle la lista. Ah, bueno, sí, eso sí.  
+Me: Les hago una una una consulta.  
+Them: Ahí te te digo yo. De que capaz que se pueda hacer hacer como una caja de comentarios, no especificar cuál es el servicio que tienen que elegir, sino como que el  
+Me: Un campo libre,  
+Them: No, no, no, como que sea múltiple opción, tipo, está bien.  
+Me: Ok, ok, ok.  
+Them: Digamos.  
+Me: Okay, ya la pregunta que tengo ahora, y un poco  
+Them: Sí,  
+Me: me va a dar pie a la pregunta que, a lo a lo que les quería proponer, barra, consultar, era, yo ingreso acá, no sé, o zona norte, que ustedes ahí lo mencionaron. Y acá, prótesis. El poner zona norte me va a decir, qué qué zona qué lista de precios recibo, digamos, ¿no? Eso va qué lista de precios recibe el odontólogo, y acá elija lo que elija, De todas maneras, por que por lo que entendí, parecería que es irrelevante, porque después el tipo va a tener que elegir un ítem cuando se en el bebé o no, o eso dictamina, ¿me explico a lo que voy? Porque los ítems que reciben la lista de precios por lo que tienen alguna relación con prótesis, alquiler de escáner, O sea, yo, la información que yo pueda tener acá no es que me va a limitar la lista de precios que yo reciba, ¿no?, porque la lista de precios es es genérica, a no ser que este tipo de servicio a ustedes les dé otra información que no tenga que ver con la lista de precios,  
+Them: El tema es que, si vos elegís una prótesis, sí, ahí te van a tener que dar alta de alta en el baby, porque  
+Me: Sí.  
+Them: vas a tener que cargar, tipo, qué tipo de está buscando.  
+Me: Okay.  
+Them: Si querés un alquiler de escáner,  
+Me: Sí.  
+Them: no no te van a dar de alta en el baby, porque vos necesitás un el servicio del producto, o sea, vos te van a llevar el el dental al al laboratorio.  
+Me: Ah, ok.  
+Them: O sea, no no no no tiene que ver con el armado de la prótesis. Lo mismo que fotogrametría. Fotogrametría es otro tipo de escáner para otro tipo de de pacientes.  
+Me: Quiere decir que estas dos opciones no involucran una la compra de un ítem de  
+Them: Exactamente.  
+Me: lista de precios. Ok, ok, entiendo. Ahí está. Yo lo que estaba pensando era, tratar de hacer esto lo más dinámico posible, y vamos a suponer, como le puedo explicar, para evitar, y que haga todo desde acá y que a ustedes les llegue todo lo más digerido posible  
+Them: Sí.  
+Me: al al al baby o al o al o al punto final Yo lo que estaba pensando era por ahí decir, bueno, acá ¿Cómo les explico?  
+Them: Sí.  
+Me: A ver, elijo Caba, por ejemplo, ¿no? Acá elijo  
+Them: Sí.  
+Me: prótesis, y, bueno, al enviar solicitud, en lugar de que acá le iba a enviar solicitud, ponemos que esto es el paso uno, y en el paso dos, aparece la lista de precios en base a lo que eligió acá el odontólogo. No sé si fue posible, digamos, ¿no? Entonces, ojo, lo podemos dejar simple así como está, y está todo bien, digamos, ¿no? Pero bueno, eso, ¿ahí qué qué...? ¿Esto qué haría por detrás el sistema? Leería, la localidad leería, ah, mirá, esta persona es de CABA,  
+Them: Sí. Sí, sí. Sí.  
+Me: y esta persona quiere una prótesis. Bueno, me fijo, CABA corresponde a esta lista de precios, y prótesis, no sé,  
+Them: Claro, sí, sí.  
+Me: son estas opciones, no sé, que son tal vez un equipo, es un son son sub ítems, o es una versión filtrada del PDF que ustedes me mandaron.  
+Them: Sí.  
+Me: Entonces, en base a eso le muestro y le digo, y le digo al odontólogo que elija cantidad y qué ítem quiere, digamos, ¿no? O sea, ¿qué ítem quiere y la cantidad de esos ítems? Y lo que le llegaría a la administración sería, algo mucho más limpio con la cantidad de cosas que quiere comprar, y y bueno, ya después se hace lo que quiere, después le das el alta en el baby, no sé qué. Ojo, puede ser que esto sea al pedo, ¿por qué? Porque porque tal vez eso, si el el, hay acá hay dos opciones, porque después si el médico tiene que volver a ingresar lo que ya puso acá en el baby, veo como que por ahí  
+Them: Claro.  
+Me: estás duplicándole el trabajo y por ahí no estamos haciendo una integración con el bebé. Entonces, no hay forma de que la información que le estamos pidiendo acá, ellos la vuelvan a poner en el en en automáticamente a través de algún mecanismo, la podamos insertar y lo va a tener que hacer el odontólogo de vuelta.  
+Them: Claro,  
+Me: Si es así, por ahí,  
+Them: Sí,  
+Me: es en vano esto, entonces lo dejamos como está.  
+Them: sí, para mí es la opción, tipo, dejarlo simplificado, de que le llegue a  
+Me: Perfecto.  
+Them: el el el tipo de servicio que se va a solicitar, si una prótesis un alquiler de escáner o un servicio de fotogrametría, y ya, en base a eso, ya se le, o sea, se le envía el el la lista de precios según la localidad, y en el caso de que el odontólogo, o sea, que que o sea, que avance con la solicitud, que ahí no no  
+Me: Perfecto.  
+Them: no sé cómo sería. Tipo, ya simplemente sea pasarle el usuario y la contraseña del baby y que cargue el caso. Administración ya va a estar sabiendo que va a contar con, no sé, por ejemplo, diez nuevas solicitudes de prótesis, Dos De Caner y una de fotogrametría.  
+Me: Bien, perfecto, perfecto. Bueno, está bien, perfecto, diez puntos, ya me veo claro.  
+Them: Claro.  
+Me: La versión simplificada, porque esa era la parte que no me queda clara. Bueno, sigamos acá. Es... Localidad, elegir una localidad, acaba de elegir una prótesis,  
+Them: Sí.  
+Me: acá se pone enviar solicitud, y esto podría, esta es una pregunta, podría ser dos cosas.  
+Them: Ajá.  
+Me: Una, enviarles la notificación a la administración hacia a  
+Them: Sí.  
+Me: al usuario administrador del lado del app Neo, y por otro lado, el odontólogo podría recibir el PDF respectivo con su, con la lista de precios, y nada más, ¿no?, ¿qué recibe a cambio el odontólogo? Porque después, en base a eso,  
+Them: Sí. No, en base a eso,  
+Me: tendría que recibir algo más, Ok.  
+Them: No, nada más. Tipo, en base a eso, el el odontólogo da el ok de dar el alta en en medio, o sea, yo creo que ahí, cuando el odontólogo recibe la lista de precios, tipo,  
+Me: Sí.  
+Them: como que el mensaje que le tendría que llegar tipo, en el caso de seguir avanzando,  
+Me: Sí. Sí.  
+Them: tipo,  
+Me: Okay.  
+Them: no sé, respondé el mail, por decirlo de una forma, y te damos de alta en la plataforma. Para que puedas cargar el caso.  
+Me: Ok, entonces recapitulando, se envía se abre una solicitud, se elige localidad, se elige el tipo de prótesis, se envía esto, el el médico el odontólogo recibe por un lado la lista de precios, administración recibe la notificación de que hubo una nueva solicitud de alta,  
+Them: Sí.  
+Me: o solicitud de servicio, no sé cómo llamarla, pero bueno, Este, en base a esto, se tendría que abrir, desde el lado del odontólogo, tendría que haber como una confirmación, una solicitud de confirmación de que estamos ok para avanzar, en función de la lista de precios, Cuando da el ok, ahí esto tal vez tendría que dispararle una notificación a la administración para que le cree un usuario, digamos, ¿no? En Bedi, Eso es un proceso manual, ¿no?, la administradora cree el usuario en Bedi.  
+Them: Sí. Claro, Sí, Sí, actualmente lo hacen así, Sí, le pasan directamente el alta.  
+Me: Bien,  
+Them: Sí.  
+Me: ¿Qué le pasa en usuario y contraseña?  
+Them: Sí. Yo consulté.  
+Me: Bien. Y la vuelta, cuando ya está listo,  
+Them: Sí, yo consulté si el si el odontólogo se podía hacer el alta solo, tipo,  
+Me: Sí.  
+Them: ingresando al a la página, me dijeron que no sabían cómo hacerlo.  
+Me: Sí. Bien.  
+Them: Pero  
+Me: Bien.  
+Them: no no sé bien cómo funciona el baby en ese sentido,  
+Me: Ustedes no lo usan eso, ¿no?, el bebé.  
+Them: No.  
+Me: Claro.  
+Them: No, no, no. No, tanto no ayudan.  
+Me: Ok, ok.  
+Them: Yo yo entré con el usuario de contraseña que me mandaron y...  
+Me: Es una plataforma tipo,  
+Them: Pero Sí,  
+Me: web, digamos, ¿no? Vos puedes ingresás una dirección y te logueás y entrás.  
+Them: Claro, por eso, para mí, tipo, pasando el link de la página de Bebi, podés registrarte solo y darte a alta solo con cualquier página web. Pero pero no sé.  
+Me: Bien. Perfecto. ¿Y saben lo que es Bebi? O sea, ¿es un sistema que creó la o es un sistema central que nuclea todos los laboratorios dentales del país, no sé qué es?  
+Them: Ahí te lo muestro. Creo que te lo habían mostrado la otra vez,  
+Me: Sí, sí, lo  
+Them: Bueno,  
+Me: me lo mostraron, pero quería saber más o menos qué era, si era algo de usted, lab neo, o era algo más  
+Them: de laboratorio. Programa de gestión de laboratorio dental.  
+Me: era como un CRM lo había visto, o un Y eso lo compró Labneo y lo usan como  
+Them: Claro, lo usan mucho,  
+Me: un software, digamos. Ah, ok.  
+Them: No sé, o sea,  
+Me: Okay, okay.  
+Them: usualmente, no no se usa en parate. Pará que tenemos un tal.  
+Me: Porque lo que estaba Porque lo que estaba pensando, esto para una segunda etapa, por ahí, lo que se puede hacer tal vez es hacer una integración directa a Bebi, y esto ya evitaría  
+Them: Claro, mira. Yo lo pienso también igual.  
+Me: Pero bueno, es  
+Them: Yo te muestro  
+Me: Claro,  
+Them: No vendría a ir por la rama. Muestro, mirá, como uno hoy en día tenemos un protocolo de ingreso de trabajo tipo de acceso a la nube, para enviarla a los  
+Me: A los odontólogos,  
+Them: a los Sí. Que, ¿cómo es? Tipo, una vez que  
+Me: Todavía no.  
+Them: Sí. Te estoy compartiendo, ¿ves? A ver. Listo. No, Sí. Ahí va.  
+Me: Ahora sí. A ver, dejame que quiero ver, a ver.  
+Them: Ahí se ve como el paso a paso, una vez que se ingresa a la plataforma de hoy, de cómo tiene que cargar el caso en Bevi.  
+Me: A ver, perfecto. Bien, Está. Perdón, miro para acá porque tengo otro monitor.  
+Them: Sí, sí, sí.  
+Me: Genial, eso me lo eso me lo... ¿Esto es una es un instructivo para el odontólogo o para  
+Them: Claro, sí. Para el odontólogo, una vez que se le da de alta en el baby, se le manda  
+Me: el...? Ah, ok.  
+Them: instructivo, para que puedan cargar el caso de manera correcta.  
+Me: Bien. Okay, perfecto. Bien.  
+Them: Sí.  
+Me: Sí, si me lo podés pasar, sería ideal, como para para tenerlo, tener más información de qué es lo que hacen. Te repito, poco lo que lo que decían ustedes, ¿está bien? No, la idea no no es irse por las ramas, porque tal vez arrancar algo de una con algo chico,  
+Them: Claro,  
+Me: tratando de de de lo que se pueda, Aparte, cuando uno hace todo de una, ¿viste?, y más cuando hay personas, porque no porque sea algo malo, le pasa a todos, digamos, ¿no?  
+Them: difícil también migrar todo.  
+Me: No, total, aparte, la parte más difícil  
+Them: Sí, sí.  
+Me: lo digo por experiencia propia, es son las personas, que ya tienen su laburo el día a día y están ¿viste?, cuando vos estás acostumbrada a hacer algo, tenés tu método y, ¿viste?, es lo es lo más difícil. Así que  
+Them: Este, sí.  
+Me: vayamos de a poco. Pero me parece, o sea, esto por lo que veo, se podría hacer de una manera tal vez, ojo, habría que investigar un poco esta plataforma Bevi, ver cómo, qué tipo de conexiones permite tener por atrás, y ver si se puede no sé, establecer algún vínculo directamente. Entonces, que el proceso de alta se ejecute de forma automática, eso debe existir, pero bueno, es, te repito, hagamos vayamos por partes. Voy a empezar a chusmear a ver si existe alguna ¿Cómo es el...? ¿Tenés el link o la URL? No para entrar, pero el el la URL que tenés que poner cuando ves, ponés baby, Baby dental punto com. Ok, ahí lo voy a anotar.  
+Them: Ajá. Sí, para mucho bien. Sí. Bebi dental punto com. A ver, poné el coso. No sé cuál ¿Ah? Ahí, acá te pone el cambio. ¿Ves? Y aparece así,  
+Me: Ah, perfeito. Parece algo español, por lo que estoy viendo. Sí.  
+Them: ¿Ves? Acá dice registrarme como cliente.  
+Me: Claro.  
+Them: A ver, Acá, bueno, poné el email de nosotros.  
+Me: Sí, el tema es Sí, parece ser un un software un software así que que, desarrollado para este tipo de aplicaciones,  
+Them: Ah. Déjame el otro dígito. Ay, me lo dije que no. Aguión. Ana, la tengo guardada aquí. Ahí ahí está, ahí está.  
+Me: Perfeito.  
+Them: Guardala. Y después, tendríamos que seguir nuestro propio tutorial, porque no no sabría no sabría  
+Me: No, tranquila.  
+Them: cómo va a estar.  
+Me: Si quieren, lo que  
+Them: Pero es que creo que tenemos como acceso a administrador nosotros.  
+Me: Ah, bien, esos son los clientes.  
+Them: Pero no sé. Clientes.  
+Me: Claro,  
+Them: No, es, tenéis que poner el código del cliente. Y ahí buscas el nombre del caso. Un caso que que hicimos siempre Circón. No, pero Delgado. Circón, sí. Ay, se me buía el huésped. Pero es por código, ¿no?, o No, dice nombre o código. Ahí está. De contacto, datos de operación.  
+Me: Bien,  
+Them: Ahí sabes opciones de facturación, ¿ves? Tarifa de precios, L tres, es la número tres.  
+Me: Ah, bien.  
+Them: Ah, ¿y de dónde es? De Neuquen.  
+Me: Bien. Ok, ok, perfecto. Bueno, en realidad esto no nos va a salir mucho porque ahora no vamos a hacer una conexión con esto, yo quería conocer más como qué es lo que pasaba después.  
+Them: Sí.  
+Me: Pero bueno, entiendo que es como que la parte de automatización que estamos haciendo ahora sería para facilitarle el trabajo al administrador del lab neo, que va a seguir haciendo esto manualmente. Por ahora,  
+Them: Sí.  
+Me: si logramos avanzar y logramos que esto funcione, por ahí un segundo paso podría ser bueno, hacemos o nos integramos directamente con Baby o lo que fuere, digamos, ¿no?  
+Them: Exacto. Sí, total.  
+Me: Este, así que, bueno, genial. Bueno, vuelvo rápidamente a lo que es lo que estaba mostrando. A ver, un segundito. Yo lo que necesitaría es  
+Them: Sí.  
+Me: en base a lo que es esto que me  
+Them: Sí.  
+Me: que me dijeron de que las  
+Them: Sí.  
+Me: de precio varían, ¿cuál es el NICU?  
+Them: Sí.  
+Me: ¿Me explico cuál es la relación entre cada lista de precios? Sea, necesito necesito que pasen todas las listas de precios, no sé, vamos a suponer que se, como ustedes dijeron, l uno, l dos, l tres,  
+Them: Sí.  
+Me: qué es l uno, l dos, l tres, y pásenme todas las localidades posibles que se pueden elegir acá,  
+Them: Sí, sí, cómo se determina  
+Me: y cómo es el map. Y cómo se determina. Después,  
+Them: qué lista de precios corresponde a cada zona, básicamente.  
+Me: Exactamente. Y después lo que necesitaría acá es cómo ustedes detallan la localidad, se manejan con una lista de localidades posibles O sea, ¿es una lista conocida o le dejan, o es un campo hoy en día que completan de forma  
+Them: Es que se habla por WhatsApp.  
+Me: libre o o es algo que Ah, ok.  
+Them: O sea, es como, bueno, soy de Neuquen, Listo, te mando la lista de precios. No sé, soy de te mando  
+Me: ¿Estoy bien, ok? Ok. Ok. Bueno, si ustedes no saben bien el mapeo, o sea, tienen un criterio, o sea, l tres aplica para tal  
+Them: Sí.  
+Me: tales localidades o tales zonas geográficas?  
+Them: Sí, yo creo que sí dicen algo así.  
+Me: ¿Esa información la tienen ustedes?  
+Them: Sí, yo creo que sí. Ahora, en este momento no, pero lo podemos  
+Me: Sea sea lo que sea, Ok, ok, perfecto.  
+Them: o sea, la chica de administración sí lo sabe.  
+Me: Lo pueden conseguir. Ah, listo, listo, buenísimo, buenísimo. Genial. Si pudieran tener eso, genial.  
+Them: Sí, sí, se lo se lo puedo pedir, no no lo tenemos ahora.  
+Me: No, no, está perfecto, está perfecto, más que nada lo lo pongo lo lo lo digo así, medio  
+Them: Ahí está, la información está, tipo, tiene un criterio.  
+Me: Perfecto, perfecto, buenísimo. No, no, no, se veía que sí, ya cuando dijeron l uno, l dos, l tres, ahí me me da la pauta de que están usando como nombres para identificarlas y demás.  
+Them: Sí, sí.  
+Me: Imagino después que esas listas van a cambiar con el tiempo, con lo cual yo lo que estaba pensando, y ya con esto  
+Them: Sí. Más o menos.  
+Me: cierro, si acá quedó claro el flujo.  
+Them: Sí.  
+Me: Continúen.  
+Them: Un tiempo que las actualizábamos nosotras, y después les pasamos directamente el editable porque Igual, se se suelen cambiar bastante tiempo, no es algo que se cambie con constantemente, por suerte. Por diciembre o noviembre, la mano en WhatsApp la volvieron a cambiar. Pues no. Algo así.  
+Me: Mire, Y ustedes crean, es un CanvaView el que usan, ¿no?  
+Them: Tengo un Excel, hay un Excel en realidad.  
+Me: Bien. Ah, excelente. Porque lo que yo estaba pensando, chicas, es,  
+Them: Donde que yo estaba  
+Me: que eso lo hagan ustedes a a través de esta aplicación,  
+Them: Ok.  
+Me: ¿me explico? Porque, o, bueno, si lo hacen y manejar, ¿ustedes qué editan?  
+Them: Eita  
+Me: Actualmente?  
+Them: Nosotros nos encargamos más de la parte visual, digamos, nos pasan la lista de precios  
+Me: Ah, ok.  
+Them: acá, a ver.  
+Me: Bueno,  
+Them: De precios Presto. No. No. Bueno, la tengo, la tenía en un Excel, la la estoy buscando.  
+Me: No hay problema, lo buscan cuando cuando cuando tengan tiempo, no hay problema, no hay apuren eso.  
+Them: Pero sí, la teníamos en un Excel y en base al armamos, tipo, todo el el los los  
+Me: Perfecto. Porque lo que yo...  
+Them: como para pasarlo más visualmente al odontólogo.  
+Me: Perfecto. Porque esto se puede hacer más fácil, Y miren, ¿vieron que acá estamos logueados como odontólogos? ¿Ven acá que dice odontólogo?  
+Them: Sí.  
+Me: Bueno. Cuando se lo vean como administrador, que sería al lado de del lado de Gramneo, acá aparecen más opciones, y una opción acá era tarifario, sé si la llegaron a ver.  
+Them: Sí.  
+Me: Bueno, acá en tarifario lo que yo estaba pensando es decir, bueno, ustedes acá pueden justamente, escribir la información de cada ítem, pueden agregar un ítem y poner el precio en dólares o en pesos, y poner en qué en qué moneda incluso está la la la lista. Entonces, con esa información que se carga ahí, directamente cuando acá el el el odontólogo realiza una solicitud, se envía y ya la información sale de acá, o sea, y acá al acá va a haber, más automáticamente en base a la localidad, ya se va a elegir qué tipo de, y el PDF ya sale formateado con el formato del apneo, eso lo podemos manejar. Si quieren, me pueden pasar el formato actual que usan. O hacemos algún diseño medio bonito con el logo del abneo y demás, y lo único que ustedes hacen es actualizar en forma manual, cuando haya que actualizarlo, los precios cada item. No, imagino que los systems no varían, lo que varían son los precios, ¿correcto?  
+Them: Ok. Ok. Anything Sí.  
+Me: Bien.  
+Them: Sí, sí, por ahí tanto, sabría un ítem, pero no, no, no. Pero muy tanto.  
+Me: ¿Y los ítems son todos iguales? Y se y si lo que va a decir, ¿es es posible que l uno tenga más ítems que l dos?  
+Them: No, son los mismos. Las tres listas tienen los mismos  
+Me: O siempre son todos los mismos ítems?  
+Them: misma cantidad de ítems,  
+Me: Okay, perfeito.  
+Them: que, lo lo único que varía es el costo, y en, por ejemplo,  
+Me: Perfecto.  
+Them: sé que hay la lista de dólares, tipo, que que creo que esa se para servicios de cuando hacen en otros países, tipo, no tienen algunos servicios, tipo, no ofrecen algunos servicios.  
+Me: Bien,  
+Them: Pero yo creo que, o sea, en eso queda como un  
+Me: Bueno,  
+Them: un tipo sin costo, digamos.  
+Me: Okay. Ok, ok, perfecto. Bueno, espero las listas y, en base a eso, armo algo, ¿les parecería bien que el tarifario aparezca acá todo y ustedes lo diguen todo desde acá? Ok. Perfecto, genial, entonces. Bueno, creo que ahí estaríamos más más o menos bien, que necesitaría sería ese tipo de servicio, ese tipo, esa lista de precios, Después, en fotogrametría, acá me surge una duda más, esto es lo mismo... Uy, esto es una función de ayuda que no tiene mucho sentido. Fotogrametría sería como lo que hablamos la segunda parte, pero yo lo puse separado porque pensé que era un flujo aparte, pero en base es una pregunta que tengo. Cuando vos creas una solicitud, o mejor dicho, cuando el odontólogo pide crear una solicitud,  
+Them: Así. Sí, Sí. Sí, sí. Ajá. Sí.  
+Me: veo que una opción es fotogrametría.  
+Them: Sí, esa realidad es de habíamos dicho que era papi, que se va a encargar de otro Sí. Sí, está bien.  
+Me: Acá acá tenemos dos  
+Them: Sí, es Andalía, y tiene que ser aparte. Esa no la pongamos ahí.  
+Me: Ok.  
+Them: Como está en la Pero  
+Me: La segunda opción,  
+Them: en la categoría de ahí del Sí.  
+Me: el tema, desde el punto de vista del odontólogo, ¿también tiene que estar separado?  
+Them: Sí, sí, sí, sí. Sí, porque es un servicio completamente diferente.  
+Me: Okay.  
+Them: E independiente a lo de una  
+Me: Ok, entonces, fotogrametría tendría que estar  
+Them: de scanner también. Sí, puede ser como una, englobar las dos. Tipo, alquilar, dentro de alquiler de escáners, poner, tipo, si necesitas un escáner intraoral o fotogrametría. Sí, puede ser.  
+Me: Porque, por lo, Está bien. O sea,  
+Them: Para que Que uno es para pacientes desdentados y otro para con dientes. Pero no venden, digo, el servicio de la misma manera. No. Entonces, no es lo mismo, no podríamos, no no sé si quedaría bien No sé. Sí, para mí es Sí. Por todas las cosas en español, intraoral, extraoral. Pero que es el de mesa o todo lo que tenga que ver con eso, y otra cosa es la tecnología del Pero yo creo que ahí lo que difiere es el costo. No sé. Bueno, no importa, después lo debativo,  
+Me: No, está bien, yo lo que  
+Them: ponle, te quedas las  
+Me: lo que estoy o sea, está está perfecto, no, no. De hecho, está bien que se, que lo discutan, porque ahora de que o sea, te requiere una discusión. A veces, y uno  
+Them: Más que nada, también para saber qué decir de o qué hacer.  
+Me: No, no, tranquila, igual es algo normal, hecho, veces, cuando uno trata de organizar o automatizar algo, el proceso tiene que pensarlo, bueno, si lo tuviera que manualmente o si tuviera que organizar los pasos,  
+Them: No, encima, o sea,  
+Me: ¿esto a qué corresponde? Y ahí surgen un montón de dudas que uno dice, ¿viste?, no sé,  
+Them: No, a ver,  
+Me: Sí, obvio, es más.  
+Them: además, una realidad, tipo, nosotras, tipo, somos publicistas, o sea, del diente es, tenemos cero idea. O sea O sea, todos estos debates que estamos teniendo los estamos teniendo porque estamos laburando acá hace  
+Me: No, no, está claro.  
+Them: casi dos años y lo tuvimos carretera de A la fuerza, básicamente. Porque si no los prendíamos, nosotros no lo no lo explicaba nadie,  
+Me: No, no, es que está está perfecto. Yo lo que quería hacer con un poco para tratar de de y no quiero perder mucho más tiempo, pero bueno, a ver si esto tiene mucho Porque por lo que entendí, o sea, esto, ya sea fotogrametría, o sea, todas las otras opciones, bueno, por lo que me dieron a entender tanto alquiler de escáner como fotogrametría,  
+Them: Sí.  
+Me: no siguen esa misma lógica de recibir una lista de precios, es otra cosa, digamos, donde se coordina una visita por ejemplo, o una entrega de un equipo. ¿Correcto?  
+Them: Esatto.  
+Me: Pero pero todas entran dentro de una o sea, son todas solicitudes de servicio.  
+Them: Sì, esatto.  
+Me: ¿Correcto? Bien. La pregunta ¿todas las solicitudes van a venir de odontólogos que no están dados de altas dados de alta en VEDI, ¿correcto?  
+Them: No. Que hay algunos que ya estén dados de alta en Bevi, Pero Bevi no está opción porque son servicios nuevos que se están dando en el laboratorio.  
+Me: Okay.  
+Them: Entonces, eso suelen ser siempre charlados.  
+Me: Ok. Entonces, la idea es  
+Them: Y coordinado.  
+Me: y la idea es que acá se descentralice toda esa todo ese todos esos procesos, centralizarlos en una plataforma como esta, por ejemplo.  
+Them: Sí.  
+Me: Ok, perfecto. Porque lo que yo estaba pensando bien, separarlo tiene sentido, bueno, quería entender un poco más. Es decir, voy a volver a compartir.  
+Them: Sí, porque son dos personas que se ocupan.  
+Me: Hacer otra cosa este, porque tal vez  
+Them: Sí, sí, junto. Respuesta. Céntesis al pasillo. Ok.  
+Me: que A ver, O sea, usted O sea, ustedes lo que dicen es que estas dos opciones son... Perdón, no estoy compartiendo todavía. Tanto fotogrametría como alquiler de escáner son dos funciones dos funciones, dos, perdón, dos tipos de servicios no entran no entrarían en esta misma categorización de prótesis full arch y soldadura de titania. ¿Sí?  
+Them: Sí.  
+Me: Esas tres sí va a haber lista de precios.  
+Them: Full arch hay que sacarla.  
+Me: Ok. Ah, cierto, es verdad.  
+Them: Sería Creo que sí es oso la hora de Daniel.  
+Me: Protegizo, o eso  
+Them: Que No, es prótesis solamente, tipo, yo...  
+Me: bien.  
+Them: Yo lo haría, tipo, por eso a lo que iba mi debate era este, tipo, que lo dejaría, tipo, en la parte de prótesis, porque de las prótesis, tipo, podés encontrar en la lista de precios lo que es soldadura de titanio de full arch, Y lo que es, tipo, al  
+Me: Ah, bien, bien, bien. Entonces, serían tres tipos nada más.  
+Them: Claro, tipo, y lo y por eso haría yo lo haría en dos, tipo, como alquiler de escáner, y dentro de la selección de alquiler de escáner, poder elegir si uno intraoral o uno de fotogrametría. Que ahí ya estás alquilando el servicio del equipo.  
+Me: Ah, ok, ok, ok, perfecto. Entonces, en opciones vamos a poner directamente  
+Them: Gratis.  
+Me: dos opciones de prótesis. Voy a anotarlo acá si me  
+Them: Sí.  
+Me: de tipo de servicio. Sería la primera,  
+Them: Sí.  
+Me: sería prótesis, y la segunda sería  
+Them: Sí.  
+Me: me habías dicho, alquiler, ¿no? Alquiler de equipos, en forma genérica lo podemos poner, ¿no?  
+Them: Sí, sí.  
+Me: Perfecto. El dentro de prótesis, me decías que ahí, eso es genérico, lo dejamos así, y que esto se complete algo como esto, digamos, ¿no? Ahí es el proceso que veníamos discutiendo hasta ahora, en prótesis. ¿Correcto?  
+Them: Sí.  
+Me: Y dentro de alquiler de equipos puede ir alquiler de escáner, ponemos un escáner,  
+Them: Sí, intraoral, y  
+Me: Ah, no, perdón.  
+Them: y fotogrametría.  
+Me: Perdón. ¿Cuáles serían las dos opciones? ¿Integral o escáner intraoral, ¿se llama?  
+Them: Sí.  
+Me: Ok, perfecto. Porque lo que yo estaba pensando es  
+Them: Sí.  
+Me: reorganizar esta ventana, y hacerlo algo más genérico por ahí, ¿no? Y no, y ya olvídense un poco de esta interfaz, este, tipo, Perdón, Un segundito. Olvídense de esta de esta interfaz, Imagínense que ponen nueva solicitud, y esto abre una ventana donde la primera  
+Them: Sí.  
+Me: selección que tienen que hacer es el tipo de servicio, si es prótesis, lo que ustedes me comentaron. Prótesis, la primero, y después, o alquiler de equipos. Si es alquiler de equipos, es otra es una un tipo de formulario, si es prótesis, es otro tipo de formulario.  
+Them: Ok.  
+Me: Y eso ya, el tipo de usuario va, sea, ustedes me dijeron que un tipo de de servicio es de un tipo, es de una persona puntual, y otro tipo de servicio lo va a usar otra persona, por lo que escuché, ¿puede ser?  
+Them: Sí.  
+Me: Ok, perfecto. Genial, entonces. Perfecto. Y me queda claro. Imagino que lo que es fotogrametría o mejor dicho, todo lo que es alquiler de equipos, tiene la lógica que me describieron la última vez, donde el alquiler de equipos requiere una coordinación, donde se emite un horario, ¿sí? Ok, perfecto.  
+Them: Sí.  
+Me: Fotogrametría. Y no no no no va ser así, pero pero voy al tema del formulario,  
+Them: Sí, sí.  
+Me: Esto es lo que puse para fotogrametría, que eventualmente aplicaría para  
+Them: Sí.  
+Me: alquiler de equipos en general, ¿está está bien lo que estoy diciendo? Bien.  
+Them: Ah, está,  
+Me: Acá  
+Them: No, está bien, mira, ahí sí, ya, tipo de servicio. Dirección de consultorio, tipo de servicio. Fecha de observación. Tipo  
+Me: Perfecto.  
+Them: Tipo, ahí yo pondría, si es, fotogrametría o integral. Sí. Sí.  
+Me: Claro, acá sería solicitud de alquiler de equipo, y acá ponemos el tipo de servicio.  
+Them: Sí.  
+Me: bien? Perfecto. ¿Qué opciones serían acá?  
+Them: Sí, sí, sí. Sí.  
+Me: Alquilar de escáner integral o fotogrametría, ¿serían esas dos opciones? Ok. Lo de full arch es algo que no no no entendería acá.  
+Them: Sí. No, en realidad es una técnica que es para las prótesis dentales.  
+Me: Ok.  
+Them: Eso eso en realidad tiene que ver con algo que se llama cirugía guiada, que también como que es algo, es un consecuente de dependiendo el la rehabilitación que se tenga que hacer, no  
+Me: Perfecto, perfecto, genial. Bueno, creo que ahora quedé un poco más claro, porque yo me me da una idea de cómo organizarlo mejor, más que nada para el tipo de usuarios que ustedes tienen,  
+Them: Sí.  
+Me: Por ahí podemos organizarlo más en algo centralizado y ya dividirlo en en base a eso.  
+Them: None.  
+Me: Pero bueno, genial, entonces. A ver, yo tenía algunas preguntitas más, pero creo que ya las ya las este, ya las ya las respondieron. Sería el flujo del tarifario, ya me lo consultar, ya me lo ¿Cómo...? Perdón, no es no es...  
+Them: Sí, estoy cumpliendo en el país de administración, tipo tienen como un un Excel de reporte de clientes nuevos donde van cargando todo de manera manual, la fecha, en que se contactó el nuevo cliente, el nombre del teléfono, el motivo de la consulta, tipo... Lo van haciendo todo manual. Sí se la envió la lista de precios, ¿no? Sí.  
+Me: Bueno, eso lo van a poder ver. ¿Eso qué es lo que ven ustedes? Es un registro que usan las administradores del  
+Them: Sí, es un Excel. Es un Excel que hacen las  
+Me: ¿Me puedes repetir lo que tienen?  
+Them: chicas de administración. Tienen  
+Me: Los campos que tienen?  
+Them: fecha, fecha de contacto,  
+Me: Sí.  
+Them: nombre, teléfono,  
+Me: Sí.  
+Them: motivo de consulta y tipo que se le que se le dio de parte del laboratorio,  
+Me: Bien,  
+Them: Acá, por ejemplo, ponen lista de precios, ingresa a un sistema, Envíe otro. Claro, lista de precios, lista de precios se dio de alta.  
+Me: Bien,  
+Them: Información, Después después fecha, segundo contacto. Segundo contacto.  
+Me: Okay.  
+Them: Observaciones, tipo, consultó si pudo ingresar al baby. Consultó si pudo ver lista de información, consultó si puedo se envió datos y se envió a la alta.  
+Me: Bien,  
+Them: Y después una tercer fecha de contacto y una observaciones. Es mi lista de precios. Si querés, eso es todo, te lo puedo enviar.  
+Me: Perfecto. Perfecto. Sí,  
+Them: ¿Entiendes?  
+Me: Perfecto. Sí, está estaría genial si me lo pueden enviar, más que nada para ver para mostrarles a las administradores o a los administradores o administradoras  
+Them: Sí.  
+Me: algo parecido, ¿viste?, para generar mejor menor impacto a la hora de... Pero bueno, genial, entonces. Diez puntos. Hagamos eso, entonces, pásenmelo yo voy a tratar de rearmar, y si tengo algo listo, se los puedo enviar como para que ya lo vayan probando.  
+Them: La liposia.  
+Me: Creo que está bastante claro todo, pero puede surgir. Yo creo que lo lo que más o sea, lo difícil no es armarlo, sino más bien a ustedes les cierre y que ustedes digan, no, mirá, esto es mejor así, así que  
+Them: Sí.  
+Me: eso. Si les parece, tal vez para la semana que viene podemos coordinar otra, o mitad de semana, y y, bueno, ya les voy mostrando cómo va quedando. Pero bueno, creo que es bastante claro el sistema. O sea, el flujo ahora me quedó mucho más claro.  
+Them: Sí, Sí, lo que te te, ahora te enviamos una parte, pero lo  
+Me: A ver, voy a ver.  
+Them: que no te voy a deber, tipo, ya es, tipo, linkear lista de con, por ejemplo, ubicación, porque nada, no no me van a, dudo que me  
+Me: Nagrama. No, no, aparte es feriado, tranquila. Ustedes me pasaron un Canva igual, ¿no? O, mejor dicho, me un  
+Them: De lo de la lista de precios,  
+Me: Sí,  
+Them: No, ya no, creo.  
+Me: Me lo compartieron, mejor dicho.  
+Them: Pero te lo pasamos. Pero Sí, sí, sí.  
+Me: Me lo compartieron acá. Si quieren pásenmelo, porque me sirve ver  
+Them: Sí. Dale.  
+Me: cómo es como para más o menos ver el tipo de datos que tienen,  
+Them: Sí. Sí.  
+Me: y en base a eso después lo, o sea, yo armo una algo algo ficticio y después lo reemplazamos por por lo que va realmente. Y y chequeo si tenía alguna pregunta más, campo de formulario de fotogrametría, casilla notificaciones, Bueno, acá, en lo que son notificaciones, está bien por mail, ¿no?, informarle al odontólogo cada vez que se complete un paso por mail, está bien, ¿no?  
+Them: Sí. ¿Cómo?  
+Me: No, tranquila, informarle al odontólogo,  
+Them: Perdón.  
+Me: bueno, obviamente, administración también, pero por mail, cada vez que se van completando los pasos, está  
+Them: Sí, es  
+Me: está bien, ¿correcto? Perfecto. Después, acceso al del... Ah, al técnico. Debería tener algo distinto a lo que discutimos, un acceso distinto,  
+Them: No, porque  
+Me: Como, por ejemplo, ver, no sé, algo, o es algo que  
+Them: No, porque ya el técnico se encargaría directamente en mail. Claro. Estos no, por ahora, son En la parte administrativa.  
+Me: Ok, perfecto. Bueno, genial. Entonces, solamente administración,  
+Them: Sí.  
+Me: y odontólogos.  
+Them: ¿Alisa?  
+Me: Diez puntos. Bueno, chicas, creo que estamos bien. Este, cualquier cosa les pregunto, pero bueno, perdón si les hice muchas preguntas o las hice pensar en feriado.  
+Them: Dale, sí, Lirubio. No, no No, no, tranqui, nosotros estamos siempre igual.  
+Me: No, está, igual saben un montón, O sea, piensen que para hacer del  
+Them: Sí.  
+Me: de la parte marketing, ¿no?, publicidad, bastante bien.  
+Them: Sí, sí.  
+Me: Ya se pueden poner el el laboratorio en caballito.  
+Them: No, por favor. No, no. Está está esperando el momento, Aldo. Sí, en vos a ser dientes. Sí, sí. Es lo que le falta.  
+Me: Ah, bueno.  
+Them: Sí, es un de que nos pongamos a hacer dientes, pero no vasos.  
+Me: Bueno, es un es un Bueno, es un es un buen negocio por ahí. O expandirlo en Caballito, no, no, no, no, no es, no cierra.  
+Them: No, no, no, no, no, no, no. Es es completamente asqueroso.  
+Me: Ok. Bueno, sí, sí.  
+Them: Para empezar.  
+Me: Sí, no, eso me imagino, me imagino. Pero bueno, aprendieron una, me imagino que aprendieron mucho,  
+Them: No, sí, sí, sí, bueno.  
+Me: todo este tiempo.  
+Them: Sí, estamos haciendo unas presentaciones de materiales,  
+Me: Sí.  
+Them: y es como no sé, tipo, hablar de de de de be  
+Me: Mira,  
+Them: biocompatibilidad o o dureza, o tipo cambios de de solidificación de materiales, tipo... ¿Qué qué es esto?, ¿por qué estoy haciendo esto?, pero bueno. El otro día me lo comentaba a Jessie, yo le he llegado. ¿Sabes qué?, lo sé.  
+Me: Mira,  
+Them: No sé por qué, lo sé, le dije, lo había escuchado de un lado. Pero sí,  
+Me: Y sí, la, te te expone a... Sí, sí, el es trabajar en un rubro, te  
+Them: te llamo el cerebro.  
+Me: No, bueno, pero está bien, después, qué sé yo, así así también vas formando parecen jóvenes, no sé hace cuánto que trabajan acá, pero creo que eso te va formando y a veces te despierta el interés y, oh, me interesa, y uno, sin quererlo, se va digo que van a terminar siendo laburando sol toda la vida. A mí me pasó que yo salté un RUT a otro muchas veces, pero en tecnología es distinto, porque en tecnología es muy común, tal vez. Como es tan algo tan abarcativo, es como que, bueno,  
+Them: Sí.  
+Me: Pero cuando tal vez venís de... Bueno, y marketing también,  
+Them: Sí, sí, aquí.  
+Me: Pero bueno, a veces te termina especializando, y ojo que especializarse en un área  
+Them: No, no, no, no, es que sí, la  
+Me: no está mal tampoco, ¿viste?  
+Them: trabajamos con un montón de de otros rubros también, o sea, trabajamos con con  
+Me: Ah, bien.  
+Them: con Claro, tipo,  
+Me: Ah, mirá qué bien.  
+Them: tipo, gastronomía, hotelería,  
+Me: O sea, ustedes tienen como su agencia y y trabajan para el... Ah, mirá qué bien.  
+Them: Claro. Prestamos servicio  
+Me: Perfecto, perfecto.  
+Them: Claro, ¿es vos?  
+Me: Perfecto.  
+Them: Formas freelance, igual, pero como clientes. Claro.  
+Me: Perfecto, genial. Genial, genial, genial, genial, buenísimo, entonces.  
+Them: Pero  
+Me: Este, bueno, si tienen obviamente que más que si quieren, si en algún momento quieren armar algo más,  
+Them: Sí.  
+Me: para, o ven que hay una oportunidad para otro tipo de cliente, que quieren algo parecido y, bueno,  
+Them: Sí, sí, un guion.  
+Me: este, es algo que, cuando quieran, podemos podemos charlar y, bueno, obviamente, sin compromiso, ¿no? O sea, me agendan algo y charlamos. A veces pasa incluso que se puede hacer tal cosa, no porque necesariamente lo quieren hacer, es que mandan un mensaje, no hay problema, o sea, es como que... Sé que a veces pasa, digamos, ¿no?  
+Them: Sí.  
+Me: Lo que es campañas de Google Ads y eso, ¿ustedes lo lo manejan?  
+Them: No cuento.  
+Me: Campañas publicitarias para  
+Them: Tanto. No no no lo hacemos nosotras.  
+Me: Ok, Ah, ok.  
+Them: O sea, tenemos no lo aplicamos nosotros, pero sí, o sea, la idea es, por ejemplo, en en algunos clientes empezar a aplicarlo de manera como más profesionalizada,  
+Me: Bien,  
+Them: Tipo, porque no nos dedicamos tanto por ahí a todo lo que es pauta en apps. No tanta en apps.  
+Me: Ah, meta, ¿sí?  
+Them: Sí, meta sí.  
+Me: Ah, mirá, porque Meta es bueno, yo estoy haciendo, estuve armando hace poco algunos bots de WhatsApp,  
+Them: Sí.  
+Me: y Meta, lo que el sistema Meta es re complicado, o sea, no porque sea difícil en sí, sino porque es muy quisquilloso en  
+Them: Son muchos pasos.  
+Me: Sí, sí, pero me, es sabido de que en en Meta, para lo que es publicidad, es complicado, pero cuando te tenés que te tenés que crear el portfolio comercial, tenés que crearte, es como que son un montón de cosas que tenés que tener en cuenta. A mí me pasó, por ejemplo, para la cuando querés  
+Them: Enfim,  
+Me: usar una cuenta de WhatsApp para hacer algún bot, tenés que como, no sé, empezar a ser muy cuidadoso con el tema de, no, primero, calentá la cuenta, ¿viste?, para que no para que no te baneen la cuenta. Me ha pasado que me han baneado cuentas de WhatsApp por hacer pero sin aviso alguno, o sea, no es porque empecé a spamear, ¿viste?, mandando mensajes a todos. No, no, porque  
+Them: No, no, no.  
+Me: no sé, tienen algún flag, tienen algún patrón de reconocimiento y dicen, no, estos  
+Them: Mhmm.  
+Me: son raros, bueno, pum, te lo bloquean. Pero bueno, pero bueno.  
+Them: Sí, sí. Es es medio quisquilloso, meta, en general,  
+Me: Total,  
+Them: la verdad. Pero sí, lo que es meta así, apps no. Te voy a consultar, duda, tipo, página web y eso realizás, tipo,  
+Me: Sí, sí,  
+Them: conocimiento o eso,  
+Me: digamos, sí, sí, en líneas generales, sí, lo que se podría hacer es algo similar a esto,  
+Them: Sí.  
+Me: obviamente, además, entre comillas, estético, como para imagino que es, tipo, sería más una landing page, algo con, digamos, para lo que es el un sitio institucional o algo más de presentación, digamos, ¿no? El  
+Them: ¿Son no es landing?  
+Me: Sí, sí, sí, yo creo que sí.  
+Them: Pero porque tiene tiene las categorías, tiene sus páginas,  
+Me: Bien.  
+Them: pero son poquitas, es como  
+Me: Sí, sí, sí, sí. Sí, de hecho, lo que hacemos, lo que hemos, lo que he estado haciendo, más que nada, es la parte de de aplicaciones, Entonces, que son básicamente páginas web, pero con una lógica y con una app  
+Them: Sí, sí, sí.  
+Me: detrás, digamos, ¿no? Sí, te diría que sí. Este, así que, en ese sentido,  
+Them: Sí, que sí.  
+Me: si en algún momento también lo que es la parte de diseño, también la la trabajo, así que si algún día necesitan tal vez algo más inspiracional que que tanto tener la página en sí, también los los puedo asesorar en ese sentido. O sea, si necesitan, tienen algún cliente que quieren el el hacer el renovación del branding y demás, en ese sentido también. Porque a veces es una etapa previa, digamos, ¿no?, que  
+Them: Ok.  
+Me: no es tanto la parte de  
+Them: Sí.  
+Me: este, de de de la app en sí, sino más bien la parte de diseño, me gustaría, sé, darle este esta a mi a mi página, darle este mensaje, comunicar este estilo, eso  
+Them: Sorry.  
+Me: también lo lo podemos hacer.  
+Them: Sí, sí, sí. Sí, eso, bueno, y nosotras nos encargamos un poco de todo lo que es la gestión de  
+Me: Ah, bueno, genial.  
+Them: de diseño y de branding del laboratorio.  
+Me: Diez puntos. Diez puntos.  
+Them: Pero sí.  
+Me: Buenísimo.  
+Them: Sí, sí. Buenísimo.  
+Me: Buenísimo, chicas, yo por mi parte ya estoy, este,  
+Them: Bien.  
+Me: perdón que se extendió un poco más, pero bueno.  
+Them: No, no, no nada, no hay problema.  
+Me: Genial.  
+Them: Literalmente, todavía no teníamos nada para hacer. Está todo pautado para la tarde.  
+Me: Bueno, perfecto, no me siento tan culpable, entonces.  
+Them: No, no, en lo absoluto.  
+Me: Bueno.  
+Them: Bueno.  
+Me: Cuídense, buen fin de, y estamos hablando cualquier cosa.  
+Them: Igualmente, gracias. Nos vemos, por Hablamos.  
+Me: Chau, chau, nos vemos.  
+Them: Chao. 

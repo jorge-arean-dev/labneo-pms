@@ -20,35 +20,106 @@ export interface UsuarioPms {
 }
 
 // ============================================================================
-// SOLICITUDES (dentist onboarding requests)
+// LOCALIDADES (lookup table)
 // ============================================================================
 
-export type EstadoSolicitud = "enviada" | "en_proceso" | "alta_generada"
+export interface Localidad {
+  id: string
+  codigo: string
+  nombre_display: string
+  provincia: string | null
+  activo: boolean
+  created_at: string
+  updated_at: string
+}
+
+// ============================================================================
+// ODONTOLOGOS PERFIL (odontologo-specific profile data)
+// ============================================================================
+
+export interface OdontologoPerfil {
+  id: string
+  usuario_id: string
+  localidad_id: string | null
+  telefono: string | null
+  cuit: string | null
+  situacion_iva: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface OdontologoPerfilWithLocalidad extends OdontologoPerfil {
+  localidades: Localidad | null
+}
+
+// ============================================================================
+// ODONTOLOGOS HORARIOS (weekly schedule)
+// ============================================================================
+
+export interface OdontologoHorario {
+  id: string
+  usuario_id: string
+  dia_semana: number // 0=Sunday, 1=Monday, ..., 6=Saturday
+  hora_inicio: string // HH:MM:SS
+  hora_fin: string // HH:MM:SS
+  activo: boolean
+  created_at: string
+  updated_at: string
+}
+
+// ============================================================================
+// ESTADOS SOLICITUD (dedicated status table)
+// ============================================================================
+
+export interface EstadoSolicitud {
+  id: string
+  codigo: string
+  nombre: string
+  tipo_solicitud: "protesis" | "alquiler_equipos" | "todos"
+  descripcion: string | null
+  orden: number
+  activo: boolean
+  created_at: string
+  updated_at: string
+}
+
+// ============================================================================
+// SOLICITUDES (unified service requests)
+// ============================================================================
+
+export type TipoSolicitud = "protesis" | "alquiler_equipos"
+export type SubtipoServicio = "escaner_intraoral" | "fotogrametria"
 
 export interface Solicitud {
   id: string
   odontologo_id: string
+  tipo_solicitud: TipoSolicitud
+  estado_id: string
   nombre: string
   apellido: string
-  localidad: string
-  telefono: string
-  horarios_atencion: string
-  cuit_iva: string
   email: string
-  tipo_servicio: string[] | null
-  estado: EstadoSolicitud
+  telefono: string
+  localidad_id: string | null
+  cuit: string | null
+  situacion_iva: string | null
+  subtipo_servicio: SubtipoServicio | null
+  direccion_consultorio: string | null
+  fecha_propuesta: string | null
+  observaciones: string | null
   notas_admin: string | null
   created_at: string
   updated_at: string
 }
 
-export interface SolicitudWithOdontologo extends Solicitud {
+export interface SolicitudWithRelations extends Solicitud {
   odontologo: {
     id: string
     nombre: string
     apellido: string
     email: string
   } | null
+  estados_solicitud: EstadoSolicitud | null
+  localidades: Localidad | null
 }
 
 // ============================================================================
@@ -86,49 +157,30 @@ export interface TarifarioWithItems extends Tarifario {
 
 export interface LocalidadTarifario {
   id: string
-  localidad: string
+  localidad_id: string | null
   tarifario_id: string
   created_at: string
 }
 
 // ============================================================================
-// CITAS FOTOGRAMETRIA (photogrammetry appointments)
+// HELPER TYPES & CONSTANTS
 // ============================================================================
 
-export type EstadoCita = "pendiente" | "aceptada" | "finalizada" | "rechazada"
+export const TIPOS_SOLICITUD = {
+  protesis: "Prótesis",
+  alquiler_equipos: "Alquiler de equipos",
+} as const
 
-export interface CitaFotogrametria {
-  id: string
-  odontologo_id: string
-  direccion_consultorio: string
-  tipo_servicio: string[] | null
-  fecha_propuesta: string
-  observaciones: string | null
-  estado: EstadoCita
-  notas: string | null
-  created_at: string
-  updated_at: string
-}
+export const SUBTIPOS_SERVICIO = {
+  escaner_intraoral: "Escáner Intraoral",
+  fotogrametria: "Fotogrametría",
+} as const
 
-export interface CitaFotogrametriaWithOdontologo extends CitaFotogrametria {
-  odontologo: {
-    id: string
-    nombre: string
-    apellido: string
-    email: string
-  } | null
-}
-
-// ============================================================================
-// HELPER TYPES
-// ============================================================================
-
-export const TIPOS_SERVICIO = [
-  "Prótesis",
-  "Fotogrametría",
-  "Alquiler de escáner",
-  "Soldadura de titanio",
-  "Full Arch",
+export const SITUACIONES_IVA = [
+  "Responsable Inscripto",
+  "Monotributista",
+  "Exento",
+  "Consumidor Final",
 ] as const
 
-export type TipoServicio = typeof TIPOS_SERVICIO[number]
+export type SituacionIva = typeof SITUACIONES_IVA[number]

@@ -3,14 +3,17 @@
 
 export type {
   Solicitud,
-  SolicitudWithOdontologo,
+  SolicitudWithRelations,
   EstadoSolicitud,
+  TipoSolicitud,
+  SubtipoServicio,
   Tarifario,
   TarifarioItem,
   TarifarioWithItems,
   LocalidadTarifario,
-  CitaFotogrametria,
-  CitaFotogrametriaWithOdontologo,
-  EstadoCita,
+  Localidad,
+  OdontologoPerfil,
+  OdontologoPerfilWithLocalidad,
+  OdontologoHorario,
   UsuarioPms,
 } from './entities'

@@ -25,8 +25,15 @@ import {
 } from "@/components/ui/select"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { createSolicitud, fetchTarifarioWithItems } from "../actions"
-import { TIPOS_SERVICIO } from "@/lib/types/entities"
-import type { Solicitud } from "@/lib/types/entities"
+// TODO: Phase 3 — this entire dialog will be replaced with multistep form
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Solicitud = any
+
+// Temporary stub — this entire dialog will be replaced with a multistep form in Phase 3
+const TIPOS_SERVICIO = [
+  "Prótesis",
+  "Alquiler de equipos",
+] as const
 
 interface CrearSolicitudDialogProps {
   open: boolean

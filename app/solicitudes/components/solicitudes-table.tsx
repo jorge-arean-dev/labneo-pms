@@ -25,7 +25,9 @@ import { Card, CardContent } from "@/components/ui/card"
 import { getEstadoSolicitudColor, getEstadoSolicitudLabel } from "@/lib/constants/estado-colors"
 import { formatDate } from "@/lib/utils/date-format"
 import { CrearSolicitudDialog } from "./crear-solicitud-dialog"
-import type { Solicitud } from "@/lib/types/entities"
+// TODO: Phase 3 — this file will be rewritten for the new Solicitud schema
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Solicitud = any
 
 interface SolicitudesTableProps {
   initialSolicitudes: Solicitud[]
@@ -157,7 +159,7 @@ export function SolicitudesTable({
                     <TableCell>{s.localidad}</TableCell>
                     <TableCell>
                       <div className="flex flex-wrap gap-1">
-                        {s.tipo_servicio?.map((ts) => (
+                        {s.tipo_servicio?.map((ts: string) => (
                           <Badge key={ts} variant="outline" className="text-xs">
                             {ts}
                           </Badge>
@@ -223,7 +225,7 @@ export function SolicitudesTable({
                 </div>
                 {s.tipo_servicio && s.tipo_servicio.length > 0 && (
                   <div className="flex flex-wrap gap-1">
-                    {s.tipo_servicio.map((ts) => (
+                    {s.tipo_servicio.map((ts: string) => (
                       <Badge key={ts} variant="outline" className="text-xs">
                         {ts}
                       </Badge>

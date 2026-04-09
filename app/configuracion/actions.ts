@@ -3,8 +3,12 @@
 import { createClient } from "@/lib/supabase/server"
 import { createAdminClient } from "@/lib/supabase/admin"
 import { revalidatePath } from "next/cache"
-import { UsuarioPms } from "@/lib/types/entities"
+import type { UsuarioPms, OdontologoPerfil, OdontologoHorario, Localidad } from "@/lib/types/entities"
 import { getBaseUrl } from "@/lib/utils/get-base-url"
+
+// ============================================================================
+// USUARIO PMS (shared across roles)
+// ============================================================================
 
 /**
  * Fetch usuario_pms data by user ID
@@ -79,6 +83,183 @@ export async function resetOwnPassword(email: string) {
   if (error) {
     return { success: false, error: error.message }
   }
+
+  return { success: true, error: null }
+}
+
+// ============================================================================
+// LOCALIDADES (lookup table)
+// ============================================================================
+
+/**
+ * Fetch all active localidades for dropdown
+ */
+export async function fetchLocalidades() {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from("localidades")
+    .select("id, codigo, nombre_display, provincia, activo, created_at, updated_at")
+    .eq("activo", true)
+    .order("nombre_display")
+
+  if (error) {
+    return { data: null, error: error.message }
+  }
+
+  return { data: data as Localidad[], error: null }
+}
+
+// ============================================================================
+// ODONTOLOGOS PERFIL
+// ============================================================================
+
+/**
+ * Fetch odontologo perfil with localidad join
+ */
+export async function fetchOdontologoPerfil(userId: string) {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from("odontologos_perfil")
+    .select("id, usuario_id, localidad_id, telefono, cuit, situacion_iva, created_at, updated_at, localidades(id, codigo, nombre_display, provincia, activo, created_at, updated_at)")
+    .eq("usuario_id", userId)
+    .single()
+
+  if (error && error.code !== "PGRST116") {
+    // PGRST116 = no rows found — not an error, just means profile doesn't exist yet
+    return { data: null, error: error.message }
+  }
+
+  return { data: data as (OdontologoPerfil & { localidades: Localidad | null }) | null, error: null }
+}
+
+/**
+ * Create or update odontologo perfil
+ */
+export async function upsertOdontologoPerfil(
+  userId: string,
+  formData: {
+    localidad_id: string | null
+    telefono: string | null
+    cuit: string | null
+    situacion_iva: string | null
+  }
+) {
+  const supabase = await createClient()
+
+  // Check if profile exists
+  const { data: existing } = await supabase
+    .from("odontologos_perfil")
+    .select("id")
+    .eq("usuario_id", userId)
+    .single()
+
+  if (existing) {
+    // Update
+    const { error } = await supabase
+      .from("odontologos_perfil")
+      .update({
+        localidad_id: formData.localidad_id,
+        telefono: formData.telefono,
+        cuit: formData.cuit,
+        situacion_iva: formData.situacion_iva,
+      })
+      .eq("usuario_id", userId)
+
+    if (error) {
+      return { success: false, error: error.message }
+    }
+  } else {
+    // Insert
+    const { error } = await supabase
+      .from("odontologos_perfil")
+      .insert({
+        usuario_id: userId,
+        localidad_id: formData.localidad_id,
+        telefono: formData.telefono,
+        cuit: formData.cuit,
+        situacion_iva: formData.situacion_iva,
+      })
+
+    if (error) {
+      return { success: false, error: error.message }
+    }
+  }
+
+  revalidatePath("/configuracion", "page")
+
+  return { success: true, error: null }
+}
+
+// ============================================================================
+// ODONTOLOGOS HORARIOS
+// ============================================================================
+
+/**
+ * Fetch all horarios for an odontologo
+ */
+export async function fetchOdontologoHorarios(userId: string) {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from("odontologos_horarios")
+    .select("id, usuario_id, dia_semana, hora_inicio, hora_fin, activo, created_at, updated_at")
+    .eq("usuario_id", userId)
+    .order("dia_semana")
+    .order("hora_inicio")
+
+  if (error) {
+    return { data: null, error: error.message }
+  }
+
+  return { data: data as OdontologoHorario[], error: null }
+}
+
+/**
+ * Replace all horarios for an odontologo (delete all + insert new)
+ */
+export async function updateOdontologoHorarios(
+  userId: string,
+  horarios: {
+    dia_semana: number
+    hora_inicio: string
+    hora_fin: string
+    activo: boolean
+  }[]
+) {
+  const supabase = await createClient()
+
+  // Delete all existing
+  const { error: deleteError } = await supabase
+    .from("odontologos_horarios")
+    .delete()
+    .eq("usuario_id", userId)
+
+  if (deleteError) {
+    return { success: false, error: deleteError.message }
+  }
+
+  // Insert new ones (if any)
+  if (horarios.length > 0) {
+    const schedulesToInsert = horarios.map((h) => ({
+      usuario_id: userId,
+      dia_semana: h.dia_semana,
+      hora_inicio: h.hora_inicio,
+      hora_fin: h.hora_fin,
+      activo: h.activo,
+    }))
+
+    const { error: insertError } = await supabase
+      .from("odontologos_horarios")
+      .insert(schedulesToInsert)
+
+    if (insertError) {
+      return { success: false, error: insertError.message }
+    }
+  }
+
+  revalidatePath("/configuracion", "page")
 
   return { success: true, error: null }
 }

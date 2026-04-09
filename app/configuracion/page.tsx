@@ -1,7 +1,7 @@
 import { redirect, notFound } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { ConfiguracionPage } from "./components/configuracion-page"
-import { fetchUsuarioPms } from "./actions"
+import { fetchUsuarioPms, fetchOdontologoPerfil, fetchOdontologoHorarios, fetchLocalidades } from "./actions"
 import type { UserRole } from "@/app/components/entity-detail-layout/types"
 
 export const dynamic = "force-dynamic"
@@ -46,11 +46,31 @@ export default async function Page() {
     return notFound()
   }
 
+  // Fetch odontologo-specific data
+  let perfilData = null
+  let horariosData = null
+  let localidadesData = null
+
+  if (role === "odontologo") {
+    const [perfilResult, horariosResult, localidadesResult] = await Promise.all([
+      fetchOdontologoPerfil(user.id),
+      fetchOdontologoHorarios(user.id),
+      fetchLocalidades(),
+    ])
+
+    perfilData = perfilResult.data
+    horariosData = horariosResult.data || []
+    localidadesData = localidadesResult.data || []
+  }
+
   return (
     <ConfiguracionPage
       role={role}
       userId={user.id}
       usuarioData={usuarioData}
+      perfilData={perfilData}
+      horariosData={horariosData}
+      localidadesData={localidadesData}
     />
   )
 }

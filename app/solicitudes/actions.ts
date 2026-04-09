@@ -2,7 +2,8 @@
 
 import { createClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
-import type { EstadoSolicitud } from "@/lib/types/entities"
+// TODO: Phase 3 — refactor to use estado_id FK instead of estado string
+type EstadoSolicitudLegacy = string
 
 // ============================================================================
 // Fetch solicitudes
@@ -126,7 +127,7 @@ export async function createSolicitud(formData: CreateSolicitudData) {
 
 export async function updateSolicitudEstado(
   id: string,
-  estado: EstadoSolicitud,
+  estado: EstadoSolicitudLegacy,
   notas_admin?: string
 ) {
   const supabase = await createClient()

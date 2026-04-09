@@ -31,7 +31,10 @@ import {
 import { getEstadoSolicitudColor, getEstadoSolicitudLabel } from "@/lib/constants/estado-colors"
 import { formatDateTime } from "@/lib/utils/date-format"
 import { updateSolicitudEstado, deleteSolicitud } from "../../actions"
-import type { Solicitud, EstadoSolicitud } from "@/lib/types/entities"
+// TODO: Phase 3 — this entire file will be rewritten for the new Solicitud schema
+// Using any type to avoid build errors with the legacy schema references
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Solicitud = any
 
 interface SolicitudDetailPageProps {
   solicitud: Solicitud
@@ -41,7 +44,7 @@ interface SolicitudDetailPageProps {
 export function SolicitudDetailPage({ solicitud, userRole }: SolicitudDetailPageProps) {
   const router = useRouter()
   const [isUpdating, setIsUpdating] = useState(false)
-  const [newEstado, setNewEstado] = useState<EstadoSolicitud>(solicitud.estado)
+  const [newEstado, setNewEstado] = useState<string>(solicitud.estado as unknown as string)
   const [notasAdmin, setNotasAdmin] = useState(solicitud.notas_admin || "")
 
   const isAdmin = userRole === "administracion"
@@ -148,7 +151,7 @@ export function SolicitudDetailPage({ solicitud, userRole }: SolicitudDetailPage
             <div>
               <Label className="text-muted-foreground text-xs">Servicios solicitados</Label>
               <div className="flex flex-wrap gap-2 mt-1">
-                {solicitud.tipo_servicio.map((ts) => (
+                {solicitud.tipo_servicio.map((ts: string) => (
                   <Badge key={ts} variant="outline">
                     {ts}
                   </Badge>
@@ -182,7 +185,7 @@ export function SolicitudDetailPage({ solicitud, userRole }: SolicitudDetailPage
               <Label>Estado</Label>
               <Select
                 value={newEstado}
-                onValueChange={(v) => setNewEstado(v as EstadoSolicitud)}
+                onValueChange={(v) => setNewEstado(v as string)}
               >
                 <SelectTrigger className="w-full sm:w-[250px]">
                   <SelectValue />

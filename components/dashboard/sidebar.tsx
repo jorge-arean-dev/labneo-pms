@@ -8,7 +8,6 @@ import { usePathname } from "next/navigation"
 import { useTheme } from "next-themes"
 import {
   FileText,
-  Camera,
   DollarSign,
   Settings,
   HelpCircle,
@@ -64,12 +63,6 @@ const navItems: NavItem[] = [
     roles: ["administracion", "odontologo"],
   },
   {
-    icon: Camera,
-    label: "Fotogrametría",
-    href: "/fotogrametria",
-    roles: ["administracion", "odontologo"],
-  },
-  {
     icon: DollarSign,
     label: "Tarifarios",
     href: "/tarifarios",
@@ -82,7 +75,7 @@ const toolItems: NavItem[] = [
     icon: Settings,
     label: "Configuración",
     href: "/configuracion",
-    roles: ["administracion"],
+    roles: ["administracion", "odontologo"],
   },
 ]
 

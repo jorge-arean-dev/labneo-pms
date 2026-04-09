@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { toast } from "sonner"
@@ -31,8 +31,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { createSolicitud } from "../actions"
+import { createSolicitud, fetchTarifarioForCurrentOdontologo } from "../actions"
 import type { CreateSolicitudData } from "../actions"
+import { ProtesisItemsSelector } from "./protesis-items-selector"
 import {
   TIPOS_SOLICITUD,
   SUBTIPOS_SERVICIO,
@@ -40,6 +41,8 @@ import {
   type SubtipoServicio,
   type SolicitudWithRelations,
   type OdontologoPerfilWithLocalidad,
+  type ItemWithPrecio,
+  type Moneda,
 } from "@/lib/types/entities"
 
 // ============================================================================
@@ -111,6 +114,31 @@ export function CrearSolicitudDialog({
   const [fechaPropuesta, setFechaPropuesta] = useState("")
   const [observaciones, setObservaciones] = useState("")
 
+  // Prótesis-specific state
+  const [catalogItems, setCatalogItems] = useState<ItemWithPrecio[] | null>(null)
+  const [catalogMoneda, setCatalogMoneda] = useState<Moneda | null>(null)
+  const [isLoadingCatalog, setIsLoadingCatalog] = useState(false)
+  const [quantities, setQuantities] = useState<Record<string, number>>({})
+
+  // Load catalog lazily when user picks Prótesis
+  useEffect(() => {
+    if (step === 2 && tipoSolicitud === "protesis" && catalogItems === null && !isLoadingCatalog) {
+      setIsLoadingCatalog(true)
+      fetchTarifarioForCurrentOdontologo()
+        .then((res) => {
+          if (res.error) {
+            toast.error(res.error)
+            setCatalogItems([])
+            setCatalogMoneda(null)
+          } else {
+            setCatalogItems(res.items || [])
+            setCatalogMoneda(res.tarifario?.moneda ?? null)
+          }
+        })
+        .finally(() => setIsLoadingCatalog(false))
+    }
+  }, [step, tipoSolicitud, catalogItems, isLoadingCatalog])
+
   // Resolve display values for read-only fields
   const localidadDisplay = odontologoPerfil?.localidades?.nombre_display || null
   const telefonoDisplay = odontologoPerfil?.telefono || null
@@ -124,6 +152,9 @@ export function CrearSolicitudDialog({
     setSubtipoServicio("")
     setFechaPropuesta("")
     setObservaciones("")
+    setCatalogItems(null)
+    setCatalogMoneda(null)
+    setQuantities({})
   }
 
   const handleClose = (newOpen: boolean) => {
@@ -140,9 +171,17 @@ export function CrearSolicitudDialog({
     setStep(1)
   }
 
+  const selectedItemsCount = Object.values(quantities).reduce((sum, q) => sum + q, 0)
+
   const validateStep2 = (): string | null => {
     if (!telefonoDisplay) {
       return "Falta tu teléfono. Completá tu perfil en Configuración antes de continuar."
+    }
+
+    if (tipoSolicitud === "protesis") {
+      if (selectedItemsCount === 0) {
+        return "Seleccioná al menos un ítem antes de enviar la solicitud"
+      }
     }
 
     if (tipoSolicitud === "alquiler_equipos") {
@@ -167,12 +206,20 @@ export function CrearSolicitudDialog({
 
     setIsLoading(true)
 
+    const itemsPayload =
+      tipoSolicitud === "protesis"
+        ? Object.entries(quantities)
+            .filter(([, qty]) => qty > 0)
+            .map(([item_id, cantidad]) => ({ item_id, cantidad }))
+        : undefined
+
     const payload: CreateSolicitudData = {
       tipo_solicitud: tipoSolicitud,
       subtipo_servicio:
         tipoSolicitud === "alquiler_equipos" ? (subtipoServicio as SubtipoServicio) : null,
       fecha_propuesta: tipoSolicitud === "alquiler_equipos" ? fechaPropuesta : null,
       observaciones: observaciones || null,
+      items: itemsPayload,
     }
 
     const result = await createSolicitud(payload)
@@ -260,17 +307,25 @@ export function CrearSolicitudDialog({
         {/* STEP 2 — Prótesis */}
         {step === 2 && tipoSolicitud === "protesis" && (
           <div className="space-y-4 py-2">
-            {/* Tariff placeholder */}
-            <Card className="border-dashed bg-muted/30">
-              <CardContent className="p-6 flex flex-col items-center text-center gap-2">
-                <Package className="h-8 w-8 text-muted-foreground/60" />
-                <h3 className="font-semibold text-sm">Selección de productos</h3>
-                <p className="text-xs text-muted-foreground max-w-sm">
-                  Próximamente vas a poder elegir los productos del tarifario y sus cantidades
-                  desde acá.
-                </p>
-              </CardContent>
-            </Card>
+            {/* Items selector */}
+            {isLoadingCatalog || catalogItems === null ? (
+              <Card className="border-dashed bg-muted/30">
+                <CardContent className="p-6 flex flex-col items-center text-center gap-2">
+                  <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                  <p className="text-xs text-muted-foreground">
+                    Cargando catálogo de ítems...
+                  </p>
+                </CardContent>
+              </Card>
+            ) : (
+              <ProtesisItemsSelector
+                items={catalogItems}
+                moneda={catalogMoneda}
+                quantities={quantities}
+                onQuantitiesChange={setQuantities}
+                noTarifario={catalogMoneda === null}
+              />
+            )}
 
             {/* Observaciones */}
             <div className="space-y-2">

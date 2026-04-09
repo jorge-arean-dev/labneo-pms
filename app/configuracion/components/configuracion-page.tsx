@@ -34,6 +34,7 @@ interface ConfiguracionPageProps {
   perfilData?: (OdontologoPerfil & { localidades: Localidad | null }) | null
   horariosData?: OdontologoHorario[] | null
   localidadesData?: Localidad[] | null
+  incompleteMissingLabels?: string[]
 }
 
 export function ConfiguracionPage({
@@ -43,6 +44,7 @@ export function ConfiguracionPage({
   perfilData = null,
   horariosData = null,
   localidadesData = null,
+  incompleteMissingLabels = [],
 }: ConfiguracionPageProps) {
   const router = useRouter()
   const [isEditMode, setIsEditMode] = useState(false)
@@ -188,8 +190,25 @@ export function ConfiguracionPage({
     }
   }
 
+  const showIncompleteBanner = incompleteMissingLabels.length > 0
+
   return (
     <div className="p-6 space-y-6">
+      {showIncompleteBanner && (
+        <div className="rounded-lg border border-yellow-200 bg-yellow-50/60 dark:border-yellow-900 dark:bg-yellow-950/20 p-4">
+          <p className="text-sm font-medium text-yellow-900 dark:text-yellow-200">
+            Tu perfil está incompleto
+          </p>
+          <p className="text-xs text-yellow-800 dark:text-yellow-300 mt-1">
+            Completá los siguientes campos para poder crear solicitudes:{" "}
+            <span className="font-medium">
+              {incompleteMissingLabels.join(", ")}
+            </span>
+            .
+          </p>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>

@@ -3,10 +3,16 @@ import { createClient } from "@/lib/supabase/server"
 import { ConfiguracionPage } from "./components/configuracion-page"
 import { fetchUsuarioPms, fetchOdontologoPerfil, fetchOdontologoHorarios, fetchLocalidades } from "./actions"
 import type { UserRole } from "@/app/components/entity-detail-layout/types"
+import { getMissingProfileFields, PROFILE_FIELD_LABELS } from "@/lib/odontologo-profile"
 
 export const dynamic = "force-dynamic"
 
-export default async function Page() {
+interface PageProps {
+  searchParams: Promise<{ incompleto?: string }>
+}
+
+export default async function Page({ searchParams }: PageProps) {
+  const { incompleto } = await searchParams
   const supabase = await createClient()
 
   // Get authenticated user
@@ -63,6 +69,13 @@ export default async function Page() {
     localidadesData = localidadesResult.data || []
   }
 
+  // Compute missing-field labels for the incomplete-banner (odontólogo only)
+  let incompleteMissingLabels: string[] = []
+  if (incompleto === "1" && role === "odontologo") {
+    const missing = getMissingProfileFields(perfilData)
+    incompleteMissingLabels = missing.map((f) => PROFILE_FIELD_LABELS[f])
+  }
+
   return (
     <ConfiguracionPage
       role={role}
@@ -71,6 +84,7 @@ export default async function Page() {
       perfilData={perfilData}
       horariosData={horariosData}
       localidadesData={localidadesData}
+      incompleteMissingLabels={incompleteMissingLabels}
     />
   )
 }

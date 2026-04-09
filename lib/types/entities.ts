@@ -108,6 +108,10 @@ export interface Solicitud {
   fecha_propuesta: string | null
   observaciones: string | null
   notas_admin: string | null
+  // Tarifario snapshot (only set for tipo_solicitud = 'protesis')
+  tarifario_id: string | null
+  moneda_snapshot: Moneda | null
+  total_snapshot: number | null
   created_at: string
   updated_at: string
 }
@@ -121,45 +125,71 @@ export interface SolicitudWithRelations extends Solicitud {
   } | null
   estados_solicitud: EstadoSolicitud | null
   localidades: Localidad | null
+  solicitudes_items?: SolicitudItem[]
 }
 
 // ============================================================================
-// TARIFARIOS (price lists)
+// ITEMS (global catalog)
 // ============================================================================
+
+export interface Item {
+  id: string
+  nombre: string
+  tiempo_entrega: string
+  created_at: string
+  updated_at: string
+  deleted_at: string | null
+}
+
+// ============================================================================
+// TARIFARIOS (price lists) + entries
+// ============================================================================
+
+export type Moneda = "ARS" | "USD"
 
 export interface Tarifario {
   id: string
   nombre: string
-  moneda: "ARS" | "USD"
-  is_active: boolean
+  moneda: Moneda
   created_at: string
   updated_at: string
+  deleted_at: string | null
 }
 
-export interface TarifarioItem {
+/** Row in tarifarios_items: one item priced inside one tarifario. */
+export interface TarifarioItemPrecio {
   id: string
   tarifario_id: string
-  servicio: string
+  item_id: string
   precio: number
-  descripcion: string | null
-  is_active: boolean
-  orden: number
   created_at: string
   updated_at: string
 }
 
-export interface TarifarioWithItems extends Tarifario {
-  items: TarifarioItem[]
+/** Summary used in listas table rows: tarifario + linked localidades + item-priced count. */
+export interface TarifarioSummary extends Tarifario {
+  localidades: Pick<Localidad, "id" | "nombre_display">[]
+  precios_count: number
+}
+
+/** Item joined with its precio in a specific tarifario (null = sin precio). */
+export interface ItemWithPrecio extends Item {
+  precio: number | null
 }
 
 // ============================================================================
-// LOCALIDADES → TARIFARIOS (mapping)
+// SOLICITUDES_ITEMS (line items on a prótesis solicitud)
 // ============================================================================
 
-export interface LocalidadTarifario {
+export interface SolicitudItem {
   id: string
-  localidad_id: string | null
-  tarifario_id: string
+  solicitud_id: string
+  item_id: string
+  nombre_snapshot: string
+  tiempo_entrega_snapshot: string
+  precio_snapshot: number
+  cantidad: number
+  subtotal_snapshot: number
   created_at: string
 }
 

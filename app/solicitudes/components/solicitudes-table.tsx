@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 import { Search, Plus, Filter } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -22,6 +23,12 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Card, CardContent } from "@/components/ui/card"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { getEstadoSolicitudColor } from "@/lib/constants/estado-colors"
 import { formatDate } from "@/lib/utils/date-format"
 import { CrearSolicitudDialog } from "./crear-solicitud-dialog"
@@ -31,6 +38,10 @@ import type {
   EstadoSolicitud,
   OdontologoPerfilWithLocalidad,
 } from "@/lib/types/entities"
+import {
+  PROFILE_FIELD_LABELS,
+  type RequiredProfileField,
+} from "@/lib/odontologo-profile"
 
 interface SolicitudesTableProps {
   initialSolicitudes: SolicitudWithRelations[]
@@ -38,6 +49,8 @@ interface SolicitudesTableProps {
   estados: EstadoSolicitud[]
   userProfile: { id: string; nombre: string; apellido: string; email: string } | null
   odontologoPerfil: OdontologoPerfilWithLocalidad | null
+  isProfileComplete?: boolean
+  missingProfileFields?: RequiredProfileField[]
 }
 
 export function SolicitudesTable({
@@ -46,6 +59,8 @@ export function SolicitudesTable({
   estados,
   userProfile,
   odontologoPerfil,
+  isProfileComplete = true,
+  missingProfileFields = [],
 }: SolicitudesTableProps) {
   const router = useRouter()
   const [solicitudes, setSolicitudes] = useState(initialSolicitudes)
@@ -55,6 +70,8 @@ export function SolicitudesTable({
   const [dialogOpen, setDialogOpen] = useState(false)
 
   const isOdontologo = userRole === "odontologo"
+  const canCreate = isProfileComplete
+  const missingLabels = missingProfileFields.map((f) => PROFILE_FIELD_LABELS[f])
 
   // Client-side filtering
   const filtered = solicitudes.filter((s) => {
@@ -92,12 +109,55 @@ export function SolicitudesTable({
           </p>
         </div>
         {isOdontologo && (
-          <Button onClick={() => setDialogOpen(true)}>
-            <Plus className="mr-2 h-4 w-4" />
-            Nueva Solicitud
-          </Button>
+          canCreate ? (
+            <Button onClick={() => setDialogOpen(true)}>
+              <Plus className="mr-2 h-4 w-4" />
+              Nueva Solicitud
+            </Button>
+          ) : (
+            <TooltipProvider delayDuration={200}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span tabIndex={0}>
+                    <Button disabled>
+                      <Plus className="mr-2 h-4 w-4" />
+                      Nueva Solicitud
+                    </Button>
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p className="text-xs">
+                    Completá tu perfil antes de crear una solicitud.
+                    {missingLabels.length > 0 && (
+                      <> Falta: {missingLabels.join(", ")}.</>
+                    )}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )
         )}
       </div>
+
+      {/* Profile-incomplete banner for odontólogos */}
+      {isOdontologo && !canCreate && (
+        <Card className="border-yellow-200 bg-yellow-50/60 dark:border-yellow-900 dark:bg-yellow-950/20">
+          <CardContent className="p-4 flex items-start gap-3">
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-yellow-900 dark:text-yellow-200">
+                Tu perfil está incompleto
+              </p>
+              <p className="text-xs text-yellow-800 dark:text-yellow-300 mt-1">
+                Para crear una solicitud necesitás completar:{" "}
+                {missingLabels.length > 0 ? missingLabels.join(", ") : "tu perfil"}.
+              </p>
+            </div>
+            <Button asChild variant="outline" size="sm">
+              <Link href="/configuracion?incompleto=1">Ir a Configuración</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Filters */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">

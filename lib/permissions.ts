@@ -35,3 +35,12 @@ export function isAdmin(role: string): boolean {
 export function isOdontologo(role: string): boolean {
   return normalizeRole(role) === "odontologo"
 }
+
+// ============================================================================
+// Tarifarios — admin-only module
+// ============================================================================
+
+/** Whether the user can access the /tarifarios admin surface (items + listas). */
+export function canAccessTarifarios(role: string): boolean {
+  return isAdmin(role)
+}

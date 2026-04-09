@@ -10,6 +10,9 @@ import type {
   SubtipoServicio,
   OdontologoPerfilWithLocalidad,
   OdontologoHorario,
+  Tarifario,
+  ItemWithPrecio,
+  Item,
 } from "@/lib/types/entities"
 
 // ============================================================================
@@ -72,7 +75,8 @@ export async function fetchSolicitudById(id: string) {
     .select(`
       *,
       estados_solicitud(id, codigo, nombre, tipo_solicitud, orden, activo, descripcion, created_at, updated_at),
-      localidades(id, codigo, nombre_display, provincia, activo, created_at, updated_at)
+      localidades(id, codigo, nombre_display, provincia, activo, created_at, updated_at),
+      solicitudes_items(id, solicitud_id, item_id, nombre_snapshot, tiempo_entrega_snapshot, precio_snapshot, cantidad, subtotal_snapshot, created_at)
     `)
     .eq("id", id)
     .single()
@@ -175,6 +179,99 @@ export async function fetchOdontologoProfileForForm() {
 }
 
 // ============================================================================
+// Fetch tarifario + items for the current odontólogo
+// ============================================================================
+
+/**
+ * Resolves the tarifario that applies to the current odontólogo based on their
+ * localidad, and returns all catalog items LEFT-joined to their prices in that
+ * tarifario. Items without a price in the tarifario come back with precio=null.
+ *
+ * If the odontólogo has no localidad set OR the localidad has no tarifario
+ * linked, returns every catalog item with precio=null (allowing submission
+ * per product decision).
+ */
+export async function fetchTarifarioForCurrentOdontologo() {
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    return { tarifario: null, items: null, error: "No autenticado" }
+  }
+
+  // 1. Read odontólogo perfil to get localidad_id
+  const { data: perfilData } = await supabase
+    .from("odontologos_perfil")
+    .select("localidad_id")
+    .eq("usuario_id", user.id)
+    .single()
+
+  const localidadId = perfilData?.localidad_id as string | null | undefined
+
+  // 2. Resolve the tarifario via localidades.tarifario_id (nullable)
+  let tarifario: Tarifario | null = null
+  if (localidadId) {
+    const { data: localidadData } = await supabase
+      .from("localidades")
+      .select("tarifario_id")
+      .eq("id", localidadId)
+      .single()
+
+    const tarifarioId = (localidadData as { tarifario_id: string | null } | null)
+      ?.tarifario_id
+
+    if (tarifarioId) {
+      const { data: tarifarioData } = await supabase
+        .from("tarifarios")
+        .select("id, nombre, moneda, created_at, updated_at, deleted_at")
+        .eq("id", tarifarioId)
+        .is("deleted_at", null)
+        .single()
+      tarifario = (tarifarioData as Tarifario | null) ?? null
+    }
+  }
+
+  // 3. Fetch catalog items
+  const { data: items, error: itemsError } = await supabase
+    .from("items")
+    .select("id, nombre, tiempo_entrega, created_at, updated_at, deleted_at")
+    .is("deleted_at", null)
+    .order("nombre", { ascending: true })
+
+  if (itemsError) {
+    return { tarifario: null, items: null, error: itemsError.message }
+  }
+
+  // 4. If we have a tarifario, fetch its prices and attach them
+  let priceMap = new Map<string, number>()
+  if (tarifario) {
+    const { data: precios, error: preciosError } = await supabase
+      .from("tarifarios_items")
+      .select("item_id, precio")
+      .eq("tarifario_id", tarifario.id)
+    if (preciosError) {
+      return { tarifario: null, items: null, error: preciosError.message }
+    }
+    priceMap = new Map(
+      (precios || []).map((p) => {
+        const row = p as { item_id: string; precio: number }
+        return [row.item_id, Number(row.precio)]
+      })
+    )
+  }
+
+  const itemsWithPrecio: ItemWithPrecio[] = ((items || []) as Item[]).map((it) => ({
+    ...it,
+    precio: priceMap.get(it.id) ?? null,
+  }))
+
+  return { tarifario, items: itemsWithPrecio, error: null }
+}
+
+// ============================================================================
 // Create solicitud
 // ============================================================================
 
@@ -184,6 +281,11 @@ export async function fetchOdontologoProfileForForm() {
  * direccion_consultorio) are pulled server-side from the odontologo profile
  * to ensure data consistency and prevent client-side tampering.
  */
+export interface CreateSolicitudItemInput {
+  item_id: string
+  cantidad: number
+}
+
 export interface CreateSolicitudData {
   tipo_solicitud: TipoSolicitud
   // Alquiler-specific (editable)
@@ -191,6 +293,8 @@ export interface CreateSolicitudData {
   fecha_propuesta: string | null
   // Shared optional (editable)
   observaciones: string | null
+  // Prótesis-specific: selected items with quantities (ignored for alquiler)
+  items?: CreateSolicitudItemInput[]
 }
 
 export async function createSolicitud(formData: CreateSolicitudData) {
@@ -229,11 +333,19 @@ export async function createSolicitud(formData: CreateSolicitudData) {
     }
   }
 
-  // Validate required profile fields
-  if (!perfilData.telefono) {
+  // Validate ALL required profile fields (server-side guard — matches
+  // lib/odontologo-profile.ts). Any missing field blocks submission.
+  const missing: string[] = []
+  if (!perfilData.telefono) missing.push("Teléfono")
+  if (!perfilData.localidad_id) missing.push("Localidad")
+  if (!perfilData.cuit) missing.push("CUIT")
+  if (!perfilData.situacion_iva) missing.push("Situación frente al IVA")
+  if (!perfilData.direccion_consultorio) missing.push("Dirección del consultorio")
+
+  if (missing.length > 0) {
     return {
       success: false,
-      error: "Falta el teléfono en tu perfil. Completalo en Configuración.",
+      error: `Completá tu perfil en Configuración antes de continuar. Falta: ${missing.join(", ")}.`,
       data: null,
     }
   }
@@ -249,6 +361,119 @@ export async function createSolicitud(formData: CreateSolicitudData) {
     return { success: false, error: "Error al obtener estado inicial", data: null }
   }
 
+  // ==========================================================================
+  // Prótesis-only: resolve tarifario + validate/snapshot line items
+  // ==========================================================================
+  let tarifarioIdSnapshot: string | null = null
+  let monedaSnapshot: "ARS" | "USD" | null = null
+  let totalSnapshot: number | null = null
+  let linesToInsert: {
+    item_id: string
+    nombre_snapshot: string
+    tiempo_entrega_snapshot: string
+    precio_snapshot: number
+    cantidad: number
+    subtotal_snapshot: number
+  }[] = []
+
+  if (formData.tipo_solicitud === "protesis") {
+    const selected = (formData.items || []).filter((x) => x.cantidad > 0)
+    if (selected.length === 0) {
+      return {
+        success: false,
+        error: "Seleccioná al menos un ítem antes de enviar la solicitud",
+        data: null,
+      }
+    }
+
+    // Resolve tarifario via localidad (source of truth server-side)
+    if (perfilData.localidad_id) {
+      const { data: localidadRow } = await supabase
+        .from("localidades")
+        .select("tarifario_id")
+        .eq("id", perfilData.localidad_id)
+        .single()
+      tarifarioIdSnapshot =
+        (localidadRow as { tarifario_id: string | null } | null)?.tarifario_id ?? null
+    }
+
+    if (tarifarioIdSnapshot) {
+      const { data: tarifarioRow } = await supabase
+        .from("tarifarios")
+        .select("moneda")
+        .eq("id", tarifarioIdSnapshot)
+        .is("deleted_at", null)
+        .single()
+      monedaSnapshot =
+        (tarifarioRow as { moneda: "ARS" | "USD" } | null)?.moneda ?? null
+    }
+
+    // Fetch the selected items from the catalog (for snapshot fields)
+    const itemIds = selected.map((x) => x.item_id)
+    const { data: itemRows, error: itemsError } = await supabase
+      .from("items")
+      .select("id, nombre, tiempo_entrega")
+      .in("id", itemIds)
+      .is("deleted_at", null)
+
+    if (itemsError) {
+      return { success: false, error: itemsError.message, data: null }
+    }
+    const itemMap = new Map(
+      (itemRows || []).map((r) => {
+        const row = r as { id: string; nombre: string; tiempo_entrega: string }
+        return [row.id, row]
+      })
+    )
+
+    // Fetch prices for these items in the resolved tarifario (may be empty)
+    let precioMap = new Map<string, number>()
+    if (tarifarioIdSnapshot) {
+      const { data: preciosRows } = await supabase
+        .from("tarifarios_items")
+        .select("item_id, precio")
+        .eq("tarifario_id", tarifarioIdSnapshot)
+        .in("item_id", itemIds)
+      precioMap = new Map(
+        (preciosRows || []).map((p) => {
+          const row = p as { item_id: string; precio: number }
+          return [row.item_id, Number(row.precio)]
+        })
+      )
+    }
+
+    // Build line snapshots; items without a price use precio=0 ("sin precio")
+    linesToInsert = selected
+      .map((line) => {
+        const itemData = itemMap.get(line.item_id)
+        if (!itemData) return null
+        const precio = precioMap.get(line.item_id) ?? 0
+        const subtotal = precio * line.cantidad
+        return {
+          item_id: line.item_id,
+          nombre_snapshot: itemData.nombre,
+          tiempo_entrega_snapshot: itemData.tiempo_entrega,
+          precio_snapshot: precio,
+          cantidad: line.cantidad,
+          subtotal_snapshot: subtotal,
+        }
+      })
+      .filter((x): x is NonNullable<typeof x> => x !== null)
+
+    if (linesToInsert.length === 0) {
+      return {
+        success: false,
+        error: "No se pudieron resolver los ítems seleccionados",
+        data: null,
+      }
+    }
+
+    totalSnapshot = linesToInsert.reduce((acc, l) => acc + l.subtotal_snapshot, 0)
+  }
+
+  // ==========================================================================
+  // Insert the solicitud
+  // ==========================================================================
   const { data, error } = await supabase
     .from("solicitudes")
     .insert({
@@ -268,6 +493,10 @@ export async function createSolicitud(formData: CreateSolicitudData) {
       subtipo_servicio: formData.subtipo_servicio,
       fecha_propuesta: formData.fecha_propuesta,
       observaciones: formData.observaciones,
+      // Tarifario snapshot (prótesis only — null otherwise)
+      tarifario_id: tarifarioIdSnapshot,
+      moneda_snapshot: monedaSnapshot,
+      total_snapshot: totalSnapshot,
     })
     .select(`
       *,
@@ -278,6 +507,22 @@ export async function createSolicitud(formData: CreateSolicitudData) {
 
   if (error) {
     return { success: false, error: error.message, data: null }
+  }
+
+  // Insert line items (prótesis only)
+  if (linesToInsert.length > 0) {
+    const solicitudId = (data as { id: string }).id
+    const { error: linesError } = await supabase.from("solicitudes_items").insert(
+      linesToInsert.map((l) => ({
+        solicitud_id: solicitudId,
+        ...l,
+      }))
+    )
+    if (linesError) {
+      // Best-effort rollback of the parent solicitud
+      await supabase.from("solicitudes").delete().eq("id", solicitudId)
+      return { success: false, error: linesError.message, data: null }
+    }
   }
 
   revalidatePath("/solicitudes", "page")

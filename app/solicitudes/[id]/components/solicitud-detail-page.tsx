@@ -36,7 +36,13 @@ import {
   SUBTIPOS_SERVICIO,
   type SolicitudWithRelations,
   type EstadoSolicitud,
+  type Moneda,
 } from "@/lib/types/entities"
+
+function formatPrice(precio: number, moneda: Moneda): string {
+  if (moneda === "USD") return `US$ ${precio.toFixed(2)}`
+  return `$ ${precio.toLocaleString("es-AR")}`
+}
 
 interface SolicitudDetailPageProps {
   solicitud: SolicitudWithRelations
@@ -191,6 +197,68 @@ export function SolicitudDetailPage({ solicitud, userRole, estados }: SolicitudD
               <div className="sm:col-span-2">
                 <Label className="text-muted-foreground text-xs">Dirección del consultorio</Label>
                 <p className="font-medium">{solicitud.direccion_consultorio || "—"}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Prótesis items */}
+          {isProtesis && solicitud.solicitudes_items && solicitud.solicitudes_items.length > 0 && (
+            <div className="pt-4 border-t space-y-3">
+              <div className="flex items-center justify-between">
+                <Label className="text-muted-foreground text-xs">Ítems solicitados</Label>
+                {solicitud.moneda_snapshot && (
+                  <Badge variant="outline" className="text-xs">
+                    {solicitud.moneda_snapshot}
+                  </Badge>
+                )}
+              </div>
+              <div className="rounded-md border">
+                <table className="w-full text-sm">
+                  <thead className="bg-muted/50">
+                    <tr className="text-left">
+                      <th className="px-3 py-2 font-medium">Ítem</th>
+                      <th className="px-3 py-2 font-medium hidden sm:table-cell">
+                        Tiempo de entrega
+                      </th>
+                      <th className="px-3 py-2 font-medium text-right">Precio</th>
+                      <th className="px-3 py-2 font-medium text-center w-16">Cant.</th>
+                      <th className="px-3 py-2 font-medium text-right">Subtotal</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y">
+                    {solicitud.solicitudes_items.map((line) => (
+                      <tr key={line.id}>
+                        <td className="px-3 py-2">{line.nombre_snapshot}</td>
+                        <td className="px-3 py-2 text-muted-foreground hidden sm:table-cell">
+                          {line.tiempo_entrega_snapshot}
+                        </td>
+                        <td className="px-3 py-2 text-right">
+                          {line.precio_snapshot > 0 && solicitud.moneda_snapshot
+                            ? formatPrice(Number(line.precio_snapshot), solicitud.moneda_snapshot)
+                            : <span className="text-xs text-muted-foreground italic">Sin precio</span>}
+                        </td>
+                        <td className="px-3 py-2 text-center">{line.cantidad}</td>
+                        <td className="px-3 py-2 text-right font-medium">
+                          {line.subtotal_snapshot > 0 && solicitud.moneda_snapshot
+                            ? formatPrice(Number(line.subtotal_snapshot), solicitud.moneda_snapshot)
+                            : "—"}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                  {solicitud.total_snapshot !== null && solicitud.total_snapshot > 0 && solicitud.moneda_snapshot && (
+                    <tfoot className="bg-muted/30 font-semibold">
+                      <tr>
+                        <td colSpan={4} className="px-3 py-2 text-right">
+                          Total
+                        </td>
+                        <td className="px-3 py-2 text-right">
+                          {formatPrice(Number(solicitud.total_snapshot), solicitud.moneda_snapshot)}
+                        </td>
+                      </tr>
+                    </tfoot>
+                  )}
+                </table>
               </div>
             </div>
           )}

@@ -6,6 +6,10 @@ import {
   fetchOdontologoProfileForForm,
 } from "./actions"
 import { SolicitudesTable } from "./components/solicitudes-table"
+import {
+  isOdontologoProfileComplete,
+  getMissingProfileFields,
+} from "@/lib/odontologo-profile"
 
 export const dynamic = "force-dynamic"
 
@@ -50,6 +54,12 @@ export default async function SolicitudesPage() {
     )
   }
 
+  const isProfileComplete = isOdontologoProfileComplete(
+    profileResult.usuario,
+    profileResult.perfil
+  )
+  const missingFields = getMissingProfileFields(profileResult.perfil)
+
   return (
     <SolicitudesTable
       initialSolicitudes={solicitudesResult.data || []}
@@ -57,6 +67,8 @@ export default async function SolicitudesPage() {
       estados={estadosResult.data || []}
       userProfile={profileResult.usuario}
       odontologoPerfil={profileResult.perfil}
+      isProfileComplete={isProfileComplete}
+      missingProfileFields={missingFields}
     />
   )
 }

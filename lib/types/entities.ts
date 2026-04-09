@@ -44,6 +44,7 @@ export interface OdontologoPerfil {
   telefono: string | null
   cuit: string | null
   situacion_iva: string | null
+  direccion_consultorio: string | null
   created_at: string
   updated_at: string
 }

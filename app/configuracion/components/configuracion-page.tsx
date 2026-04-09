@@ -82,6 +82,7 @@ export function ConfiguracionPage({
             nombre: string
             apellido: string
             telefono?: string
+            direccion_consultorio?: string
             localidad_id?: string
             cuit?: string
             situacion_iva?: string
@@ -114,6 +115,7 @@ export function ConfiguracionPage({
           telefono: values.telefono || null,
           cuit: values.cuit || null,
           situacion_iva: values.situacion_iva || null,
+          direccion_consultorio: values.direccion_consultorio || null,
         })
 
         if (!perfilSuccess) {

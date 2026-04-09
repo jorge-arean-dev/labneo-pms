@@ -22,49 +22,58 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Card, CardContent } from "@/components/ui/card"
-import { getEstadoSolicitudColor, getEstadoSolicitudLabel } from "@/lib/constants/estado-colors"
+import { getEstadoSolicitudColor } from "@/lib/constants/estado-colors"
 import { formatDate } from "@/lib/utils/date-format"
 import { CrearSolicitudDialog } from "./crear-solicitud-dialog"
-// TODO: Phase 3 — this file will be rewritten for the new Solicitud schema
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Solicitud = any
+import { TIPOS_SOLICITUD } from "@/lib/types/entities"
+import type {
+  SolicitudWithRelations,
+  EstadoSolicitud,
+  OdontologoPerfilWithLocalidad,
+} from "@/lib/types/entities"
 
 interface SolicitudesTableProps {
-  initialSolicitudes: Solicitud[]
+  initialSolicitudes: SolicitudWithRelations[]
   userRole: string
-  userProfile: { nombre: string; apellido: string; email: string } | null
-  localidades: { id: string; localidad: string; tarifario_id: string }[]
+  estados: EstadoSolicitud[]
+  userProfile: { id: string; nombre: string; apellido: string; email: string } | null
+  odontologoPerfil: OdontologoPerfilWithLocalidad | null
 }
 
 export function SolicitudesTable({
   initialSolicitudes,
   userRole,
+  estados,
   userProfile,
-  localidades,
+  odontologoPerfil,
 }: SolicitudesTableProps) {
   const router = useRouter()
   const [solicitudes, setSolicitudes] = useState(initialSolicitudes)
   const [searchTerm, setSearchTerm] = useState("")
   const [estadoFilter, setEstadoFilter] = useState<string>("todos")
+  const [tipoFilter, setTipoFilter] = useState<string>("todos")
   const [dialogOpen, setDialogOpen] = useState(false)
 
   const isOdontologo = userRole === "odontologo"
 
   // Client-side filtering
   const filtered = solicitudes.filter((s) => {
+    const localidadName = s.localidades?.nombre_display || ""
     const matchesSearch =
       searchTerm === "" ||
       `${s.nombre} ${s.apellido}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
       s.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      s.localidad.toLowerCase().includes(searchTerm.toLowerCase())
+      localidadName.toLowerCase().includes(searchTerm.toLowerCase())
 
     const matchesEstado =
-      estadoFilter === "todos" || s.estado === estadoFilter
+      estadoFilter === "todos" || s.estados_solicitud?.codigo === estadoFilter
 
-    return matchesSearch && matchesEstado
+    const matchesTipo = tipoFilter === "todos" || s.tipo_solicitud === tipoFilter
+
+    return matchesSearch && matchesEstado && matchesTipo
   })
 
-  const handleSolicitudCreated = (newSolicitud: Solicitud) => {
+  const handleSolicitudCreated = (newSolicitud: SolicitudWithRelations) => {
     setSolicitudes([newSolicitud, ...solicitudes])
   }
 
@@ -101,6 +110,17 @@ export function SolicitudesTable({
             className="pl-10"
           />
         </div>
+        <Select value={tipoFilter} onValueChange={setTipoFilter}>
+          <SelectTrigger className="w-full sm:w-[180px]">
+            <Filter className="mr-2 h-4 w-4" />
+            <SelectValue placeholder="Tipo" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="todos">Todos los tipos</SelectItem>
+            <SelectItem value="protesis">{TIPOS_SOLICITUD.protesis}</SelectItem>
+            <SelectItem value="alquiler_equipos">{TIPOS_SOLICITUD.alquiler_equipos}</SelectItem>
+          </SelectContent>
+        </Select>
         <Select value={estadoFilter} onValueChange={setEstadoFilter}>
           <SelectTrigger className="w-full sm:w-[180px]">
             <Filter className="mr-2 h-4 w-4" />
@@ -108,9 +128,11 @@ export function SolicitudesTable({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="todos">Todos los estados</SelectItem>
-            <SelectItem value="enviada">Enviada</SelectItem>
-            <SelectItem value="en_proceso">En proceso</SelectItem>
-            <SelectItem value="alta_generada">Alta generada</SelectItem>
+            {estados.map((e) => (
+              <SelectItem key={e.id} value={e.codigo}>
+                {e.nombre}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
@@ -128,8 +150,8 @@ export function SolicitudesTable({
               <TableRow>
                 <TableHead>Nombre</TableHead>
                 <TableHead>Email</TableHead>
+                <TableHead>Tipo</TableHead>
                 <TableHead>Localidad</TableHead>
-                <TableHead>Servicios</TableHead>
                 <TableHead>Estado</TableHead>
                 <TableHead>Fecha</TableHead>
               </TableRow>
@@ -156,23 +178,21 @@ export function SolicitudesTable({
                       {s.nombre} {s.apellido}
                     </TableCell>
                     <TableCell>{s.email}</TableCell>
-                    <TableCell>{s.localidad}</TableCell>
                     <TableCell>
-                      <div className="flex flex-wrap gap-1">
-                        {s.tipo_servicio?.map((ts: string) => (
-                          <Badge key={ts} variant="outline" className="text-xs">
-                            {ts}
-                          </Badge>
-                        ))}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant="outline"
-                        className={`border-transparent ${getEstadoSolicitudColor(s.estado)}`}
-                      >
-                        {getEstadoSolicitudLabel(s.estado)}
+                      <Badge variant="secondary" className="text-xs">
+                        {TIPOS_SOLICITUD[s.tipo_solicitud]}
                       </Badge>
+                    </TableCell>
+                    <TableCell>{s.localidades?.nombre_display || "—"}</TableCell>
+                    <TableCell>
+                      {s.estados_solicitud && (
+                        <Badge
+                          variant="outline"
+                          className={`border-transparent ${getEstadoSolicitudColor(s.estados_solicitud.codigo)}`}
+                        >
+                          {s.estados_solicitud.nombre}
+                        </Badge>
+                      )}
                     </TableCell>
                     <TableCell className="text-muted-foreground">
                       {formatDate(s.created_at)}
@@ -209,28 +229,26 @@ export function SolicitudesTable({
                   <span className="font-medium">
                     {s.nombre} {s.apellido}
                   </span>
-                  <Badge
-                    variant="outline"
-                    className={`border-transparent ${getEstadoSolicitudColor(s.estado)}`}
-                  >
-                    {getEstadoSolicitudLabel(s.estado)}
-                  </Badge>
+                  {s.estados_solicitud && (
+                    <Badge
+                      variant="outline"
+                      className={`border-transparent ${getEstadoSolicitudColor(s.estados_solicitud.codigo)}`}
+                    >
+                      {s.estados_solicitud.nombre}
+                    </Badge>
+                  )}
                 </div>
                 <p className="text-sm text-muted-foreground">{s.email}</p>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">{s.localidad}</span>
+                <div className="flex items-center justify-between gap-2">
+                  <Badge variant="secondary" className="text-xs">
+                    {TIPOS_SOLICITUD[s.tipo_solicitud]}
+                  </Badge>
                   <span className="text-xs text-muted-foreground">
                     {formatDate(s.created_at)}
                   </span>
                 </div>
-                {s.tipo_servicio && s.tipo_servicio.length > 0 && (
-                  <div className="flex flex-wrap gap-1">
-                    {s.tipo_servicio.map((ts: string) => (
-                      <Badge key={ts} variant="outline" className="text-xs">
-                        {ts}
-                      </Badge>
-                    ))}
-                  </div>
+                {s.localidades?.nombre_display && (
+                  <p className="text-sm text-muted-foreground">{s.localidades.nombre_display}</p>
                 )}
               </CardContent>
             </Card>
@@ -239,12 +257,12 @@ export function SolicitudesTable({
       </div>
 
       {/* Create dialog */}
-      {isOdontologo && (
+      {isOdontologo && userProfile && (
         <CrearSolicitudDialog
           open={dialogOpen}
           onOpenChange={setDialogOpen}
           userProfile={userProfile}
-          localidades={localidades}
+          odontologoPerfil={odontologoPerfil}
           onSolicitudCreated={handleSolicitudCreated}
         />
       )}

@@ -122,7 +122,7 @@ export async function fetchOdontologoPerfil(userId: string) {
 
   const { data, error } = await supabase
     .from("odontologos_perfil")
-    .select("id, usuario_id, localidad_id, telefono, cuit, situacion_iva, created_at, updated_at, localidades(id, codigo, nombre_display, provincia, activo, created_at, updated_at)")
+    .select("id, usuario_id, localidad_id, telefono, cuit, situacion_iva, direccion_consultorio, created_at, updated_at, localidades(id, codigo, nombre_display, provincia, activo, created_at, updated_at)")
     .eq("usuario_id", userId)
     .single()
 
@@ -144,6 +144,7 @@ export async function upsertOdontologoPerfil(
     telefono: string | null
     cuit: string | null
     situacion_iva: string | null
+    direccion_consultorio: string | null
   }
 ) {
   const supabase = await createClient()
@@ -164,6 +165,7 @@ export async function upsertOdontologoPerfil(
         telefono: formData.telefono,
         cuit: formData.cuit,
         situacion_iva: formData.situacion_iva,
+        direccion_consultorio: formData.direccion_consultorio,
       })
       .eq("usuario_id", userId)
 
@@ -180,6 +182,7 @@ export async function upsertOdontologoPerfil(
         telefono: formData.telefono,
         cuit: formData.cuit,
         situacion_iva: formData.situacion_iva,
+        direccion_consultorio: formData.direccion_consultorio,
       })
 
     if (error) {

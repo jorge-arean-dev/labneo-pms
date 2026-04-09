@@ -25,6 +25,7 @@ const odontologoInfoSchema = z.object({
   nombre: z.string().min(1, "El nombre es requerido"),
   apellido: z.string().min(1, "El apellido es requerido"),
   telefono: z.string().optional(),
+  direccion_consultorio: z.string().optional(),
   localidad_id: z.string().optional(),
   cuit: z.string().optional(),
   situacion_iva: z.string().optional(),
@@ -53,6 +54,7 @@ export function OdontologoInfoContent({
       nombre: usuario.nombre,
       apellido: usuario.apellido,
       telefono: perfil?.telefono || "",
+      direccion_consultorio: perfil?.direccion_consultorio || "",
       localidad_id: perfil?.localidad_id || "",
       cuit: perfil?.cuit || "",
       situacion_iva: perfil?.situacion_iva || "",
@@ -100,6 +102,7 @@ export function OdontologoInfoContent({
         nombre: usuario.nombre,
         apellido: usuario.apellido,
         telefono: perfil?.telefono || "",
+        direccion_consultorio: perfil?.direccion_consultorio || "",
         localidad_id: perfil?.localidad_id || "",
         cuit: perfil?.cuit || "",
         situacion_iva: perfil?.situacion_iva || "",
@@ -178,6 +181,20 @@ export function OdontologoInfoContent({
               />
             ) : (
               <p className="text-sm">{perfil?.telefono || "—"}</p>
+            )}
+          </div>
+
+          {/* Dirección del consultorio */}
+          <div className="space-y-2">
+            <Label htmlFor="direccion_consultorio">Dirección del consultorio</Label>
+            {isEditMode ? (
+              <Input
+                id="direccion_consultorio"
+                {...form.register("direccion_consultorio")}
+                placeholder="Av. Corrientes 1234, CABA"
+              />
+            ) : (
+              <p className="text-sm">{perfil?.direccion_consultorio || "—"}</p>
             )}
           </div>
         </CardContent>

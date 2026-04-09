@@ -1,6 +1,10 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
-import { fetchSolicitudes, fetchCurrentUserProfile, fetchLocalidades } from "./actions"
+import {
+  fetchSolicitudes,
+  fetchEstadosSolicitud,
+  fetchOdontologoProfileForForm,
+} from "./actions"
 import { SolicitudesTable } from "./components/solicitudes-table"
 
 export const dynamic = "force-dynamic"
@@ -27,10 +31,10 @@ export default async function SolicitudesPage() {
   const userRole = roles?.nombre?.toLowerCase() || ""
 
   // Fetch data in parallel
-  const [solicitudesResult, profileResult, localidadesResult] = await Promise.all([
+  const [solicitudesResult, estadosResult, profileResult] = await Promise.all([
     fetchSolicitudes(),
-    fetchCurrentUserProfile(),
-    fetchLocalidades(),
+    fetchEstadosSolicitud(),
+    fetchOdontologoProfileForForm(),
   ])
 
   if (solicitudesResult.error) {
@@ -50,8 +54,9 @@ export default async function SolicitudesPage() {
     <SolicitudesTable
       initialSolicitudes={solicitudesResult.data || []}
       userRole={userRole}
-      userProfile={profileResult.data}
-      localidades={localidadesResult.data || []}
+      estados={estadosResult.data || []}
+      userProfile={profileResult.usuario}
+      odontologoPerfil={profileResult.perfil}
     />
   )
 }

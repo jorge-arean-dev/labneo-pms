@@ -1,6 +1,6 @@
 import { redirect, notFound } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
-import { fetchSolicitudById } from "../actions"
+import { fetchSolicitudById, fetchEstadosSolicitud } from "../actions"
 import { SolicitudDetailPage } from "./components/solicitud-detail-page"
 
 export const dynamic = "force-dynamic"
@@ -31,16 +31,20 @@ export default async function Page({ params }: PageProps) {
   const roles = userData?.roles as unknown as { nombre: string } | null
   const userRole = roles?.nombre?.toLowerCase() || ""
 
-  const { data: solicitud, error } = await fetchSolicitudById(id)
+  const [solicitudResult, estadosResult] = await Promise.all([
+    fetchSolicitudById(id),
+    fetchEstadosSolicitud(),
+  ])
 
-  if (error || !solicitud) {
+  if (solicitudResult.error || !solicitudResult.data) {
     return notFound()
   }
 
   return (
     <SolicitudDetailPage
-      solicitud={solicitud}
+      solicitud={solicitudResult.data}
       userRole={userRole}
+      estados={estadosResult.data || []}
     />
   )
 }

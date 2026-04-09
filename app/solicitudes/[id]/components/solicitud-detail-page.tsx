@@ -28,33 +28,43 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { getEstadoSolicitudColor, getEstadoSolicitudLabel } from "@/lib/constants/estado-colors"
+import { getEstadoSolicitudColor } from "@/lib/constants/estado-colors"
 import { formatDateTime } from "@/lib/utils/date-format"
 import { updateSolicitudEstado, deleteSolicitud } from "../../actions"
-// TODO: Phase 3 — this entire file will be rewritten for the new Solicitud schema
-// Using any type to avoid build errors with the legacy schema references
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Solicitud = any
+import {
+  TIPOS_SOLICITUD,
+  SUBTIPOS_SERVICIO,
+  type SolicitudWithRelations,
+  type EstadoSolicitud,
+} from "@/lib/types/entities"
 
 interface SolicitudDetailPageProps {
-  solicitud: Solicitud
+  solicitud: SolicitudWithRelations
   userRole: string
+  estados: EstadoSolicitud[]
 }
 
-export function SolicitudDetailPage({ solicitud, userRole }: SolicitudDetailPageProps) {
+export function SolicitudDetailPage({ solicitud, userRole, estados }: SolicitudDetailPageProps) {
   const router = useRouter()
   const [isUpdating, setIsUpdating] = useState(false)
-  const [newEstado, setNewEstado] = useState<string>(solicitud.estado as unknown as string)
+  const [newEstadoId, setNewEstadoId] = useState<string>(solicitud.estado_id)
   const [notasAdmin, setNotasAdmin] = useState(solicitud.notas_admin || "")
 
   const isAdmin = userRole === "administracion"
+  const isProtesis = solicitud.tipo_solicitud === "protesis"
+  const isAlquiler = solicitud.tipo_solicitud === "alquiler_equipos"
+
+  // Filter estados that match the solicitud tipo OR apply to all
+  const availableEstados = estados.filter(
+    (e) => e.tipo_solicitud === solicitud.tipo_solicitud || e.tipo_solicitud === "todos"
+  )
 
   const handleUpdateEstado = async () => {
     setIsUpdating(true)
 
     const result = await updateSolicitudEstado(
       solicitud.id,
-      newEstado,
+      newEstadoId,
       notasAdmin || undefined
     )
 
@@ -102,12 +112,19 @@ export function SolicitudDetailPage({ solicitud, userRole }: SolicitudDetailPage
           </h1>
           <p className="text-muted-foreground">{solicitud.email}</p>
         </div>
-        <Badge
-          variant="outline"
-          className={`border-transparent text-sm px-3 py-1 ${getEstadoSolicitudColor(solicitud.estado)}`}
-        >
-          {getEstadoSolicitudLabel(solicitud.estado)}
-        </Badge>
+        <div className="flex items-center gap-2">
+          <Badge variant="secondary" className="text-sm px-3 py-1">
+            {TIPOS_SOLICITUD[solicitud.tipo_solicitud]}
+          </Badge>
+          {solicitud.estados_solicitud && (
+            <Badge
+              variant="outline"
+              className={`border-transparent text-sm px-3 py-1 ${getEstadoSolicitudColor(solicitud.estados_solicitud.codigo)}`}
+            >
+              {solicitud.estados_solicitud.nombre}
+            </Badge>
+          )}
+        </div>
       </div>
 
       {/* Data Card */}
@@ -116,6 +133,7 @@ export function SolicitudDetailPage({ solicitud, userRole }: SolicitudDetailPage
           <CardTitle className="text-base">Datos de la solicitud</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
+          {/* Common fields */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <Label className="text-muted-foreground text-xs">Nombre</Label>
@@ -133,33 +151,59 @@ export function SolicitudDetailPage({ solicitud, userRole }: SolicitudDetailPage
               <Label className="text-muted-foreground text-xs">Teléfono</Label>
               <p className="font-medium">{solicitud.telefono}</p>
             </div>
-            <div>
-              <Label className="text-muted-foreground text-xs">Localidad</Label>
-              <p className="font-medium">{solicitud.localidad}</p>
-            </div>
-            <div>
-              <Label className="text-muted-foreground text-xs">CUIT / IVA</Label>
-              <p className="font-medium">{solicitud.cuit_iva}</p>
-            </div>
-            <div className="sm:col-span-2">
-              <Label className="text-muted-foreground text-xs">Horarios de atención</Label>
-              <p className="font-medium">{solicitud.horarios_atencion}</p>
-            </div>
           </div>
 
-          {solicitud.tipo_servicio && solicitud.tipo_servicio.length > 0 && (
-            <div>
-              <Label className="text-muted-foreground text-xs">Servicios solicitados</Label>
-              <div className="flex flex-wrap gap-2 mt-1">
-                {solicitud.tipo_servicio.map((ts: string) => (
-                  <Badge key={ts} variant="outline">
-                    {ts}
-                  </Badge>
-                ))}
+          {/* Prótesis-specific */}
+          {isProtesis && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t">
+              <div>
+                <Label className="text-muted-foreground text-xs">Localidad</Label>
+                <p className="font-medium">{solicitud.localidades?.nombre_display || "—"}</p>
+              </div>
+              <div>
+                <Label className="text-muted-foreground text-xs">CUIT</Label>
+                <p className="font-medium">{solicitud.cuit || "—"}</p>
+              </div>
+              <div className="sm:col-span-2">
+                <Label className="text-muted-foreground text-xs">Situación frente al IVA</Label>
+                <p className="font-medium">{solicitud.situacion_iva || "—"}</p>
               </div>
             </div>
           )}
 
+          {/* Alquiler-specific */}
+          {isAlquiler && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t">
+              <div>
+                <Label className="text-muted-foreground text-xs">Tipo de servicio</Label>
+                <p className="font-medium">
+                  {solicitud.subtipo_servicio
+                    ? SUBTIPOS_SERVICIO[solicitud.subtipo_servicio]
+                    : "—"}
+                </p>
+              </div>
+              <div>
+                <Label className="text-muted-foreground text-xs">Fecha propuesta</Label>
+                <p className="font-medium">
+                  {solicitud.fecha_propuesta ? formatDateTime(solicitud.fecha_propuesta) : "—"}
+                </p>
+              </div>
+              <div className="sm:col-span-2">
+                <Label className="text-muted-foreground text-xs">Dirección del consultorio</Label>
+                <p className="font-medium">{solicitud.direccion_consultorio || "—"}</p>
+              </div>
+            </div>
+          )}
+
+          {/* Observaciones */}
+          {solicitud.observaciones && (
+            <div className="pt-4 border-t">
+              <Label className="text-muted-foreground text-xs">Observaciones</Label>
+              <p className="text-sm whitespace-pre-wrap">{solicitud.observaciones}</p>
+            </div>
+          )}
+
+          {/* Audit */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t">
             <div>
               <Label className="text-muted-foreground text-xs">Fecha de envío</Label>
@@ -183,17 +227,16 @@ export function SolicitudDetailPage({ solicitud, userRole }: SolicitudDetailPage
             {/* Estado selector */}
             <div className="space-y-2">
               <Label>Estado</Label>
-              <Select
-                value={newEstado}
-                onValueChange={(v) => setNewEstado(v as string)}
-              >
+              <Select value={newEstadoId} onValueChange={setNewEstadoId}>
                 <SelectTrigger className="w-full sm:w-[250px]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="enviada">Enviada</SelectItem>
-                  <SelectItem value="en_proceso">En proceso</SelectItem>
-                  <SelectItem value="alta_generada">Alta generada</SelectItem>
+                  {availableEstados.map((e) => (
+                    <SelectItem key={e.id} value={e.id}>
+                      {e.nombre}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
@@ -212,10 +255,7 @@ export function SolicitudDetailPage({ solicitud, userRole }: SolicitudDetailPage
 
             {/* Actions */}
             <div className="flex items-center gap-3 pt-2">
-              <Button
-                onClick={handleUpdateEstado}
-                disabled={isUpdating}
-              >
+              <Button onClick={handleUpdateEstado} disabled={isUpdating}>
                 {isUpdating ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -237,7 +277,7 @@ export function SolicitudDetailPage({ solicitud, userRole }: SolicitudDetailPage
                     <AlertDialogTitle>¿Eliminar solicitud?</AlertDialogTitle>
                     <AlertDialogDescription>
                       Esta acción no se puede deshacer. Se eliminará permanentemente la
-                      solicitud de servicio de {solicitud.nombre} {solicitud.apellido}.
+                      solicitud de {solicitud.nombre} {solicitud.apellido}.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
@@ -260,7 +300,7 @@ export function SolicitudDetailPage({ solicitud, userRole }: SolicitudDetailPage
             <CardTitle className="text-base">Notas del laboratorio</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm">{solicitud.notas_admin}</p>
+            <p className="text-sm whitespace-pre-wrap">{solicitud.notas_admin}</p>
           </CardContent>
         </Card>
       )}

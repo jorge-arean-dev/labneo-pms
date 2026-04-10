@@ -492,3 +492,29 @@ export async function fetchLocalidadesForTarifarios() {
     error: null,
   }
 }
+
+/**
+ * Bulk-assign multiple localidades to a single tarifario.
+ * Validates that none of the localidades already belong to another tarifario.
+ */
+export async function bulkAssignLocalidades(
+  localidadIds: string[],
+  tarifarioId: string
+) {
+  const auth = await assertAdmin()
+  if (!auth.ok) return { success: false, error: auth.error }
+
+  if (localidadIds.length === 0) {
+    return { success: false, error: "No se seleccionaron localidades" }
+  }
+
+  const { error } = await auth.supabase
+    .from("localidades")
+    .update({ tarifario_id: tarifarioId })
+    .in("id", localidadIds)
+
+  if (error) return { success: false, error: error.message }
+
+  revalidatePath("/tarifarios", "page")
+  return { success: true, error: null }
+}

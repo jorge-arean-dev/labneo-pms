@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ItemsTable } from "./items-table"
 import { ListasTable } from "./listas-table"
+import { LocalidadesTable } from "./localidades-table"
 import type { Item, TarifarioSummary, Localidad } from "@/lib/types/entities"
 
 interface TarifariosTabsProps {
@@ -34,6 +35,7 @@ export function TarifariosTabs({
         <TabsList>
           <TabsTrigger value="items">Ítems</TabsTrigger>
           <TabsTrigger value="listas">Listas de precios</TabsTrigger>
+          <TabsTrigger value="localidades">Localidades</TabsTrigger>
         </TabsList>
 
         <TabsContent value="items" className="mt-6">
@@ -46,6 +48,15 @@ export function TarifariosTabs({
             onTarifariosChange={setTarifarios}
             localidades={localidadesState}
             onLocalidadesChange={setLocalidadesState}
+          />
+        </TabsContent>
+
+        <TabsContent value="localidades" className="mt-6">
+          <LocalidadesTable
+            localidades={localidadesState}
+            onLocalidadesChange={setLocalidadesState}
+            tarifarios={tarifarios}
+            onTarifariosChange={setTarifarios}
           />
         </TabsContent>
       </Tabs>

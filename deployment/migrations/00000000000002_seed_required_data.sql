@@ -6,12 +6,11 @@
 -- =============================================================================
 -- ROLES (Required for authentication/authorization)
 -- =============================================================================
--- IMPORTANT: Role names are Capitalized to match RLS helper functions
--- (is_admin() checks 'Administrador', is_medico() checks 'Medico', is_recepcionista() checks 'Recepcionista')
+-- IMPORTANT: Role names must match RLS helper functions
+-- (is_admin() checks 'Administracion', is_odontologo() checks 'Odontologo')
 INSERT INTO public.roles (nombre, descripcion) VALUES
-    ('Recepcionista', 'Personal de recepcion encargado de la gestion de pacientes y citas'),
-    ('Medico', 'Medico dermatologo con acceso a historiales medicos y consultas'),
-    ('Administrador', 'Administrador del sistema con acceso completo a todas las funcionalidades')
+    ('Administracion', 'Administrador del sistema con acceso completo a todas las funcionalidades'),
+    ('Odontologo', 'Odontologo con acceso al portal de solicitudes y perfil profesional')
 ON CONFLICT (nombre) DO NOTHING;
 
 -- =============================================================================
@@ -92,7 +91,7 @@ ON CONFLICT (key) DO NOTHING;
 -- VERIFICATION
 -- =============================================================================
 -- After running this migration, verify with:
--- SELECT COUNT(*) FROM roles;           -- Should be 3
+-- SELECT COUNT(*) FROM roles;           -- Should be 2
 -- SELECT COUNT(*) FROM estados_consulta; -- Should be 5
 -- SELECT COUNT(*) FROM email_templates;  -- Should be 1
 -- SELECT COUNT(*) FROM email_config;     -- Should be 1

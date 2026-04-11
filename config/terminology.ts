@@ -46,31 +46,22 @@ export const terminology = {
     articlePlural: "los", // los pacientes
   },
 
-  doctor: {
-    singular: "Médico",
-    plural: "Médicos",
-    singularLower: "médico",
-    pluralLower: "médicos",
+  odontologo: {
+    singular: "Odontólogo",
+    plural: "Odontólogos",
+    singularLower: "odontólogo",
+    pluralLower: "odontólogos",
     article: "el",
     articlePlural: "los",
   },
 
-  appointment: {
-    singular: "Consulta",
-    plural: "Consultas",
-    singularLower: "consulta",
-    pluralLower: "consultas",
+  solicitud: {
+    singular: "Solicitud",
+    plural: "Solicitudes",
+    singularLower: "solicitud",
+    pluralLower: "solicitudes",
     article: "la",
     articlePlural: "las",
-  },
-
-  receptionist: {
-    singular: "Recepcionista",
-    plural: "Recepcionistas",
-    singularLower: "recepcionista",
-    pluralLower: "recepcionistas",
-    article: "el/la",
-    articlePlural: "los/las",
   },
 
   insurance: {
@@ -96,14 +87,14 @@ export const terminology = {
   // ==========================================================================
 
   domain: {
-    /** Business type (e.g., "Clínica", "Spa", "Veterinaria") */
-    type: "Clínica",
+    /** Business type (e.g., "Laboratorio Dental", "Clínica", "Spa") */
+    type: "Laboratorio Dental",
 
-    /** Specialty or focus area (e.g., "Dermatología", "Masajes", "Medicina General") */
-    specialty: "Dermatología",
+    /** Specialty or focus area */
+    specialty: "Prótesis Dental",
 
-    /** Full name for display (e.g., "Clínica Dermatológica") */
-    fullName: "Clínica Dermatológica",
+    /** Full name for display */
+    fullName: "Laboratorio Dental",
   },
 
   // ==========================================================================
@@ -112,11 +103,9 @@ export const terminology = {
 
   navigation: {
     dashboard: "Inicio",
-    patients: "Pacientes",
-    appointments: "Consultas",
-    doctors: "Médicos",
-    receptionists: "Recepcionistas",
-    insurance: "Obras Sociales",
+    odontologos: "Odontólogos",
+    solicitudes: "Solicitudes",
+    tarifarios: "Tarifarios",
     settings: "Configuración",
     profile: "Mi Perfil",
     logout: "Cerrar Sesión",
@@ -127,23 +116,11 @@ export const terminology = {
   // ==========================================================================
 
   actions: {
-    // Patient actions
-    newPatient: "Nuevo Paciente",
-    editPatient: "Editar Paciente",
-    deletePatient: "Eliminar Paciente",
-    searchPatients: "Buscar pacientes...",
-
-    // Appointment actions
-    newAppointment: "Nueva Consulta",
-    editAppointment: "Editar Consulta",
-    cancelAppointment: "Cancelar Consulta",
-    rescheduleAppointment: "Reprogramar Consulta",
-    completeAppointment: "Completar Consulta",
-
-    // Doctor actions
-    newDoctor: "Nuevo Médico",
-    editDoctor: "Editar Médico",
-    manageSchedule: "Gestionar Horarios",
+    // Solicitud actions
+    newSolicitud: "Nueva Solicitud",
+    editSolicitud: "Editar Solicitud",
+    cancelSolicitud: "Cancelar Solicitud",
+    searchSolicitudes: "Buscar solicitudes...",
 
     // Generic actions
     save: "Guardar",
@@ -163,30 +140,17 @@ export const terminology = {
   // ==========================================================================
 
   pageTitles: {
-    patientList: "Listado de Pacientes",
-    patientDetail: "Detalle del Paciente",
-    patientNew: "Nuevo Paciente",
+    solicitudList: "Listado de Solicitudes",
+    solicitudDetail: "Detalle de la Solicitud",
+    solicitudNew: "Nueva Solicitud",
 
-    appointmentList: "Listado de Consultas",
-    appointmentDetail: "Detalle de la Consulta",
-    appointmentNew: "Nueva Consulta",
-    appointmentCalendar: "Calendario de Consultas",
+    odontologoList: "Listado de Odontólogos",
+    odontologoDetail: "Detalle del Odontólogo",
 
-    doctorList: "Listado de Médicos",
-    doctorDetail: "Detalle del Médico",
-    doctorNew: "Nuevo Médico",
-
-    receptionistList: "Listado de Recepcionistas",
-    receptionistDetail: "Detalle del Recepcionista",
-    receptionistNew: "Nuevo Recepcionista",
-
-    insuranceList: "Listado de Obras Sociales",
-    insuranceDetail: "Detalle de la Obra Social",
-    insuranceNew: "Nueva Obra Social",
+    tarifarioList: "Listado de Tarifarios",
+    tarifarioDetail: "Detalle del Tarifario",
 
     settings: "Configuración",
-    clinicInfo: "Información de la Clínica",
-    emailTemplates: "Plantillas de Email",
   },
 
   // ==========================================================================
@@ -195,28 +159,19 @@ export const terminology = {
 
   messages: {
     // Success messages
-    patientCreated: "Paciente creado exitosamente",
-    patientUpdated: "Paciente actualizado exitosamente",
-    patientDeleted: "Paciente eliminado exitosamente",
-
-    appointmentCreated: "Consulta creada exitosamente",
-    appointmentUpdated: "Consulta actualizada exitosamente",
-    appointmentCancelled: "Consulta cancelada exitosamente",
-    appointmentCompleted: "Consulta completada exitosamente",
+    solicitudCreated: "Solicitud creada exitosamente",
+    solicitudUpdated: "Solicitud actualizada exitosamente",
+    solicitudCancelled: "Solicitud cancelada exitosamente",
 
     // Error messages
-    patientNotFound: "Paciente no encontrado",
-    appointmentConflict: "Ya existe una consulta programada en ese horario",
-    doctorUnavailable: "El médico no está disponible en ese horario",
+    solicitudNotFound: "Solicitud no encontrada",
 
     // Confirmation messages
     confirmDelete: "¿Está seguro que desea eliminar este registro?",
-    confirmCancel: "¿Está seguro que desea cancelar esta consulta?",
+    confirmCancel: "¿Está seguro que desea cancelar esta solicitud?",
 
     // Empty states
-    noPatients: "No hay pacientes registrados",
-    noAppointments: "No hay consultas programadas",
-    noDoctors: "No hay médicos registrados",
+    noSolicitudes: "No hay solicitudes registradas",
   },
 
   // ==========================================================================
@@ -236,33 +191,15 @@ export const terminology = {
     createdAt: "Fecha de Creación",
     updatedAt: "Última Actualización",
 
-    // Patient-specific fields
-    dni: "DNI",
-    dateOfBirth: "Fecha de Nacimiento",
-    age: "Edad",
-    gender: "Género",
-    insuranceProvider: "Obra Social",
-    insurancePlan: "Plan",
-    memberNumber: "Número de Afiliado",
-    medicalHistory: "Historial Médico",
-    consent: "Consentimiento de Datos",
+    // Odontólogo-specific fields
+    cuit: "CUIT",
+    situacionIva: "Situación frente al IVA",
+    localidad: "Localidad",
+    direccionConsultorio: "Dirección del Consultorio",
 
-    // Appointment-specific fields
-    appointmentDate: "Fecha de la Consulta",
-    appointmentTime: "Hora",
-    duration: "Duración",
-    reason: "Motivo",
-    diagnosis: "Diagnóstico",
-    treatment: "Tratamiento",
-    prescription: "Receta",
-    report: "Informe",
-    nextAppointment: "Próxima Consulta",
-    appointmentType: "Tipo de Consulta",
-
-    // Doctor-specific fields
-    specialty: "Especialidad",
-    license: "Matrícula",
-    schedule: "Horario de Atención",
+    // Solicitud-specific fields
+    tipoSolicitud: "Tipo de Solicitud",
+    observaciones: "Observaciones",
   },
 } as const
 
@@ -288,19 +225,16 @@ export type DomainInfo = typeof terminology.domain
 /**
  * Get the terminology for a specific entity
  */
-export function getEntityTerminology(
-  entity: "patient" | "doctor" | "appointment" | "receptionist" | "insurance" | "schedule"
-): EntityTerminology {
+type EntityKey = "patient" | "odontologo" | "solicitud" | "insurance" | "schedule"
+
+export function getEntityTerminology(entity: EntityKey): EntityTerminology {
   return terminology[entity]
 }
 
 /**
- * Format a label with article (e.g., "el paciente", "la consulta")
+ * Format a label with article (e.g., "el odontólogo", "la solicitud")
  */
-export function withArticle(
-  entity: "patient" | "doctor" | "appointment" | "receptionist" | "insurance" | "schedule",
-  plural: boolean = false
-): string {
+export function withArticle(entity: EntityKey, plural: boolean = false): string {
   const term = terminology[entity]
   if (plural) {
     return `${term.articlePlural} ${term.pluralLower}`
@@ -311,10 +245,7 @@ export function withArticle(
 /**
  * Get a message with entity name interpolated
  */
-export function formatMessage(
-  template: string,
-  entity: "patient" | "doctor" | "appointment" | "receptionist" | "insurance" | "schedule"
-): string {
+export function formatMessage(template: string, entity: EntityKey): string {
   const term = terminology[entity]
   return template
     .replace(/\{singular\}/g, term.singular)

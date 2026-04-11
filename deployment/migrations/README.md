@@ -110,7 +110,7 @@ Update the consolidated migrations when:
 ## Schema Overview
 
 ### Core Tables
-- `roles` - User roles (Administrador, Medico, Recepcionista)
+- `roles` - User roles (Administracion, Odontologo)
 - `usuarios_pms` - User profiles linked to auth.users
 - `pacientes` - Patient records
 - `medicos` - Doctor profiles

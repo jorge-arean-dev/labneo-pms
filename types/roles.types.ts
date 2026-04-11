@@ -14,9 +14,8 @@ export type RoleUpdate = Database['public']['Tables']['roles']['Update']
  * Role names as constants for type safety
  */
 export const ROLE_NAMES = {
-  RECEPCIONISTA: 'Recepcionista',
-  MEDICO: 'Medico',
-  ADMINISTRADOR: 'Administrador',
+  ADMINISTRACION: 'Administracion',
+  ODONTOLOGO: 'Odontologo',
 } as const
 
 export type RoleName = typeof ROLE_NAMES[keyof typeof ROLE_NAMES]

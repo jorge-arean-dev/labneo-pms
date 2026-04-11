@@ -47,7 +47,7 @@ CREATE TABLE roles (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-COMMENT ON TABLE roles IS 'User roles for access control: Administrador, Medico, Recepcionista';
+COMMENT ON TABLE roles IS 'User roles for access control: Administracion, Odontologo';
 
 CREATE INDEX idx_roles_nombre ON roles(nombre);
 
@@ -132,7 +132,7 @@ AS $$
     FROM public.usuarios_pms u
     JOIN public.roles r ON u.rol_id = r.id
     WHERE u.id = auth.uid()
-    AND r.nombre = 'Administrador'
+    AND r.nombre = 'Administracion'
   );
 $$;
 
@@ -148,13 +148,13 @@ BEGIN
         FROM public.usuarios_pms u
         JOIN public.roles r ON u.rol_id = r.id
         WHERE u.id = user_id
-        AND r.nombre = 'Administrador'
+        AND r.nombre = 'Administracion'
     );
 END;
 $$;
 
--- Function: is_medico()
-CREATE OR REPLACE FUNCTION is_medico()
+-- Function: is_odontologo()
+CREATE OR REPLACE FUNCTION is_odontologo()
 RETURNS BOOLEAN
 LANGUAGE sql
 STABLE
@@ -166,24 +166,7 @@ AS $$
     FROM public.usuarios_pms u
     JOIN public.roles r ON u.rol_id = r.id
     WHERE u.id = auth.uid()
-    AND r.nombre = 'Medico'
-  );
-$$;
-
--- Function: is_recepcionista()
-CREATE OR REPLACE FUNCTION is_recepcionista()
-RETURNS BOOLEAN
-LANGUAGE sql
-STABLE
-SECURITY DEFINER
-SET search_path TO 'public'
-AS $$
-  SELECT EXISTS (
-    SELECT 1
-    FROM public.usuarios_pms u
-    JOIN public.roles r ON u.rol_id = r.id
-    WHERE u.id = auth.uid()
-    AND r.nombre = 'Recepcionista'
+    AND r.nombre = 'Odontologo'
   );
 $$;
 
@@ -199,7 +182,7 @@ BEGIN
         FROM public.usuarios_pms u
         JOIN public.roles r ON u.rol_id = r.id
         WHERE u.id = user_id
-        AND r.nombre IN ('Recepcionista', 'Medico', 'Administrador')
+        AND r.nombre IN ('Administracion', 'Odontologo')
     );
 END;
 $$;
@@ -951,10 +934,10 @@ CREATE POLICY "obras_sociales_delete_admin" ON obras_sociales FOR DELETE TO auth
 -- ----------------------------------------------------------------------------
 CREATE POLICY "pacientes_select_all" ON pacientes FOR SELECT TO authenticated USING (true);
 CREATE POLICY "pacientes_insert_all_roles" ON pacientes FOR INSERT TO authenticated
-  WITH CHECK (get_user_role() IN ('Recepcionista', 'Medico', 'Administrador'));
+  WITH CHECK (get_user_role() IN ('Administracion', 'Odontologo'));
 CREATE POLICY "pacientes_update_all_roles" ON pacientes FOR UPDATE TO authenticated
-  USING (get_user_role() IN ('Recepcionista', 'Medico', 'Administrador'))
-  WITH CHECK (get_user_role() IN ('Recepcionista', 'Medico', 'Administrador'));
+  USING (get_user_role() IN ('Administracion', 'Odontologo'))
+  WITH CHECK (get_user_role() IN ('Administracion', 'Odontologo'));
 CREATE POLICY "pacientes_delete_admin" ON pacientes FOR DELETE TO authenticated USING (is_admin());
 
 -- ----------------------------------------------------------------------------
@@ -963,8 +946,8 @@ CREATE POLICY "pacientes_delete_admin" ON pacientes FOR DELETE TO authenticated 
 CREATE POLICY "medicos_select_all" ON medicos FOR SELECT TO authenticated USING (deleted_at IS NULL);
 CREATE POLICY "medicos_insert_admin" ON medicos FOR INSERT TO authenticated WITH CHECK (is_admin());
 CREATE POLICY "medicos_update_own_or_admin" ON medicos FOR UPDATE TO authenticated
-  USING ((deleted_at IS NULL) AND (is_admin() OR (is_medico() AND id = get_medico_id())))
-  WITH CHECK (is_admin() OR ((deleted_at IS NULL) AND is_medico() AND id = get_medico_id()));
+  USING ((deleted_at IS NULL) AND (is_admin() OR (is_odontologo() AND id = get_medico_id())))
+  WITH CHECK (is_admin() OR ((deleted_at IS NULL) AND is_odontologo() AND id = get_medico_id()));
 CREATE POLICY "medicos_delete_admin" ON medicos FOR DELETE TO authenticated USING (is_admin());
 
 -- ----------------------------------------------------------------------------
@@ -980,36 +963,36 @@ CREATE POLICY "estados_consulta_delete_admin" ON estados_consulta FOR DELETE TO 
 -- ----------------------------------------------------------------------------
 CREATE POLICY "medicos_obras_sociales_select_all" ON medicos_obras_sociales FOR SELECT TO authenticated USING (true);
 CREATE POLICY "medicos_obras_sociales_insert_own_or_admin" ON medicos_obras_sociales FOR INSERT TO authenticated
-  WITH CHECK (is_admin() OR (is_medico() AND medico_id = get_medico_id()));
+  WITH CHECK (is_admin() OR (is_odontologo() AND medico_id = get_medico_id()));
 CREATE POLICY "medicos_obras_sociales_update_own_or_admin" ON medicos_obras_sociales FOR UPDATE TO authenticated
-  USING (is_admin() OR (is_medico() AND medico_id = get_medico_id()))
-  WITH CHECK (is_admin() OR (is_medico() AND medico_id = get_medico_id()));
+  USING (is_admin() OR (is_odontologo() AND medico_id = get_medico_id()))
+  WITH CHECK (is_admin() OR (is_odontologo() AND medico_id = get_medico_id()));
 CREATE POLICY "medicos_obras_sociales_delete_own_or_admin" ON medicos_obras_sociales FOR DELETE TO authenticated
-  USING (is_admin() OR (is_medico() AND medico_id = get_medico_id()));
+  USING (is_admin() OR (is_odontologo() AND medico_id = get_medico_id()));
 
 -- ----------------------------------------------------------------------------
 -- CONSULTAS: Complex rules based on role
 -- ----------------------------------------------------------------------------
 CREATE POLICY "consultas_select_all" ON consultas FOR SELECT TO authenticated USING (true);
 CREATE POLICY "consultas_insert_all_roles" ON consultas FOR INSERT TO authenticated
-  WITH CHECK (get_user_role() IN ('Recepcionista', 'Medico', 'Administrador'));
+  WITH CHECK (get_user_role() IN ('Administracion', 'Odontologo'));
 CREATE POLICY "consultas_update_all_roles" ON consultas FOR UPDATE TO authenticated
-  USING (get_user_role() IN ('Recepcionista', 'Medico', 'Administrador'))
-  WITH CHECK (get_user_role() IN ('Recepcionista', 'Medico', 'Administrador'));
+  USING (get_user_role() IN ('Administracion', 'Odontologo'))
+  WITH CHECK (get_user_role() IN ('Administracion', 'Odontologo'));
 CREATE POLICY "consultas_delete_all_roles" ON consultas FOR DELETE TO authenticated
-  USING (get_user_role() IN ('Recepcionista', 'Medico', 'Administrador'));
+  USING (get_user_role() IN ('Administracion', 'Odontologo'));
 
 -- ----------------------------------------------------------------------------
 -- MEDICOS_HORARIOS: All can read, admin/owner can manage
 -- ----------------------------------------------------------------------------
 CREATE POLICY "medicos_horarios_select_all" ON medicos_horarios FOR SELECT TO authenticated USING (true);
 CREATE POLICY "medicos_horarios_insert_own_or_admin" ON medicos_horarios FOR INSERT TO authenticated
-  WITH CHECK (is_admin() OR (is_medico() AND medico_id = get_medico_id()));
+  WITH CHECK (is_admin() OR (is_odontologo() AND medico_id = get_medico_id()));
 CREATE POLICY "medicos_horarios_update_own_or_admin" ON medicos_horarios FOR UPDATE TO authenticated
-  USING (is_admin() OR (is_medico() AND medico_id = get_medico_id()))
-  WITH CHECK (is_admin() OR (is_medico() AND medico_id = get_medico_id()));
+  USING (is_admin() OR (is_odontologo() AND medico_id = get_medico_id()))
+  WITH CHECK (is_admin() OR (is_odontologo() AND medico_id = get_medico_id()));
 CREATE POLICY "medicos_horarios_delete_own_or_admin" ON medicos_horarios FOR DELETE TO authenticated
-  USING (is_admin() OR (is_medico() AND medico_id = get_medico_id()));
+  USING (is_admin() OR (is_odontologo() AND medico_id = get_medico_id()));
 
 -- ----------------------------------------------------------------------------
 -- CONSULTAS_TRANSFERENCIAS: All can read and create
@@ -1022,10 +1005,10 @@ CREATE POLICY "Users can create consulta transfers" ON consultas_transferencias 
 -- ----------------------------------------------------------------------------
 CREATE POLICY "medicos_parametros_agenda_select_all" ON medicos_parametros_agenda FOR SELECT TO authenticated USING (true);
 CREATE POLICY "medicos_parametros_agenda_insert_own_or_admin" ON medicos_parametros_agenda FOR INSERT TO authenticated
-  WITH CHECK (is_admin() OR (is_medico() AND medico_id = get_medico_id()));
+  WITH CHECK (is_admin() OR (is_odontologo() AND medico_id = get_medico_id()));
 CREATE POLICY "medicos_parametros_agenda_update_own_or_admin" ON medicos_parametros_agenda FOR UPDATE TO authenticated
-  USING (is_admin() OR (is_medico() AND medico_id = get_medico_id()))
-  WITH CHECK (is_admin() OR (is_medico() AND medico_id = get_medico_id()));
+  USING (is_admin() OR (is_odontologo() AND medico_id = get_medico_id()))
+  WITH CHECK (is_admin() OR (is_odontologo() AND medico_id = get_medico_id()));
 CREATE POLICY "medicos_parametros_agenda_delete_admin" ON medicos_parametros_agenda FOR DELETE TO authenticated
   USING (is_admin());
 
@@ -1034,12 +1017,12 @@ CREATE POLICY "medicos_parametros_agenda_delete_admin" ON medicos_parametros_age
 -- ----------------------------------------------------------------------------
 CREATE POLICY "medicos_bloqueos_agenda_select_all" ON medicos_bloqueos_agenda FOR SELECT TO authenticated USING (true);
 CREATE POLICY "medicos_bloqueos_agenda_insert_all_roles" ON medicos_bloqueos_agenda FOR INSERT TO authenticated
-  WITH CHECK (is_admin() OR is_recepcionista() OR (is_medico() AND medico_id = get_medico_id()));
+  WITH CHECK (is_admin() OR (is_odontologo() AND medico_id = get_medico_id()));
 CREATE POLICY "medicos_bloqueos_agenda_update_all_roles" ON medicos_bloqueos_agenda FOR UPDATE TO authenticated
-  USING (is_admin() OR is_recepcionista() OR (is_medico() AND medico_id = get_medico_id()))
-  WITH CHECK (is_admin() OR is_recepcionista() OR (is_medico() AND medico_id = get_medico_id()));
+  USING (is_admin() OR (is_odontologo() AND medico_id = get_medico_id()))
+  WITH CHECK (is_admin() OR (is_odontologo() AND medico_id = get_medico_id()));
 CREATE POLICY "medicos_bloqueos_agenda_delete_all_roles" ON medicos_bloqueos_agenda FOR DELETE TO authenticated
-  USING (is_admin() OR is_recepcionista() OR (is_medico() AND medico_id = get_medico_id()));
+  USING (is_admin() OR (is_odontologo() AND medico_id = get_medico_id()));
 
 -- ----------------------------------------------------------------------------
 -- EMAIL_CONFIG: Authenticated can view, admin can manage
@@ -1056,7 +1039,7 @@ CREATE POLICY "Users can view reminders for their consultas" ON email_reminders 
   USING (EXISTS (
     SELECT 1 FROM consultas c
     WHERE c.id = email_reminders.consulta_id
-    AND (is_admin() OR (is_medico() AND c.medico_id IN (SELECT id FROM medicos WHERE user_id = auth.uid())) OR is_recepcionista())
+    AND (is_admin() OR (is_odontologo() AND c.medico_id IN (SELECT id FROM medicos WHERE user_id = auth.uid())) OR is_odontologo())
   ));
 
 -- ----------------------------------------------------------------------------

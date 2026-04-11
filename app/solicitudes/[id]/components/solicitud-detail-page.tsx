@@ -3,11 +3,12 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
-import { ArrowLeft, Loader2 } from "lucide-react"
+import { ArrowLeft, Loader2, CheckCircle2, Eye, EyeOff } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import {
@@ -30,7 +31,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { getEstadoSolicitudColor } from "@/lib/constants/estado-colors"
 import { formatDateTime } from "@/lib/utils/date-format"
-import { updateSolicitudEstado, deleteSolicitud } from "../../actions"
+import { updateSolicitudEstado, deleteSolicitud, acceptSolicitudProtesis } from "../../actions"
 import {
   TIPOS_SOLICITUD,
   SUBTIPOS_SERVICIO,
@@ -56,9 +57,19 @@ export function SolicitudDetailPage({ solicitud, userRole, estados }: SolicitudD
   const [newEstadoId, setNewEstadoId] = useState<string>(solicitud.estado_id)
   const [notasAdmin, setNotasAdmin] = useState(solicitud.notas_admin || "")
 
+  // Vevi acceptance form state
+  const [veviUsuario, setVeviUsuario] = useState("")
+  const [veviPassword, setVeviPassword] = useState("")
+  const [comentariosAdmin, setComentariosAdmin] = useState("")
+  const [isAccepting, setIsAccepting] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+
   const isAdmin = userRole === "administracion"
   const isProtesis = solicitud.tipo_solicitud === "protesis"
   const isAlquiler = solicitud.tipo_solicitud === "alquiler_equipos"
+  const estadoCodigo = solicitud.estados_solicitud?.codigo || ""
+  const isPendienteProtesis = estadoCodigo === "pendiente_protesis"
+  const isRegistradoVevi = estadoCodigo === "registrado_vevi"
 
   // Filter estados that match the solicitud tipo OR apply to all
   const availableEstados = estados.filter(
@@ -82,6 +93,30 @@ export function SolicitudDetailPage({ solicitud, userRole, estados }: SolicitudD
     }
 
     setIsUpdating(false)
+  }
+
+  const handleAcceptProtesis = async () => {
+    if (!veviUsuario.trim() || !veviPassword.trim()) {
+      toast.error("El usuario y contraseña de Vevi Dental son obligatorios")
+      return
+    }
+
+    setIsAccepting(true)
+
+    const result = await acceptSolicitudProtesis(solicitud.id, {
+      vevi_usuario: veviUsuario.trim(),
+      vevi_password: veviPassword.trim(),
+      comentarios_admin: comentariosAdmin.trim() || null,
+    })
+
+    if (result.success) {
+      toast.success("Solicitud aceptada — Credenciales enviadas al odontólogo")
+      router.refresh()
+    } else {
+      toast.error(result.error || "Error al aceptar la solicitud")
+    }
+
+    setIsAccepting(false)
   }
 
   const handleDelete = async () => {
@@ -285,6 +320,48 @@ export function SolicitudDetailPage({ solicitud, userRole, estados }: SolicitudD
         </CardContent>
       </Card>
 
+      {/* Vevi Dental credentials — visible to odontólogo after acceptance */}
+      {isProtesis && isRegistradoVevi && solicitud.vevi_usuario && (
+        <Card className="border-green-200 dark:border-green-900">
+          <CardHeader>
+            <CardTitle className="text-base flex items-center gap-2">
+              <CheckCircle2 className="h-5 w-5 text-green-600" />
+              Credenciales Vevi Dental
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <Label className="text-muted-foreground text-xs">Usuario</Label>
+                <p className="font-medium font-mono">{solicitud.vevi_usuario}</p>
+              </div>
+              <div>
+                <Label className="text-muted-foreground text-xs">Contraseña</Label>
+                <div className="flex items-center gap-2">
+                  <p className="font-medium font-mono">
+                    {showPassword ? solicitud.vevi_password : "••••••••"}
+                  </p>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </Button>
+                </div>
+              </div>
+            </div>
+            {solicitud.comentarios_admin && (
+              <div className="pt-2 border-t">
+                <Label className="text-muted-foreground text-xs">Comentarios</Label>
+                <p className="text-sm whitespace-pre-wrap">{solicitud.comentarios_admin}</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
+
       {/* Admin Controls */}
       {isAdmin && (
         <Card>
@@ -292,47 +369,124 @@ export function SolicitudDetailPage({ solicitud, userRole, estados }: SolicitudD
             <CardTitle className="text-base">Gestión (Administración)</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {/* Estado selector */}
-            <div className="space-y-2">
-              <Label>Estado</Label>
-              <Select value={newEstadoId} onValueChange={setNewEstadoId}>
-                <SelectTrigger className="w-full sm:w-[250px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {availableEstados.map((e) => (
-                    <SelectItem key={e.id} value={e.id}>
-                      {e.nombre}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            {/* Prótesis: acceptance form (only when pendiente_protesis) */}
+            {isProtesis && isPendienteProtesis && (
+              <>
+                <p className="text-sm text-muted-foreground">
+                  Para aceptar esta solicitud, registrá al odontólogo en Vevi Dental e ingresá las credenciales generadas.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="vevi-usuario">Usuario Vevi Dental *</Label>
+                    <Input
+                      id="vevi-usuario"
+                      value={veviUsuario}
+                      onChange={(e) => setVeviUsuario(e.target.value)}
+                      placeholder="usuario@vevidental.com"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="vevi-password">Contraseña Vevi Dental *</Label>
+                    <Input
+                      id="vevi-password"
+                      value={veviPassword}
+                      onChange={(e) => setVeviPassword(e.target.value)}
+                      placeholder="Contraseña generada"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="comentarios-admin">Comentarios (opcional)</Label>
+                  <Textarea
+                    id="comentarios-admin"
+                    value={comentariosAdmin}
+                    onChange={(e) => setComentariosAdmin(e.target.value)}
+                    placeholder="Comentarios visibles para el odontólogo..."
+                    rows={3}
+                  />
+                </div>
+              </>
+            )}
 
-            {/* Notas admin */}
-            <div className="space-y-2">
-              <Label htmlFor="notas-admin">Notas internas</Label>
-              <Textarea
-                id="notas-admin"
-                value={notasAdmin}
-                onChange={(e) => setNotasAdmin(e.target.value)}
-                placeholder="Notas visibles solo para administración..."
-                rows={3}
-              />
-            </div>
+            {/* Prótesis accepted: show stored credentials read-only */}
+            {isProtesis && isRegistradoVevi && solicitud.vevi_usuario && (
+              <div className="rounded-md bg-green-50 dark:bg-green-950/30 p-4 text-sm space-y-1">
+                <p className="font-medium text-green-700 dark:text-green-300">
+                  Solicitud aceptada
+                </p>
+                <p className="text-muted-foreground">
+                  Credenciales Vevi Dental entregadas a {solicitud.nombre} {solicitud.apellido}.
+                </p>
+              </div>
+            )}
+
+            {/* Non-prótesis: generic estado selector */}
+            {!isProtesis && (
+              <>
+                <div className="space-y-2">
+                  <Label>Estado</Label>
+                  <Select value={newEstadoId} onValueChange={setNewEstadoId}>
+                    <SelectTrigger className="w-full sm:w-[250px]">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {availableEstados.map((e) => (
+                        <SelectItem key={e.id} value={e.id}>
+                          {e.nombre}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </>
+            )}
+
+            {/* Notas admin (internal, for all types) */}
+            {!isProtesis && (
+              <div className="space-y-2">
+                <Label htmlFor="notas-admin">Notas internas</Label>
+                <Textarea
+                  id="notas-admin"
+                  value={notasAdmin}
+                  onChange={(e) => setNotasAdmin(e.target.value)}
+                  placeholder="Notas visibles solo para administración..."
+                  rows={3}
+                />
+              </div>
+            )}
 
             {/* Actions */}
             <div className="flex items-center gap-3 pt-2">
-              <Button onClick={handleUpdateEstado} disabled={isUpdating}>
-                {isUpdating ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Guardando...
-                  </>
-                ) : (
-                  "Guardar cambios"
-                )}
-              </Button>
+              {/* Prótesis pendiente: accept button */}
+              {isProtesis && isPendienteProtesis && (
+                <Button onClick={handleAcceptProtesis} disabled={isAccepting}>
+                  {isAccepting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Aceptando...
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 className="mr-2 h-4 w-4" />
+                      Aceptar solicitud
+                    </>
+                  )}
+                </Button>
+              )}
+
+              {/* Non-prótesis: save estado changes */}
+              {!isProtesis && (
+                <Button onClick={handleUpdateEstado} disabled={isUpdating}>
+                  {isUpdating ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Guardando...
+                    </>
+                  ) : (
+                    "Guardar cambios"
+                  )}
+                </Button>
+              )}
 
               <AlertDialog>
                 <AlertDialogTrigger asChild>
@@ -361,8 +515,8 @@ export function SolicitudDetailPage({ solicitud, userRole, estados }: SolicitudD
         </Card>
       )}
 
-      {/* Notas admin visible to odontólogo (read-only) */}
-      {!isAdmin && solicitud.notas_admin && (
+      {/* Notas admin visible to odontólogo (read-only, non-prótesis only) */}
+      {!isAdmin && !isProtesis && solicitud.notas_admin && (
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Notas del laboratorio</CardTitle>

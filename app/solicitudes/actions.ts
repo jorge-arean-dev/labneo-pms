@@ -350,11 +350,12 @@ export async function createSolicitud(formData: CreateSolicitudData) {
     }
   }
 
-  // Fetch default estado (pendiente)
+  // Fetch default estado based on tipo_solicitud
+  const estadoCodigo = formData.tipo_solicitud === "protesis" ? "pendiente_protesis" : "pendiente"
   const { data: estadoData, error: estadoError } = await supabase
     .from("estados_solicitud")
     .select("id")
-    .eq("codigo", "pendiente")
+    .eq("codigo", estadoCodigo)
     .single()
 
   if (estadoError || !estadoData) {
@@ -552,6 +553,99 @@ export async function updateSolicitudEstado(
 
   if (error) {
     return { success: false, error: error.message }
+  }
+
+  revalidatePath("/solicitudes", "page")
+  revalidatePath(`/solicitudes/${id}`, "page")
+  return { success: true, error: null }
+}
+
+// ============================================================================
+// Accept prótesis solicitud (admin only)
+// ============================================================================
+
+export interface AcceptProtesisSolicitudData {
+  vevi_usuario: string
+  vevi_password: string
+  comentarios_admin: string | null
+}
+
+export async function acceptSolicitudProtesis(
+  id: string,
+  data: AcceptProtesisSolicitudData
+) {
+  const supabase = await createClient()
+
+  // Fetch the registrado_vevi estado
+  const { data: estadoData, error: estadoError } = await supabase
+    .from("estados_solicitud")
+    .select("id")
+    .eq("codigo", "registrado_vevi")
+    .single()
+
+  if (estadoError || !estadoData) {
+    return { success: false, error: "Error al obtener estado 'Registrado en Vevi'" }
+  }
+
+  const { error } = await supabase
+    .from("solicitudes")
+    .update({
+      estado_id: estadoData.id,
+      vevi_usuario: data.vevi_usuario,
+      vevi_password: data.vevi_password,
+      comentarios_admin: data.comentarios_admin,
+    })
+    .eq("id", id)
+
+  if (error) {
+    return { success: false, error: error.message }
+  }
+
+  // Send email notification to the odontólogo
+  try {
+    // Fetch the solicitud to get the odontólogo email
+    const { data: solicitud } = await supabase
+      .from("solicitudes")
+      .select("nombre, apellido, email")
+      .eq("id", id)
+      .single()
+
+    if (solicitud?.email) {
+      const { sendEmail } = await import("@/lib/email")
+      const { baseTemplate } = await import("@/lib/email/templates")
+
+      const html = baseTemplate({
+        title: "Solicitud aceptada — Credenciales Vevi Dental",
+        content: `
+          <h2 style="color: #16a34a; margin-bottom: 16px;">Tu solicitud ha sido aceptada</h2>
+          <p>Hola <strong>${solicitud.nombre} ${solicitud.apellido}</strong>,</p>
+          <p>Tu solicitud de prótesis ha sido aceptada y ya estás registrado en la plataforma <strong>Vevi Dental</strong>.</p>
+          <p>A continuación encontrarás tus credenciales de acceso:</p>
+          <table style="margin: 20px 0; border-collapse: collapse; width: 100%;">
+            <tr>
+              <td style="padding: 10px 16px; background-color: #f4f4f5; border: 1px solid #e4e4e7; font-weight: 600;">Usuario</td>
+              <td style="padding: 10px 16px; border: 1px solid #e4e4e7;">${data.vevi_usuario}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 16px; background-color: #f4f4f5; border: 1px solid #e4e4e7; font-weight: 600;">Contraseña</td>
+              <td style="padding: 10px 16px; border: 1px solid #e4e4e7;">${data.vevi_password}</td>
+            </tr>
+          </table>
+          ${data.comentarios_admin ? `<p style="margin-top: 16px;"><strong>Comentarios:</strong></p><p>${data.comentarios_admin}</p>` : ""}
+          <p style="margin-top: 24px; color: #71717a; font-size: 14px;">Si tenés alguna duda, no dudes en contactarnos.</p>
+        `,
+      })
+
+      await sendEmail({
+        to: solicitud.email,
+        toName: `${solicitud.nombre} ${solicitud.apellido}`,
+        subject: "Solicitud aceptada — Credenciales Vevi Dental",
+        html,
+      })
+    }
+  } catch (emailError) {
+    // Email failure should not block the acceptance
+    console.error("Error sending Vevi credentials email:", emailError)
   }
 
   revalidatePath("/solicitudes", "page")

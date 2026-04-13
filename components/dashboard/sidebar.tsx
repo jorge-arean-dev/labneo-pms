@@ -19,6 +19,7 @@ import {
   Moon,
   Laptop,
   ShieldCheck,
+  KeyRound,
 } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -63,6 +64,12 @@ const navItems: NavItem[] = [
     roles: ["administracion", "odontologo"],
   },
   {
+    icon: KeyRound,
+    label: "Acceso Vevi",
+    href: "/acceso-vevi",
+    roles: ["odontologo"],
+  },
+  {
     icon: DollarSign,
     label: "Tarifarios",
     href: "/tarifarios",
@@ -97,9 +104,10 @@ interface SidebarProps {
   userAvatar: string | null
   userRole: string
   clinicName: string
+  veviRegistered?: boolean
 }
 
-export function Sidebar({ userName, userEmail, userAvatar, userRole, clinicName }: SidebarProps) {
+export function Sidebar({ userName, userEmail, userAvatar, userRole, clinicName, veviRegistered = false }: SidebarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [helpDialogOpen, setHelpDialogOpen] = useState(false)
@@ -201,28 +209,61 @@ export function Sidebar({ userName, userEmail, userAvatar, userRole, clinicName 
 
       {/* Main Navigation */}
       <nav className="flex-1 space-y-1 overflow-y-auto px-2 py-4">
-        {visibleNavItems.map((item) => {
-          const Icon = item.icon
-          const isActive = pathname === item.href || pathname.startsWith(item.href + "/")
+        <TooltipProvider delayDuration={200}>
+          {visibleNavItems.map((item) => {
+            const Icon = item.icon
+            const isActive = pathname === item.href || pathname.startsWith(item.href + "/")
 
-          return (
-            <Link
-              key={item.label}
-              href={item.href}
-              className={cn(
-                "flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
-                isActive
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
-                isCollapsed && "justify-center",
-              )}
-              title={isCollapsed ? item.label : undefined}
-            >
-              <Icon className="h-5 w-5 shrink-0" />
-              {!isCollapsed && <span>{item.label}</span>}
-            </Link>
-          )
-        })}
+            // "Acceso Vevi" is disabled for odontólogos until an admin registers
+            // them in Vevi. Keep the item visible so users know it exists, but
+            // render it non-interactive with a tooltip explaining why.
+            const isDisabled =
+              item.href === "/acceso-vevi" &&
+              normalizedRole === "odontologo" &&
+              !veviRegistered
+
+            if (isDisabled) {
+              return (
+                <Tooltip key={item.label}>
+                  <TooltipTrigger asChild>
+                    <div
+                      className={cn(
+                        "flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium",
+                        "text-muted-foreground/50 cursor-not-allowed select-none",
+                        isCollapsed && "justify-center",
+                      )}
+                      aria-disabled="true"
+                    >
+                      <Icon className="h-5 w-5 shrink-0" />
+                      {!isCollapsed && <span>{item.label}</span>}
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">
+                    <p>Pendiente de registro por el administrador</p>
+                  </TooltipContent>
+                </Tooltip>
+              )
+            }
+
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                className={cn(
+                  "flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                  isActive
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+                  isCollapsed && "justify-center",
+                )}
+                title={isCollapsed ? item.label : undefined}
+              >
+                <Icon className="h-5 w-5 shrink-0" />
+                {!isCollapsed && <span>{item.label}</span>}
+              </Link>
+            )
+          })}
+        </TooltipProvider>
 
         {/* Divider — only show if there are tool items or admin */}
         {(visibleToolItems.length > 0 || normalizedRole === "administracion") && (

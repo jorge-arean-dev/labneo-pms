@@ -56,6 +56,8 @@ export interface EmailConfig {
   sender_name: string | null
   reminders_enabled: boolean
   reminder_hours_before: number
+  protesis_first_notification_enabled: boolean
+  protesis_subsequent_notification_enabled: boolean
   last_test_at: string | null
   last_test_status: "success" | "failed" | null
   last_test_error: string | null
@@ -71,6 +73,8 @@ export interface EmailConfigUpdate {
   sender_name?: string
   reminders_enabled?: boolean
   reminder_hours_before?: number
+  protesis_first_notification_enabled?: boolean
+  protesis_subsequent_notification_enabled?: boolean
 }
 
 // ============================================================================

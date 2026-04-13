@@ -34,6 +34,17 @@ export default async function TarifariosLayout({
   const roles = usuarioPms.roles as unknown as { nombre: string } | null
   const userRole = roles?.nombre || "Usuario"
 
+  // Vevi registration state for the sidebar nav item (odontólogos only)
+  let veviRegistered = false
+  if (userRole === "Odontologo") {
+    const { data: perfil } = await supabase
+      .from("odontologos_perfil")
+      .select("vevi_registrado_at")
+      .eq("usuario_id", user.id)
+      .maybeSingle()
+    veviRegistered = !!perfil?.vevi_registrado_at
+  }
+
   const { data: clinicInfo } = await supabase
     .from("clinic_info")
     .select("nombre")
@@ -50,6 +61,7 @@ export default async function TarifariosLayout({
         userAvatar={usuarioPms.foto_perfil_url}
         userRole={userRole}
         clinicName={clinicName}
+        veviRegistered={veviRegistered}
       />
       <main className="flex-1 overflow-y-auto">{children}</main>
     </div>

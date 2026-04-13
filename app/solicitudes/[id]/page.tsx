@@ -1,6 +1,10 @@
 import { redirect, notFound } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
-import { fetchSolicitudById, fetchEstadosSolicitud } from "../actions"
+import {
+  fetchSolicitudById,
+  fetchEstadosSolicitud,
+  fetchOdontologoVeviState,
+} from "../actions"
 import { SolicitudDetailPage } from "./components/solicitud-detail-page"
 
 export const dynamic = "force-dynamic"
@@ -40,11 +44,21 @@ export default async function Page({ params }: PageProps) {
     return notFound()
   }
 
+  // For prótesis solicitudes, look up the odontólogo's Vevi registration state
+  // so the detail page can decide whether to show credential inputs or the
+  // "already registered" message.
+  const veviState =
+    solicitudResult.data.tipo_solicitud === "protesis"
+      ? await fetchOdontologoVeviState(solicitudResult.data.odontologo_id)
+      : { isRegistered: false, usuario: null, error: null }
+
   return (
     <SolicitudDetailPage
       solicitud={solicitudResult.data}
       userRole={userRole}
       estados={estadosResult.data || []}
+      veviRegistered={veviState.isRegistered}
+      veviUsuario={veviState.usuario}
     />
   )
 }

@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
-import { ArrowLeft, Loader2, CheckCircle2, Eye, EyeOff } from "lucide-react"
+import { ArrowLeft, Loader2, CheckCircle2, Info } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -31,7 +31,11 @@ import {
 } from "@/components/ui/alert-dialog"
 import { getEstadoSolicitudColor } from "@/lib/constants/estado-colors"
 import { formatDateTime } from "@/lib/utils/date-format"
-import { updateSolicitudEstado, deleteSolicitud, acceptSolicitudProtesis } from "../../actions"
+import {
+  updateSolicitudEstado,
+  deleteSolicitud,
+  marcarSolicitudProtesisProcesada,
+} from "../../actions"
 import {
   TIPOS_SOLICITUD,
   SUBTIPOS_SERVICIO,
@@ -49,27 +53,35 @@ interface SolicitudDetailPageProps {
   solicitud: SolicitudWithRelations
   userRole: string
   estados: EstadoSolicitud[]
+  veviRegistered: boolean
+  veviUsuario: string | null
 }
 
-export function SolicitudDetailPage({ solicitud, userRole, estados }: SolicitudDetailPageProps) {
+export function SolicitudDetailPage({
+  solicitud,
+  userRole,
+  estados,
+  veviRegistered,
+  veviUsuario,
+}: SolicitudDetailPageProps) {
   const router = useRouter()
   const [isUpdating, setIsUpdating] = useState(false)
   const [newEstadoId, setNewEstadoId] = useState<string>(solicitud.estado_id)
   const [notasAdmin, setNotasAdmin] = useState(solicitud.notas_admin || "")
 
-  // Vevi acceptance form state
-  const [veviUsuario, setVeviUsuario] = useState("")
-  const [veviPassword, setVeviPassword] = useState("")
-  const [comentariosAdmin, setComentariosAdmin] = useState("")
-  const [isAccepting, setIsAccepting] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
+  // First-time Vevi credentials form state (only used when !veviRegistered)
+  const [veviUsuarioInput, setVeviUsuarioInput] = useState("")
+  const [veviPasswordInput, setVeviPasswordInput] = useState("")
+  const [veviComentariosInput, setVeviComentariosInput] = useState("")
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [confirmOpen, setConfirmOpen] = useState(false)
 
   const isAdmin = userRole === "administracion"
   const isProtesis = solicitud.tipo_solicitud === "protesis"
   const isAlquiler = solicitud.tipo_solicitud === "alquiler_equipos"
   const estadoCodigo = solicitud.estados_solicitud?.codigo || ""
-  const isPendienteProtesis = estadoCodigo === "pendiente_protesis"
-  const isRegistradoVevi = estadoCodigo === "registrado_vevi"
+  const isPendiente = estadoCodigo === "pendiente"
+  const isProcesada = estadoCodigo === "procesada"
 
   // Filter estados that match the solicitud tipo OR apply to all
   const availableEstados = estados.filter(
@@ -95,28 +107,49 @@ export function SolicitudDetailPage({ solicitud, userRole, estados }: SolicitudD
     setIsUpdating(false)
   }
 
-  const handleAcceptProtesis = async () => {
-    if (!veviUsuario.trim() || !veviPassword.trim()) {
-      toast.error("El usuario y contraseña de Vevi Dental son obligatorios")
+  // Click handler for the "Marcar como procesada" button.
+  // - If the odontólogo is not yet registered: validate inputs, then open
+  //   a confirmation dialog before the action runs.
+  // - If the odontólogo is already registered: call the action directly.
+  const handleClickMarcarProcesada = () => {
+    if (!veviRegistered) {
+      if (!veviUsuarioInput.trim() || !veviPasswordInput.trim()) {
+        toast.error("El usuario y contraseña de Vevi son obligatorios")
+        return
+      }
+      setConfirmOpen(true)
       return
     }
+    void runMarcarProcesada()
+  }
 
-    setIsAccepting(true)
+  const runMarcarProcesada = async () => {
+    setIsProcessing(true)
+    setConfirmOpen(false)
 
-    const result = await acceptSolicitudProtesis(solicitud.id, {
-      vevi_usuario: veviUsuario.trim(),
-      vevi_password: veviPassword.trim(),
-      comentarios_admin: comentariosAdmin.trim() || null,
-    })
+    const result = await marcarSolicitudProtesisProcesada(
+      solicitud.id,
+      veviRegistered
+        ? {}
+        : {
+            vevi_usuario: veviUsuarioInput.trim(),
+            vevi_password: veviPasswordInput.trim(),
+            vevi_comentarios: veviComentariosInput.trim() || null,
+          }
+    )
 
     if (result.success) {
-      toast.success("Solicitud aceptada — Credenciales enviadas al odontólogo")
+      toast.success(
+        veviRegistered
+          ? "Solicitud marcada como procesada"
+          : "Solicitud procesada — Credenciales guardadas y enviadas al odontólogo"
+      )
       router.refresh()
     } else {
-      toast.error(result.error || "Error al aceptar la solicitud")
+      toast.error(result.error || "Error al procesar la solicitud")
     }
 
-    setIsAccepting(false)
+    setIsProcessing(false)
   }
 
   const handleDelete = async () => {
@@ -320,48 +353,6 @@ export function SolicitudDetailPage({ solicitud, userRole, estados }: SolicitudD
         </CardContent>
       </Card>
 
-      {/* Vevi Dental credentials — visible to odontólogo after acceptance */}
-      {isProtesis && isRegistradoVevi && solicitud.vevi_usuario && (
-        <Card className="border-green-200 dark:border-green-900">
-          <CardHeader>
-            <CardTitle className="text-base flex items-center gap-2">
-              <CheckCircle2 className="h-5 w-5 text-green-600" />
-              Credenciales Vevi Dental
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <Label className="text-muted-foreground text-xs">Usuario</Label>
-                <p className="font-medium font-mono">{solicitud.vevi_usuario}</p>
-              </div>
-              <div>
-                <Label className="text-muted-foreground text-xs">Contraseña</Label>
-                <div className="flex items-center gap-2">
-                  <p className="font-medium font-mono">
-                    {showPassword ? solicitud.vevi_password : "••••••••"}
-                  </p>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-6 w-6"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </Button>
-                </div>
-              </div>
-            </div>
-            {solicitud.comentarios_admin && (
-              <div className="pt-2 border-t">
-                <Label className="text-muted-foreground text-xs">Comentarios</Label>
-                <p className="text-sm whitespace-pre-wrap">{solicitud.comentarios_admin}</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      )}
-
       {/* Admin Controls */}
       {isAdmin && (
         <Card>
@@ -369,53 +360,71 @@ export function SolicitudDetailPage({ solicitud, userRole, estados }: SolicitudD
             <CardTitle className="text-base">Gestión (Administración)</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {/* Prótesis: acceptance form (only when pendiente_protesis) */}
-            {isProtesis && isPendienteProtesis && (
+            {/* Prótesis in pendiente: show the right flow based on Vevi state */}
+            {isProtesis && isPendiente && (
               <>
-                <p className="text-sm text-muted-foreground">
-                  Para aceptar esta solicitud, registrá al odontólogo en Vevi Dental e ingresá las credenciales generadas.
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="vevi-usuario">Usuario Vevi Dental *</Label>
-                    <Input
-                      id="vevi-usuario"
-                      value={veviUsuario}
-                      onChange={(e) => setVeviUsuario(e.target.value)}
-                      placeholder="usuario@vevidental.com"
-                    />
+                {veviRegistered ? (
+                  <div className="rounded-md border border-blue-200 bg-blue-50 dark:bg-blue-950/30 dark:border-blue-900 p-4 flex gap-3">
+                    <Info className="h-5 w-5 text-blue-600 shrink-0 mt-0.5" />
+                    <div className="text-sm">
+                      <p className="font-medium text-blue-900 dark:text-blue-200">
+                        Odontólogo ya registrado en Vevi como{" "}
+                        <span className="font-mono">{veviUsuario}</span>
+                      </p>
+                      <p className="text-blue-800/80 dark:text-blue-300/80 mt-1">
+                        Al marcar como procesada, solo se actualizará el estado de la solicitud.
+                      </p>
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="vevi-password">Contraseña Vevi Dental *</Label>
-                    <Input
-                      id="vevi-password"
-                      value={veviPassword}
-                      onChange={(e) => setVeviPassword(e.target.value)}
-                      placeholder="Contraseña generada"
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="comentarios-admin">Comentarios (opcional)</Label>
-                  <Textarea
-                    id="comentarios-admin"
-                    value={comentariosAdmin}
-                    onChange={(e) => setComentariosAdmin(e.target.value)}
-                    placeholder="Comentarios visibles para el odontólogo..."
-                    rows={3}
-                  />
-                </div>
+                ) : (
+                  <>
+                    <p className="text-sm text-muted-foreground">
+                      Este odontólogo aún no está registrado en Vevi. Registralo en la plataforma e
+                      ingresá las credenciales generadas para quedar asociadas a su perfil.
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="vevi-usuario">Usuario Vevi Dental *</Label>
+                        <Input
+                          id="vevi-usuario"
+                          value={veviUsuarioInput}
+                          onChange={(e) => setVeviUsuarioInput(e.target.value)}
+                          placeholder="usuario@vevidental.com"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="vevi-password">Contraseña Vevi Dental *</Label>
+                        <Input
+                          id="vevi-password"
+                          value={veviPasswordInput}
+                          onChange={(e) => setVeviPasswordInput(e.target.value)}
+                          placeholder="Contraseña generada"
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="vevi-comentarios">Comentarios (opcional)</Label>
+                      <Textarea
+                        id="vevi-comentarios"
+                        value={veviComentariosInput}
+                        onChange={(e) => setVeviComentariosInput(e.target.value)}
+                        placeholder="Comentarios visibles para el odontólogo..."
+                        rows={3}
+                      />
+                    </div>
+                  </>
+                )}
               </>
             )}
 
-            {/* Prótesis accepted: show stored credentials read-only */}
-            {isProtesis && isRegistradoVevi && solicitud.vevi_usuario && (
+            {/* Prótesis procesada: read-only summary */}
+            {isProtesis && isProcesada && (
               <div className="rounded-md bg-green-50 dark:bg-green-950/30 p-4 text-sm space-y-1">
                 <p className="font-medium text-green-700 dark:text-green-300">
-                  Solicitud aceptada
+                  Solicitud procesada
                 </p>
                 <p className="text-muted-foreground">
-                  Credenciales Vevi Dental entregadas a {solicitud.nombre} {solicitud.apellido}.
+                  Esta solicitud ya fue procesada por el administrador.
                 </p>
               </div>
             )}
@@ -441,7 +450,7 @@ export function SolicitudDetailPage({ solicitud, userRole, estados }: SolicitudD
               </>
             )}
 
-            {/* Notas admin (internal, for all types) */}
+            {/* Notas admin (internal, for non-prótesis) */}
             {!isProtesis && (
               <div className="space-y-2">
                 <Label htmlFor="notas-admin">Notas internas</Label>
@@ -457,18 +466,21 @@ export function SolicitudDetailPage({ solicitud, userRole, estados }: SolicitudD
 
             {/* Actions */}
             <div className="flex items-center gap-3 pt-2">
-              {/* Prótesis pendiente: accept button */}
-              {isProtesis && isPendienteProtesis && (
-                <Button onClick={handleAcceptProtesis} disabled={isAccepting}>
-                  {isAccepting ? (
+              {/* Prótesis pendiente: Marcar como procesada */}
+              {isProtesis && isPendiente && (
+                <Button
+                  onClick={handleClickMarcarProcesada}
+                  disabled={isProcessing}
+                >
+                  {isProcessing ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Aceptando...
+                      Procesando...
                     </>
                   ) : (
                     <>
                       <CheckCircle2 className="mr-2 h-4 w-4" />
-                      Aceptar solicitud
+                      Marcar como procesada
                     </>
                   )}
                 </Button>
@@ -526,6 +538,40 @@ export function SolicitudDetailPage({ solicitud, userRole, estados }: SolicitudD
           </CardContent>
         </Card>
       )}
+
+      {/* Confirmation dialog for first-time credential submission */}
+      <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirmar credenciales Vevi</AlertDialogTitle>
+            <AlertDialogDescription asChild>
+              <div className="space-y-3">
+                <p>Se enviarán los siguientes datos al odontólogo por email:</p>
+                <div className="rounded-md border p-3 bg-muted/40 space-y-1 font-mono text-sm">
+                  <div>
+                    <span className="text-muted-foreground">Usuario: </span>
+                    {veviUsuarioInput}
+                  </div>
+                  <div>
+                    <span className="text-muted-foreground">Contraseña: </span>
+                    {veviPasswordInput}
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Una vez guardadas, estas credenciales quedarán asociadas al perfil del
+                  odontólogo y no podrás editarlas desde esta pantalla.
+                </p>
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Volver</AlertDialogCancel>
+            <AlertDialogAction onClick={() => void runMarcarProcesada()}>
+              Confirmar y procesar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

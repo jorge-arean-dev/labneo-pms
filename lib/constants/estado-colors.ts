@@ -12,7 +12,6 @@
 export function getEstadoSolicitudLabel(codigo: string): string {
   switch (codigo) {
     case "pendiente":
-    case "pendiente_protesis":
       return "Pendiente"
     case "en_revision":
       return "En revisión"
@@ -22,8 +21,8 @@ export function getEstadoSolicitudLabel(codigo: string): string {
       return "Rechazada"
     case "completada":
       return "Completada"
-    case "registrado_vevi":
-      return "Registrado en Vevi"
+    case "procesada":
+      return "Procesada"
     default:
       return codigo
   }
@@ -32,7 +31,6 @@ export function getEstadoSolicitudLabel(codigo: string): string {
 export function getEstadoSolicitudColor(codigo: string): string {
   switch (codigo) {
     case "pendiente":
-    case "pendiente_protesis":
       return "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
     case "en_revision":
       return "bg-yellow-100 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300"
@@ -42,7 +40,7 @@ export function getEstadoSolicitudColor(codigo: string): string {
       return "bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300"
     case "completada":
       return "bg-gray-100 text-gray-700 dark:bg-gray-950 dark:text-gray-300"
-    case "registrado_vevi":
+    case "procesada":
       return "bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300"
     default:
       return "bg-gray-100 text-gray-700 dark:bg-gray-950 dark:text-gray-300"

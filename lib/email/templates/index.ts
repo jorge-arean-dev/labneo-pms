@@ -12,3 +12,9 @@ export {
   formatTimeSpanish,
   capitalize,
 } from "./base"
+
+// Prótesis solicitud processing emails
+export {
+  protesisFirstProcesadaEmail,
+  protesisSubsequentProcesadaEmail,
+} from "./solicitud-protesis"

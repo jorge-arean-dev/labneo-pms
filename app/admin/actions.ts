@@ -80,6 +80,51 @@ export async function updateSmtpSettings(
 }
 
 // ============================================================================
+// Prótesis Notification Toggles
+// ============================================================================
+
+interface UpdateProtesisNotificationData {
+  protesis_first_notification_enabled?: boolean
+  protesis_subsequent_notification_enabled?: boolean
+}
+
+export async function updateProtesisNotificationSettings(
+  configId: string,
+  formData: UpdateProtesisNotificationData
+): Promise<{ success: boolean; error: string | null }> {
+  const supabase = await createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    return { success: false, error: "No autorizado" }
+  }
+
+  const updateData: Record<string, unknown> = { updated_by: user.id }
+  if (formData.protesis_first_notification_enabled !== undefined) {
+    updateData.protesis_first_notification_enabled = formData.protesis_first_notification_enabled
+  }
+  if (formData.protesis_subsequent_notification_enabled !== undefined) {
+    updateData.protesis_subsequent_notification_enabled = formData.protesis_subsequent_notification_enabled
+  }
+
+  const { error } = await supabase
+    .from("email_config")
+    .update(updateData)
+    .eq("id", configId)
+
+  if (error) {
+    console.error("Error updating prótesis notification settings:", error)
+    return { success: false, error: error.message }
+  }
+
+  revalidatePath("/admin", "page")
+  return { success: true, error: null }
+}
+
+// ============================================================================
 // Lab Info (clinic_info table)
 // ============================================================================
 

@@ -3,6 +3,7 @@
 import { Alert, AlertTitle } from "@/components/ui/alert"
 import { CheckCircle2, XCircle, AlertCircle } from "lucide-react"
 import { SmtpSettingsCard } from "./smtp-settings-card"
+import { ProtesisNotificationsCard } from "./protesis-notifications-card"
 import type { EmailConfig } from "@/lib/email/types"
 
 function getEmailStatus(emailConfig: EmailConfig | null) {
@@ -61,6 +62,9 @@ export function EmailTabContent({ emailConfig }: EmailTabContentProps) {
 
       {/* SMTP Settings */}
       <SmtpSettingsCard emailConfig={emailConfig} />
+
+      {/* Prótesis notification toggles */}
+      <ProtesisNotificationsCard emailConfig={emailConfig} />
     </div>
   )
 }

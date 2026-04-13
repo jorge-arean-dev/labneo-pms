@@ -3,7 +3,7 @@ import { unstable_noStore as noStore } from "next/cache"
 import { createClient } from "@/lib/supabase/server"
 import { Sidebar } from "@/components/dashboard/sidebar"
 
-export default async function SolicitudesLayout({
+export default async function AccesoVeviLayout({
   children,
 }: {
   children: React.ReactNode

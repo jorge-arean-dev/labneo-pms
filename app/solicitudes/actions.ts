@@ -350,12 +350,15 @@ export async function createSolicitud(formData: CreateSolicitudData) {
     }
   }
 
-  // Fetch default estado based on tipo_solicitud
-  const estadoCodigo = formData.tipo_solicitud === "protesis" ? "pendiente_protesis" : "pendiente"
+  // Fetch default estado. Both tipos use codigo='pendiente' now; they are
+  // disambiguated by tipo_solicitud (composite unique key). Prótesis has its
+  // own row; alquiler_equipos reuses the shared ('pendiente','todos') row.
+  const estadoTipoFilter = formData.tipo_solicitud === "protesis" ? "protesis" : "todos"
   const { data: estadoData, error: estadoError } = await supabase
     .from("estados_solicitud")
     .select("id")
-    .eq("codigo", estadoCodigo)
+    .eq("codigo", "pendiente")
+    .eq("tipo_solicitud", estadoTipoFilter)
     .single()
 
   if (estadoError || !estadoData) {
@@ -561,95 +564,200 @@ export async function updateSolicitudEstado(
 }
 
 // ============================================================================
-// Accept prótesis solicitud (admin only)
+// Fetch odontólogo Vevi registration state (used by solicitud detail page)
 // ============================================================================
 
-export interface AcceptProtesisSolicitudData {
-  vevi_usuario: string
-  vevi_password: string
-  comentarios_admin: string | null
+export async function fetchOdontologoVeviState(odontologoId: string) {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from("odontologos_perfil")
+    .select("vevi_usuario, vevi_registrado_at")
+    .eq("usuario_id", odontologoId)
+    .maybeSingle()
+
+  if (error) {
+    return { isRegistered: false, usuario: null, error: error.message }
+  }
+
+  return {
+    isRegistered: !!data?.vevi_registrado_at,
+    usuario: data?.vevi_usuario ?? null,
+    error: null,
+  }
 }
 
-export async function acceptSolicitudProtesis(
+// ============================================================================
+// Mark prótesis solicitud as procesada (admin only)
+// ============================================================================
+//
+// Flow:
+//   - Reads the solicitud to get odontólogo id.
+//   - Reads odontologos_perfil.vevi_registrado_at to decide first-time vs
+//     subsequent processing.
+//   - First-time: credentials in payload are required; writes them to
+//     odontologos_perfil (with vevi_registrado_at=now()) and transitions the
+//     solicitud estado to 'procesada'. If the admin toggle
+//     email_config.protesis_first_notification_enabled is true, sends the
+//     credentials email to the odontólogo.
+//   - Subsequent: payload must NOT include credentials; transitions the
+//     solicitud to 'procesada'. If
+//     email_config.protesis_subsequent_notification_enabled is true, sends a
+//     short confirmation email.
+//
+// Atomicity note: Supabase JS client lacks client-side transactions; if the
+// odontologos_perfil UPDATE succeeds and the solicitudes UPDATE fails, we
+// return an error but the perfil write has already happened. Given the flow
+// (admin clicks a button, low concurrency), the next retry is idempotent
+// because the same credentials would be written again. Acceptable trade-off.
+
+export interface MarcarProcesadaPayload {
+  vevi_usuario?: string
+  vevi_password?: string
+  vevi_comentarios?: string | null
+}
+
+export async function marcarSolicitudProtesisProcesada(
   id: string,
-  data: AcceptProtesisSolicitudData
+  payload: MarcarProcesadaPayload = {}
 ) {
   const supabase = await createClient()
 
-  // Fetch the registrado_vevi estado
-  const { data: estadoData, error: estadoError } = await supabase
-    .from("estados_solicitud")
-    .select("id")
-    .eq("codigo", "registrado_vevi")
+  // 1. Load the solicitud + current estado
+  const { data: solicitud, error: solicitudError } = await supabase
+    .from("solicitudes")
+    .select(
+      "id, odontologo_id, tipo_solicitud, nombre, apellido, email, estados_solicitud(codigo)"
+    )
+    .eq("id", id)
     .single()
 
-  if (estadoError || !estadoData) {
-    return { success: false, error: "Error al obtener estado 'Registrado en Vevi'" }
+  if (solicitudError || !solicitud) {
+    return { success: false, error: "No se encontró la solicitud" }
   }
 
-  const { error } = await supabase
+  if (solicitud.tipo_solicitud !== "protesis") {
+    return { success: false, error: "Solo las solicitudes de prótesis pueden marcarse como procesadas" }
+  }
+
+  const currentEstado = (solicitud.estados_solicitud as unknown as { codigo: string } | null)?.codigo
+  if (currentEstado !== "pendiente") {
+    return { success: false, error: "Solo se pueden procesar solicitudes en estado 'Pendiente'" }
+  }
+
+  // 2. Load the odontólogo's Vevi state
+  const { data: perfil, error: perfilError } = await supabase
+    .from("odontologos_perfil")
+    .select("id, vevi_registrado_at")
+    .eq("usuario_id", solicitud.odontologo_id)
+    .single()
+
+  if (perfilError || !perfil) {
+    return { success: false, error: "No se encontró el perfil del odontólogo" }
+  }
+
+  const isFirstTime = !perfil.vevi_registrado_at
+
+  // 3. Validate payload matches the variant
+  if (isFirstTime) {
+    if (!payload.vevi_usuario?.trim() || !payload.vevi_password?.trim()) {
+      return {
+        success: false,
+        error: "El usuario y contraseña de Vevi son obligatorios para la primera solicitud",
+      }
+    }
+  } else {
+    if (payload.vevi_usuario || payload.vevi_password) {
+      return {
+        success: false,
+        error: "El odontólogo ya está registrado en Vevi; no envíes credenciales nuevas",
+      }
+    }
+  }
+
+  // 4. If first-time, write credentials to odontologos_perfil
+  if (isFirstTime) {
+    const { error: perfilUpdateError } = await supabase
+      .from("odontologos_perfil")
+      .update({
+        vevi_usuario: payload.vevi_usuario!.trim(),
+        vevi_password: payload.vevi_password!.trim(),
+        vevi_comentarios: payload.vevi_comentarios?.trim() || null,
+        vevi_registrado_at: new Date().toISOString(),
+      })
+      .eq("id", perfil.id)
+
+    if (perfilUpdateError) {
+      return { success: false, error: `Error al guardar credenciales: ${perfilUpdateError.message}` }
+    }
+  }
+
+  // 5. Transition solicitud estado to 'procesada' (tipo='protesis')
+  const { data: procesadaEstado, error: estadoError } = await supabase
+    .from("estados_solicitud")
+    .select("id")
+    .eq("codigo", "procesada")
+    .eq("tipo_solicitud", "protesis")
+    .single()
+
+  if (estadoError || !procesadaEstado) {
+    return { success: false, error: "Error al obtener estado 'Procesada'" }
+  }
+
+  const { error: solicitudUpdateError } = await supabase
     .from("solicitudes")
-    .update({
-      estado_id: estadoData.id,
-      vevi_usuario: data.vevi_usuario,
-      vevi_password: data.vevi_password,
-      comentarios_admin: data.comentarios_admin,
-    })
+    .update({ estado_id: procesadaEstado.id })
     .eq("id", id)
 
-  if (error) {
-    return { success: false, error: error.message }
+  if (solicitudUpdateError) {
+    return { success: false, error: solicitudUpdateError.message }
   }
 
-  // Send email notification to the odontólogo
+  // 6. Send email (best-effort; failures do not rollback the estado change)
   try {
-    // Fetch the solicitud to get the odontólogo email
-    const { data: solicitud } = await supabase
-      .from("solicitudes")
-      .select("nombre, apellido, email")
-      .eq("id", id)
+    const { data: emailConfig } = await supabase
+      .from("email_config")
+      .select("protesis_first_notification_enabled, protesis_subsequent_notification_enabled")
       .single()
 
-    if (solicitud?.email) {
-      const { sendEmail } = await import("@/lib/email")
-      const { baseTemplate } = await import("@/lib/email/templates")
+    const shouldSend =
+      (isFirstTime && emailConfig?.protesis_first_notification_enabled) ||
+      (!isFirstTime && emailConfig?.protesis_subsequent_notification_enabled)
 
-      const html = baseTemplate({
-        title: "Solicitud aceptada — Credenciales Vevi Dental",
-        content: `
-          <h2 style="color: #16a34a; margin-bottom: 16px;">Tu solicitud ha sido aceptada</h2>
-          <p>Hola <strong>${solicitud.nombre} ${solicitud.apellido}</strong>,</p>
-          <p>Tu solicitud de prótesis ha sido aceptada y ya estás registrado en la plataforma <strong>Vevi Dental</strong>.</p>
-          <p>A continuación encontrarás tus credenciales de acceso:</p>
-          <table style="margin: 20px 0; border-collapse: collapse; width: 100%;">
-            <tr>
-              <td style="padding: 10px 16px; background-color: #f4f4f5; border: 1px solid #e4e4e7; font-weight: 600;">Usuario</td>
-              <td style="padding: 10px 16px; border: 1px solid #e4e4e7;">${data.vevi_usuario}</td>
-            </tr>
-            <tr>
-              <td style="padding: 10px 16px; background-color: #f4f4f5; border: 1px solid #e4e4e7; font-weight: 600;">Contraseña</td>
-              <td style="padding: 10px 16px; border: 1px solid #e4e4e7;">${data.vevi_password}</td>
-            </tr>
-          </table>
-          ${data.comentarios_admin ? `<p style="margin-top: 16px;"><strong>Comentarios:</strong></p><p>${data.comentarios_admin}</p>` : ""}
-          <p style="margin-top: 24px; color: #71717a; font-size: 14px;">Si tenés alguna duda, no dudes en contactarnos.</p>
-        `,
-      })
+    if (shouldSend && solicitud.email) {
+      const { sendEmail } = await import("@/lib/email")
+      const {
+        protesisFirstProcesadaEmail,
+        protesisSubsequentProcesadaEmail,
+      } = await import("@/lib/email/templates")
+
+      const { subject, html } = isFirstTime
+        ? protesisFirstProcesadaEmail({
+            nombre: solicitud.nombre,
+            apellido: solicitud.apellido,
+            usuario: payload.vevi_usuario!.trim(),
+            password: payload.vevi_password!.trim(),
+            comentarios: payload.vevi_comentarios?.trim() || null,
+          })
+        : protesisSubsequentProcesadaEmail({
+            nombre: solicitud.nombre,
+            apellido: solicitud.apellido,
+          })
 
       await sendEmail({
         to: solicitud.email,
         toName: `${solicitud.nombre} ${solicitud.apellido}`,
-        subject: "Solicitud aceptada — Credenciales Vevi Dental",
+        subject,
         html,
       })
     }
   } catch (emailError) {
-    // Email failure should not block the acceptance
-    console.error("Error sending Vevi credentials email:", emailError)
+    console.error("Error sending prótesis procesada email:", emailError)
   }
 
   revalidatePath("/solicitudes", "page")
   revalidatePath(`/solicitudes/${id}`, "page")
+  revalidatePath("/acceso-vevi", "page")
   return { success: true, error: null }
 }
 

@@ -45,6 +45,10 @@ export interface OdontologoPerfil {
   cuit: string | null
   situacion_iva: string | null
   direccion_consultorio: string | null
+  vevi_usuario: string | null
+  vevi_password: string | null
+  vevi_registrado_at: string | null
+  vevi_comentarios: string | null
   created_at: string
   updated_at: string
 }
@@ -112,10 +116,6 @@ export interface Solicitud {
   tarifario_id: string | null
   moneda_snapshot: Moneda | null
   total_snapshot: number | null
-  // Vevi Dental acceptance (prótesis only, set by admin)
-  vevi_usuario: string | null
-  vevi_password: string | null
-  comentarios_admin: string | null
   created_at: string
   updated_at: string
 }

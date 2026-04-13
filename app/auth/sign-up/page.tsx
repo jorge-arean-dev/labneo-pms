@@ -1,6 +1,8 @@
 import { SignUpForm } from "@/components/sign-up-form"
 import { fetchLocalidadesForSignup } from "./actions"
 
+export const dynamic = "force-dynamic"
+
 export default async function Page() {
   const { data: localidades } = await fetchLocalidadesForSignup()
 

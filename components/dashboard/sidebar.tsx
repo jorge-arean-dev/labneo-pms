@@ -20,6 +20,7 @@ import {
   Laptop,
   ShieldCheck,
   KeyRound,
+  Users,
 } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
@@ -68,6 +69,12 @@ const navItems: NavItem[] = [
     label: "Acceso Vevi",
     href: "/acceso-vevi",
     roles: ["odontologo"],
+  },
+  {
+    icon: Users,
+    label: "Odontólogos",
+    href: "/odontologos",
+    roles: ["administracion"],
   },
   {
     icon: DollarSign,

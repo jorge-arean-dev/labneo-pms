@@ -57,6 +57,28 @@ export interface OdontologoPerfilWithLocalidad extends OdontologoPerfil {
   localidades: Localidad | null
 }
 
+/**
+ * Flat shape used by the admin /odontologos table: joins usuarios_pms,
+ * odontologos_perfil, and localidades. Intentionally OMITS `vevi_password`
+ * so the list query doesn't ship every password to the client.
+ */
+export interface OdontologoListItem {
+  id: string
+  nombre: string
+  apellido: string
+  email: string
+  created_at: string
+  telefono: string | null
+  cuit: string | null
+  situacion_iva: string | null
+  direccion_consultorio: string | null
+  localidad_id: string | null
+  localidad_nombre: string | null
+  vevi_usuario: string | null
+  vevi_registrado_at: string | null
+  vevi_comentarios: string | null
+}
+
 // ============================================================================
 // ODONTOLOGOS HORARIOS (weekly schedule)
 // ============================================================================

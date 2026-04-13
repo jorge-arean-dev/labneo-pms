@@ -17,4 +17,5 @@ export {
 export {
   protesisFirstProcesadaEmail,
   protesisSubsequentProcesadaEmail,
+  protesisCredencialesActualizadasEmail,
 } from "./solicitud-protesis"

@@ -73,3 +73,42 @@ export function protesisSubsequentProcesadaEmail(
     }),
   }
 }
+
+interface CredencialesActualizadasParams {
+  nombre: string
+  apellido: string
+  usuario: string
+  password: string
+  comentarios?: string | null
+}
+
+export function protesisCredencialesActualizadasEmail(
+  params: CredencialesActualizadasParams
+): { subject: string; html: string } {
+  const { nombre, apellido, usuario, password, comentarios } = params
+
+  return {
+    subject: "Tus credenciales de Vevi Dental fueron actualizadas",
+    html: baseTemplate({
+      title: "Credenciales de Vevi Dental actualizadas",
+      content: `
+        <h2 style="color: #2563eb; margin-bottom: 16px;">Tus credenciales fueron actualizadas</h2>
+        <p>Hola <strong>${nombre} ${apellido}</strong>,</p>
+        <p>Un administrador actualizó tus credenciales de acceso a <strong>Vevi Dental</strong>. Podés consultarlas en cualquier momento desde la sección <strong>Acceso Vevi</strong> dentro de la plataforma.</p>
+        <p>Tus nuevas credenciales son:</p>
+        <table style="margin: 20px 0; border-collapse: collapse; width: 100%;">
+          <tr>
+            <td style="padding: 10px 16px; background-color: #f4f4f5; border: 1px solid #e4e4e7; font-weight: 600;">Usuario</td>
+            <td style="padding: 10px 16px; border: 1px solid #e4e4e7;">${usuario}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px 16px; background-color: #f4f4f5; border: 1px solid #e4e4e7; font-weight: 600;">Contraseña</td>
+            <td style="padding: 10px 16px; border: 1px solid #e4e4e7;">${password}</td>
+          </tr>
+        </table>
+        ${comentarios ? `<p style="margin-top: 16px;"><strong>Comentarios:</strong></p><p>${comentarios}</p>` : ""}
+        <p style="margin-top: 24px; color: #71717a; font-size: 14px;">Si no esperabas este cambio, contactá con el administrador del laboratorio.</p>
+      `,
+    }),
+  }
+}

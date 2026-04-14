@@ -68,7 +68,7 @@ export function SchedulingCalendar({
         onSelect={onSelectDate}
         disabled={isDateDisabled}
         locale={es}
-        className="rounded-md border [--cell-size:2.5rem]"
+        className="rounded-md border [--cell-size:2.125rem] sm:[--cell-size:2rem]"
         classNames={{
           day_button:
             "h-[var(--cell-size)] w-[var(--cell-size)] mx-auto p-0 font-normal text-sm rounded-md inline-flex items-center justify-center transition-all bg-cal-available text-cal-available-fg hover:bg-cal-available-hover focus:outline-none focus:ring-2 focus:ring-cal-available-ring focus:ring-offset-1",
@@ -87,13 +87,13 @@ export function SchedulingCalendar({
           Cargando días de atención...
         </p>
       ) : (
-        <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground mt-3 pt-3 border-t">
+        <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground mt-2 pt-2 border-t">
           <div className="flex items-center gap-1.5">
             <div className="h-4 w-4 rounded bg-cal-available ring-1 ring-cal-available-ring" />
             <span>Disponible</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="h-4 w-4 rounded bg-transparent ring-1 ring-border opacity-60" />
+            <div className="h-4 w-4 rounded bg-neutral-300 dark:bg-neutral-700 ring-1 ring-border" />
             <span>No disponible</span>
           </div>
         </div>

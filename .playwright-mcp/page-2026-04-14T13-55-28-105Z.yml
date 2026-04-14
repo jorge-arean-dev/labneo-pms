@@ -1,0 +1,114 @@
+- generic:
+  - generic:
+    - generic:
+      - generic:
+        - generic: Labneo
+        - button:
+          - img
+      - navigation:
+        - link:
+          - /url: /solicitudes
+          - img
+          - generic: Solicitudes
+        - link:
+          - /url: /acceso-vevi
+          - img
+          - generic: Acceso Vevi
+        - link:
+          - /url: /configuracion
+          - img
+          - generic: Configuración
+        - button:
+          - img
+          - generic: Ayuda
+      - generic:
+        - button:
+          - img
+          - generic: "Tema: Sistema"
+          - img
+      - generic:
+        - button:
+          - generic:
+            - generic: JP
+          - generic:
+            - paragraph: Jose Paez
+            - paragraph: Odontólogo
+            - paragraph: jorge.arean.dev+odontologo3@gmail.com
+    - main:
+      - generic:
+        - generic:
+          - generic:
+            - heading [level=1]: Mis Solicitudes
+            - paragraph: Seguí el estado de tus solicitudes de servicio
+          - button:
+            - img
+            - text: Nueva Solicitud
+        - generic:
+          - generic:
+            - img
+            - textbox:
+              - /placeholder: Buscar por nombre, email o localidad...
+          - combobox:
+            - img
+            - generic: Todos los tipos
+            - img
+          - combobox:
+            - img
+            - generic: Todos los estados
+            - img
+        - paragraph: 1 solicitud
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic: Jose Paez
+                - generic: Pendiente
+              - paragraph: jorge.arean.dev+odontologo3@gmail.com
+              - generic:
+                - generic: Prótesis
+                - generic: 13/04/2026
+              - paragraph: Ciudad Autónoma de Buenos Aires
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e87] [cursor=pointer]:
+    - img [ref=e88]
+  - alert
+  - dialog:
+    - generic:
+      - heading [level=2]: Nueva Solicitud
+      - paragraph: Completá los datos para tu solicitud de Alquiler de equipos
+    - generic:
+      - generic:
+        - generic: "1"
+        - generic: "2"
+    - generic:
+      - generic:
+        - generic:
+          - text: Tipo de servicio
+          - generic: "*"
+        - combobox [expanded]:
+          - generic: Seleccioná el servicio
+          - img
+      - generic:
+        - generic:
+          - img
+        - paragraph: Elegí un servicio para continuar
+        - paragraph: Seleccioná “Escáner Intraoral” o “Fotogrametría” en el campo de arriba para ver los días y horarios disponibles para tu solicitud.
+      - generic:
+        - generic: Observaciones
+        - textbox:
+          - /placeholder: Agregá cualquier detalle adicional...
+    - generic:
+      - button:
+        - img
+        - text: Volver
+      - button [disabled]:
+        - text: Enviar Solicitud
+        - img
+    - button:
+      - img
+      - generic: Close
+  - listbox [ref=e667]:
+    - option "Escáner Intraoral" [active] [ref=e668]:
+      - generic [ref=e670]: Escáner Intraoral
+    - option "Fotogrametría" [ref=e671]:
+      - generic [ref=e673]: Fotogrametría

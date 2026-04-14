@@ -1,0 +1,107 @@
+- generic:
+  - generic:
+    - generic:
+      - generic:
+        - generic: Labneo
+        - button:
+          - img
+      - navigation:
+        - link:
+          - /url: /solicitudes
+          - img
+          - generic: Solicitudes
+        - link:
+          - /url: /acceso-vevi
+          - img
+          - generic: Acceso Vevi
+        - link:
+          - /url: /configuracion
+          - img
+          - generic: Configuración
+        - button:
+          - img
+          - generic: Ayuda
+      - generic:
+        - button:
+          - img
+          - generic: "Tema: Sistema"
+          - img
+      - generic:
+        - button:
+          - generic:
+            - generic: JP
+          - generic:
+            - paragraph: Jose Paez
+            - paragraph: Odontólogo
+            - paragraph: jorge.arean.dev+odontologo3@gmail.com
+    - main:
+      - generic:
+        - generic:
+          - generic:
+            - heading [level=1]: Mis Solicitudes
+            - paragraph: Seguí el estado de tus solicitudes de servicio
+          - button:
+            - img
+            - text: Nueva Solicitud
+        - generic:
+          - generic:
+            - img
+            - textbox:
+              - /placeholder: Buscar por nombre, email o localidad...
+          - combobox:
+            - img
+            - generic: Todos los tipos
+            - img
+          - combobox:
+            - img
+            - generic: Todos los estados
+            - img
+        - paragraph: 1 solicitud
+        - generic:
+          - generic:
+            - generic:
+              - table:
+                - rowgroup:
+                  - row:
+                    - columnheader: Nombre
+                    - columnheader: Email
+                    - columnheader: Tipo
+                    - columnheader: Localidad
+                    - columnheader: Estado
+                    - columnheader: Fecha
+                - rowgroup:
+                  - row:
+                    - cell: Jose Paez
+                    - cell: jorge.arean.dev+odontologo3@gmail.com
+                    - cell:
+                      - generic: Prótesis
+                    - cell: Ciudad Autónoma de Buenos Aires
+                    - cell:
+                      - generic: Pendiente
+                    - cell: 13/04/2026
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e96] [cursor=pointer]:
+    - img [ref=e97]
+  - alert
+  - dialog "Nueva Solicitud" [ref=e958]:
+    - generic [ref=e959]:
+      - heading "Nueva Solicitud" [level=2] [ref=e960]
+      - paragraph [ref=e961]: Seleccioná el tipo de solicitud que querés crear
+    - generic [ref=e963]:
+      - generic [ref=e964]: "1"
+      - generic [ref=e966]: "2"
+    - generic [ref=e1269]:
+      - generic [ref=e1271] [cursor=pointer]:
+        - img [ref=e1273]
+        - generic [ref=e1277]:
+          - heading "Prótesis" [level=3] [ref=e1278]
+          - paragraph [ref=e1279]: Solicitud de prótesis dental
+      - generic [ref=e1281] [cursor=pointer]:
+        - img [ref=e1283]
+        - generic [ref=e1285]:
+          - heading "Alquiler de equipos" [level=3] [ref=e1286]
+          - paragraph [ref=e1287]: Escáner Intraoral o Fotogrametría
+    - button "Cancelar" [ref=e1288] [cursor=pointer]
+    - button "Close" [active] [ref=e988] [cursor=pointer]:
+      - img
+      - generic [ref=e989]: Close

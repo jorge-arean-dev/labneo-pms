@@ -1,0 +1,225 @@
+- generic:
+  - generic:
+    - generic:
+      - generic:
+        - generic: Labneo
+        - button:
+          - img
+      - navigation:
+        - link:
+          - /url: /solicitudes
+          - img
+          - generic: Solicitudes
+        - link:
+          - /url: /acceso-vevi
+          - img
+          - generic: Acceso Vevi
+        - link:
+          - /url: /configuracion
+          - img
+          - generic: Configuración
+        - button:
+          - img
+          - generic: Ayuda
+      - generic:
+        - button:
+          - img
+          - generic: "Tema: Sistema"
+          - img
+      - generic:
+        - button:
+          - generic:
+            - generic: JP
+          - generic:
+            - paragraph: Jose Paez
+            - paragraph: Odontólogo
+            - paragraph: jorge.arean.dev+odontologo3@gmail.com
+    - main:
+      - generic:
+        - generic:
+          - generic:
+            - heading [level=1]: Mis Solicitudes
+            - paragraph: Seguí el estado de tus solicitudes de servicio
+          - button:
+            - img
+            - text: Nueva Solicitud
+        - generic:
+          - generic:
+            - img
+            - textbox:
+              - /placeholder: Buscar por nombre, email o localidad...
+          - combobox:
+            - img
+            - generic: Todos los tipos
+            - img
+          - combobox:
+            - img
+            - generic: Todos los estados
+            - img
+        - paragraph: 1 solicitud
+        - generic:
+          - generic:
+            - generic:
+              - table:
+                - rowgroup:
+                  - row:
+                    - columnheader: Nombre
+                    - columnheader: Email
+                    - columnheader: Tipo
+                    - columnheader: Localidad
+                    - columnheader: Estado
+                    - columnheader: Fecha
+                - rowgroup:
+                  - row:
+                    - cell: Jose Paez
+                    - cell: jorge.arean.dev+odontologo3@gmail.com
+                    - cell:
+                      - generic: Prótesis
+                    - cell: Ciudad Autónoma de Buenos Aires
+                    - cell:
+                      - generic: Pendiente
+                    - cell: 13/04/2026
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e96] [cursor=pointer]:
+    - img [ref=e97]
+  - alert
+  - dialog "Nueva Solicitud" [ref=e102]:
+    - generic [ref=e103]:
+      - heading "Nueva Solicitud" [level=2] [ref=e104]
+      - paragraph [ref=e105]: Completá los datos para tu solicitud de Alquiler de equipos
+    - generic [ref=e107]:
+      - generic [ref=e108]: "1"
+      - generic [ref=e110]: "2"
+    - generic [ref=e134]:
+      - generic [ref=e135]:
+        - generic [ref=e136]:
+          - text: Tipo de servicio
+          - generic [ref=e137]: "*"
+        - combobox "Tipo de servicio *" [active] [ref=e138] [cursor=pointer]:
+          - generic: Fotogrametría
+          - img
+      - region "Selección de fecha y horario" [ref=e421]:
+        - generic [ref=e422]:
+          - text: Fecha y horario propuesto
+          - generic [ref=e423]: "*"
+        - generic [ref=e424]:
+          - generic [ref=e426]:
+            - heading "Seleccioná una fecha" [level=4] [ref=e427]
+            - generic [ref=e428]:
+              - generic [ref=e430]:
+                - navigation [ref=e431]:
+                  - button "Go to the Previous Month" [ref=e432] [cursor=pointer]:
+                    - img
+                  - button "Go to the Next Month" [ref=e433] [cursor=pointer]:
+                    - img
+                - generic [ref=e434]:
+                  - status [ref=e436]: abril 2026
+                  - grid "abril 2026" [ref=e437]:
+                    - rowgroup [ref=e438]:
+                      - row [ref=e439]:
+                        - columnheader [ref=e440]: lu
+                        - columnheader [ref=e441]: ma
+                        - columnheader [ref=e442]: mi
+                        - columnheader [ref=e443]: ju
+                        - columnheader [ref=e444]: vi
+                        - columnheader [ref=e445]: sá
+                        - columnheader [ref=e446]: do
+                    - rowgroup [ref=e447]:
+                      - row "lunes, 30 de marzo de 2026 martes, 31 de marzo de 2026 miércoles, 1 de abril de 2026 jueves, 2 de abril de 2026 viernes, 3 de abril de 2026 sábado, 4 de abril de 2026 domingo, 5 de abril de 2026" [ref=e448]:
+                        - gridcell "lunes, 30 de marzo de 2026" [ref=e449]:
+                          - button "lunes, 30 de marzo de 2026" [disabled]: "30"
+                        - gridcell "martes, 31 de marzo de 2026" [ref=e450]:
+                          - button "martes, 31 de marzo de 2026" [disabled]: "31"
+                        - gridcell "miércoles, 1 de abril de 2026" [ref=e451]:
+                          - button "miércoles, 1 de abril de 2026" [disabled]: "1"
+                        - gridcell "jueves, 2 de abril de 2026" [ref=e452]:
+                          - button "jueves, 2 de abril de 2026" [disabled]: "2"
+                        - gridcell "viernes, 3 de abril de 2026" [ref=e453]:
+                          - button "viernes, 3 de abril de 2026" [disabled]: "3"
+                        - gridcell "sábado, 4 de abril de 2026" [ref=e454]:
+                          - button "sábado, 4 de abril de 2026" [disabled]: "4"
+                        - gridcell "domingo, 5 de abril de 2026" [ref=e455]:
+                          - button "domingo, 5 de abril de 2026" [disabled]: "5"
+                      - row "lunes, 6 de abril de 2026 martes, 7 de abril de 2026 miércoles, 8 de abril de 2026 jueves, 9 de abril de 2026 viernes, 10 de abril de 2026 sábado, 11 de abril de 2026 domingo, 12 de abril de 2026" [ref=e456]:
+                        - gridcell "lunes, 6 de abril de 2026" [ref=e457]:
+                          - button "lunes, 6 de abril de 2026" [disabled]: "6"
+                        - gridcell "martes, 7 de abril de 2026" [ref=e458]:
+                          - button "martes, 7 de abril de 2026" [disabled]: "7"
+                        - gridcell "miércoles, 8 de abril de 2026" [ref=e459]:
+                          - button "miércoles, 8 de abril de 2026" [disabled]: "8"
+                        - gridcell "jueves, 9 de abril de 2026" [ref=e460]:
+                          - button "jueves, 9 de abril de 2026" [disabled]: "9"
+                        - gridcell "viernes, 10 de abril de 2026" [ref=e461]:
+                          - button "viernes, 10 de abril de 2026" [disabled]: "10"
+                        - gridcell "sábado, 11 de abril de 2026" [ref=e462]:
+                          - button "sábado, 11 de abril de 2026" [disabled]: "11"
+                        - gridcell "domingo, 12 de abril de 2026" [ref=e463]:
+                          - button "domingo, 12 de abril de 2026" [disabled]: "12"
+                      - row "lunes, 13 de abril de 2026 Today, martes, 14 de abril de 2026 miércoles, 15 de abril de 2026 jueves, 16 de abril de 2026 viernes, 17 de abril de 2026 sábado, 18 de abril de 2026 domingo, 19 de abril de 2026" [ref=e464]:
+                        - gridcell "lunes, 13 de abril de 2026" [ref=e465]:
+                          - button "lunes, 13 de abril de 2026" [disabled]: "13"
+                        - gridcell "Today, martes, 14 de abril de 2026" [ref=e466]:
+                          - button "Today, martes, 14 de abril de 2026" [ref=e467] [cursor=pointer]: "14"
+                        - gridcell "miércoles, 15 de abril de 2026" [ref=e468]:
+                          - button "miércoles, 15 de abril de 2026" [disabled]: "15"
+                        - gridcell "jueves, 16 de abril de 2026" [ref=e469]:
+                          - button "jueves, 16 de abril de 2026" [disabled]: "16"
+                        - gridcell "viernes, 17 de abril de 2026" [ref=e470]:
+                          - button "viernes, 17 de abril de 2026" [disabled]: "17"
+                        - gridcell "sábado, 18 de abril de 2026" [ref=e471]:
+                          - button "sábado, 18 de abril de 2026" [ref=e472] [cursor=pointer]: "18"
+                        - gridcell "domingo, 19 de abril de 2026" [ref=e473]:
+                          - button "domingo, 19 de abril de 2026" [disabled]: "19"
+                      - row "lunes, 20 de abril de 2026 martes, 21 de abril de 2026 miércoles, 22 de abril de 2026 jueves, 23 de abril de 2026 viernes, 24 de abril de 2026 sábado, 25 de abril de 2026 domingo, 26 de abril de 2026" [ref=e474]:
+                        - gridcell "lunes, 20 de abril de 2026" [ref=e475]:
+                          - button "lunes, 20 de abril de 2026" [disabled]: "20"
+                        - gridcell "martes, 21 de abril de 2026" [ref=e476]:
+                          - button "martes, 21 de abril de 2026" [ref=e477] [cursor=pointer]: "21"
+                        - gridcell "miércoles, 22 de abril de 2026" [ref=e478]:
+                          - button "miércoles, 22 de abril de 2026" [disabled]: "22"
+                        - gridcell "jueves, 23 de abril de 2026" [ref=e479]:
+                          - button "jueves, 23 de abril de 2026" [ref=e480] [cursor=pointer]: "23"
+                        - gridcell "viernes, 24 de abril de 2026" [ref=e481]:
+                          - button "viernes, 24 de abril de 2026" [disabled]: "24"
+                        - gridcell "sábado, 25 de abril de 2026" [ref=e482]:
+                          - button "sábado, 25 de abril de 2026" [ref=e483] [cursor=pointer]: "25"
+                        - gridcell "domingo, 26 de abril de 2026" [ref=e484]:
+                          - button "domingo, 26 de abril de 2026" [disabled]: "26"
+                      - row "lunes, 27 de abril de 2026 martes, 28 de abril de 2026 miércoles, 29 de abril de 2026 jueves, 30 de abril de 2026 viernes, 1 de mayo de 2026 sábado, 2 de mayo de 2026 domingo, 3 de mayo de 2026" [ref=e485]:
+                        - gridcell "lunes, 27 de abril de 2026" [ref=e486]:
+                          - button "lunes, 27 de abril de 2026" [disabled]: "27"
+                        - gridcell "martes, 28 de abril de 2026" [ref=e487]:
+                          - button "martes, 28 de abril de 2026" [ref=e488] [cursor=pointer]: "28"
+                        - gridcell "miércoles, 29 de abril de 2026" [ref=e489]:
+                          - button "miércoles, 29 de abril de 2026" [disabled]: "29"
+                        - gridcell "jueves, 30 de abril de 2026" [ref=e490]:
+                          - button "jueves, 30 de abril de 2026" [ref=e491] [cursor=pointer]: "30"
+                        - gridcell "viernes, 1 de mayo de 2026" [ref=e492]:
+                          - button "viernes, 1 de mayo de 2026" [disabled]: "1"
+                        - gridcell "sábado, 2 de mayo de 2026" [ref=e493]:
+                          - button "sábado, 2 de mayo de 2026" [ref=e494] [cursor=pointer]: "2"
+                        - gridcell "domingo, 3 de mayo de 2026" [ref=e495]:
+                          - button "domingo, 3 de mayo de 2026" [disabled]: "3"
+              - generic [ref=e496]:
+                - generic [ref=e499]: Disponible
+                - generic [ref=e502]: No disponible
+          - generic [ref=e504]:
+            - generic [ref=e505]:
+              - heading "Horarios disponibles" [level=4] [ref=e506]
+              - paragraph [ref=e507]: Seleccioná un día en el calendario
+            - status "Cargando horarios disponibles" [ref=e509]:
+              - generic [ref=e510]: Cargando horarios disponibles…
+      - generic [ref=e147]:
+        - generic [ref=e148]: Observaciones
+        - textbox "Observaciones" [ref=e149]:
+          - /placeholder: Agregá cualquier detalle adicional...
+    - generic [ref=e130]:
+      - button "Volver" [ref=e150] [cursor=pointer]:
+        - img
+        - text: Volver
+      - button "Enviar Solicitud" [disabled]:
+        - text: Enviar Solicitud
+        - img
+    - button "Close" [ref=e132] [cursor=pointer]:
+      - img
+      - generic [ref=e133]: Close

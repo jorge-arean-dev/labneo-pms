@@ -1,10 +1,11 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useRouter } from "next/navigation"
-import Link from "next/link"
 import { toast } from "sonner"
-import { Loader2, ArrowLeft, ArrowRight, Package, Wrench, Info, Lock } from "lucide-react"
+import { format } from "date-fns"
+import { es } from "date-fns/locale"
+import { Loader2, ArrowLeft, ArrowRight, Package, Wrench, CalendarClock } from "lucide-react"
 import {
   Dialog,
   DialogContent,
@@ -14,7 +15,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import {
@@ -25,12 +25,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Card, CardContent } from "@/components/ui/card"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+import { SchedulingCalendar } from "@/components/ui/scheduling-calendar"
+import { SlotSelector } from "@/components/ui/slot-selector"
 import { createSolicitud, fetchTarifarioForCurrentOdontologo } from "../actions"
 import type { CreateSolicitudData } from "../actions"
 import { ProtesisItemsSelector } from "./protesis-items-selector"
@@ -44,6 +40,11 @@ import {
   type ItemWithPrecio,
   type Moneda,
 } from "@/lib/types/entities"
+import {
+  getMockSlotsForService,
+  getMockWorkDaysForService,
+  getMockBlockedDatesForService,
+} from "@/lib/mocks/alquiler-slots"
 
 // ============================================================================
 // Props
@@ -52,45 +53,8 @@ import {
 interface CrearSolicitudDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  userProfile: { id: string; nombre: string; apellido: string; email: string }
   odontologoPerfil: OdontologoPerfilWithLocalidad | null
   onSolicitudCreated?: (solicitud: SolicitudWithRelations) => void
-}
-
-// ============================================================================
-// Helpers
-// ============================================================================
-
-const TOOLTIP_TEXT = "Editá esta información desde Configuración"
-
-/**
- * Renders a read-only field with a tooltip explaining where to edit it.
- */
-function ReadOnlyField({
-  label,
-  value,
-}: {
-  label: string
-  value: string | null | undefined
-}) {
-  return (
-    <TooltipProvider delayDuration={200}>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <div className="space-y-1.5 cursor-help">
-            <div className="flex items-center gap-1.5">
-              <Label className="text-xs text-muted-foreground">{label}</Label>
-              <Lock className="h-3 w-3 text-muted-foreground/60" />
-            </div>
-            <p className="text-sm font-medium">{value || "—"}</p>
-          </div>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p className="text-xs">{TOOLTIP_TEXT}</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  )
 }
 
 // ============================================================================
@@ -100,7 +64,6 @@ function ReadOnlyField({
 export function CrearSolicitudDialog({
   open,
   onOpenChange,
-  userProfile,
   odontologoPerfil,
   onSolicitudCreated,
 }: CrearSolicitudDialogProps) {
@@ -111,8 +74,12 @@ export function CrearSolicitudDialog({
 
   // Editable fields only
   const [subtipoServicio, setSubtipoServicio] = useState<SubtipoServicio | "">("")
-  const [fechaPropuesta, setFechaPropuesta] = useState("")
   const [observaciones, setObservaciones] = useState("")
+
+  // Alquiler slot picker state (MOCKED — see lib/mocks/alquiler-slots.ts)
+  const [fechaSlot, setFechaSlot] = useState<Date | undefined>(undefined)
+  const [horaSlot, setHoraSlot] = useState<string | null>(null)
+  const [isLoadingSlots, setIsLoadingSlots] = useState(false)
 
   // Prótesis-specific state
   const [catalogItems, setCatalogItems] = useState<ItemWithPrecio[] | null>(null)
@@ -139,18 +106,59 @@ export function CrearSolicitudDialog({
     }
   }, [step, tipoSolicitud, catalogItems, isLoadingCatalog])
 
-  // Resolve display values for read-only fields
-  const localidadDisplay = odontologoPerfil?.localidades?.nombre_display || null
+  // Profile fields still required by the workflow even though they're no longer
+  // rendered inline — the lab needs them to coordinate the rental.
   const telefonoDisplay = odontologoPerfil?.telefono || null
-  const cuitDisplay = odontologoPerfil?.cuit || null
-  const situacionIvaDisplay = odontologoPerfil?.situacion_iva || null
   const direccionDisplay = odontologoPerfil?.direccion_consultorio || null
+
+  // Derived scheduling data for the alquiler flow (MOCKED).
+  const workDays = useMemo(
+    () => (subtipoServicio ? getMockWorkDaysForService(subtipoServicio) : []),
+    [subtipoServicio],
+  )
+  const blockedDates = useMemo(
+    () => (subtipoServicio ? getMockBlockedDatesForService(subtipoServicio) : []),
+    [subtipoServicio],
+  )
+  const slots = useMemo(
+    () =>
+      subtipoServicio && fechaSlot
+        ? getMockSlotsForService(subtipoServicio, fechaSlot)
+        : [],
+    [subtipoServicio, fechaSlot],
+  )
+
+  // Reset date + slot whenever the service changes so the new availability
+  // pattern is reflected cleanly.
+  useEffect(() => {
+    setFechaSlot(undefined)
+    setHoraSlot(null)
+  }, [subtipoServicio])
+
+  // Fake a short loading state when the date changes so the skeleton shows.
+  // Replace with real async fetch when the backend exists. The bail-out branch
+  // MUST clear isLoadingSlots — otherwise a service change with a date already
+  // picked leaves the skeleton stuck (the reset effect above clears fechaSlot
+  // in the same render cycle where this effect still sees the stale date in
+  // its closure and kicks off a timer that then gets cancelled).
+  useEffect(() => {
+    if (!subtipoServicio || !fechaSlot) {
+      setIsLoadingSlots(false)
+      return
+    }
+    setIsLoadingSlots(true)
+    setHoraSlot(null)
+    const id = setTimeout(() => setIsLoadingSlots(false), 350)
+    return () => clearTimeout(id)
+  }, [subtipoServicio, fechaSlot])
 
   const resetForm = () => {
     setStep(1)
     setTipoSolicitud(null)
     setSubtipoServicio("")
-    setFechaPropuesta("")
+    setFechaSlot(undefined)
+    setHoraSlot(null)
+    setIsLoadingSlots(false)
     setObservaciones("")
     setCatalogItems(null)
     setCatalogMoneda(null)
@@ -189,10 +197,19 @@ export function CrearSolicitudDialog({
       if (!direccionDisplay) {
         return "Falta la dirección del consultorio en tu perfil. Completala en Configuración."
       }
-      if (!fechaPropuesta) return "Seleccioná la fecha propuesta"
+      if (!fechaSlot || !horaSlot) return "Seleccioná una fecha y un horario"
     }
 
     return null
+  }
+
+  // Compose the alquiler fecha_propuesta from the calendar date + slot hour.
+  const buildFechaPropuesta = (): string | null => {
+    if (!fechaSlot || !horaSlot) return null
+    const [hh, mm] = horaSlot.split(":").map(Number)
+    const dt = new Date(fechaSlot)
+    dt.setHours(hh, mm, 0, 0)
+    return dt.toISOString()
   }
 
   const handleSubmit = async () => {
@@ -217,7 +234,8 @@ export function CrearSolicitudDialog({
       tipo_solicitud: tipoSolicitud,
       subtipo_servicio:
         tipoSolicitud === "alquiler_equipos" ? (subtipoServicio as SubtipoServicio) : null,
-      fecha_propuesta: tipoSolicitud === "alquiler_equipos" ? fechaPropuesta : null,
+      fecha_propuesta:
+        tipoSolicitud === "alquiler_equipos" ? buildFechaPropuesta() : null,
       observaciones: observaciones || null,
       items: itemsPayload,
     }
@@ -238,7 +256,7 @@ export function CrearSolicitudDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[640px] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Nueva Solicitud</DialogTitle>
           <DialogDescription>
@@ -344,77 +362,16 @@ export function CrearSolicitudDialog({
         {/* STEP 2 — Alquiler de equipos */}
         {step === 2 && tipoSolicitud === "alquiler_equipos" && (
           <div className="space-y-4 py-2">
-            {/* Read-only profile fields */}
-            <Card className="bg-muted/20">
-              <CardContent className="p-4 space-y-4">
-                <div className="flex items-center gap-2 pb-2 border-b">
-                  <Info className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-xs font-medium text-muted-foreground">
-                    Datos de tu perfil (solo lectura)
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <ReadOnlyField label="Nombre" value={userProfile.nombre} />
-                  <ReadOnlyField label="Apellido" value={userProfile.apellido} />
-                  <ReadOnlyField label="Email" value={userProfile.email} />
-                  <ReadOnlyField label="Teléfono" value={telefonoDisplay} />
-                  <ReadOnlyField label="Localidad" value={localidadDisplay} />
-                  <ReadOnlyField label="CUIT" value={cuitDisplay} />
-                  <div className="sm:col-span-2">
-                    <ReadOnlyField
-                      label="Dirección del consultorio"
-                      value={direccionDisplay}
-                    />
-                  </div>
-                  <div className="sm:col-span-2">
-                    <ReadOnlyField
-                      label="Situación frente al IVA"
-                      value={situacionIvaDisplay}
-                    />
-                  </div>
-                </div>
-
-                <p className="text-xs text-muted-foreground pt-2 border-t">
-                  Editá esta información desde{" "}
-                  <Link
-                    href="/configuracion"
-                    className="underline hover:text-foreground"
-                  >
-                    Configuración
-                  </Link>
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Horarios message */}
-            <Card className="bg-blue-50/50 border-blue-200 dark:bg-blue-950/20 dark:border-blue-900">
-              <CardContent className="p-4 flex items-start gap-3">
-                <Info className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5 shrink-0" />
-                <p className="text-sm text-blue-900 dark:text-blue-200">
-                  Utilizaremos los horarios configurados en tu perfil para coordinar
-                  esta solicitud de alquiler de equipos. Revisalos en{" "}
-                  <Link
-                    href="/configuracion"
-                    className="underline hover:no-underline font-medium"
-                  >
-                    Configuración
-                  </Link>
-                  .
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* Editable fields */}
+            {/* Tipo de servicio — drives the calendar below */}
             <div className="space-y-2">
-              <Label>
+              <Label htmlFor="subtipo-servicio">
                 Tipo de servicio <span className="text-destructive">*</span>
               </Label>
               <Select
                 value={subtipoServicio}
                 onValueChange={(v) => setSubtipoServicio(v as SubtipoServicio)}
               >
-                <SelectTrigger>
+                <SelectTrigger id="subtipo-servicio">
                   <SelectValue placeholder="Seleccioná el servicio" />
                 </SelectTrigger>
                 <SelectContent>
@@ -428,18 +385,75 @@ export function CrearSolicitudDialog({
               </Select>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="fecha">
-                Fecha propuesta <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="fecha"
-                type="datetime-local"
-                value={fechaPropuesta}
-                onChange={(e) => setFechaPropuesta(e.target.value)}
-              />
-            </div>
+            {/* Empty state before a service is picked */}
+            {!subtipoServicio && (
+              <div className="flex flex-col items-center gap-3 rounded-lg border-2 border-dashed border-border bg-muted/20 px-6 py-14 text-center dark:bg-muted/10">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 dark:bg-primary/15">
+                  <CalendarClock
+                    className="h-8 w-8 text-primary/60 dark:text-primary/70"
+                    aria-hidden="true"
+                  />
+                </div>
+                <p className="text-sm font-semibold text-foreground">
+                  Elegí un servicio para continuar
+                </p>
+                <p className="max-w-[320px] text-sm leading-relaxed text-muted-foreground">
+                  Seleccioná &ldquo;Escáner Intraoral&rdquo; o &ldquo;Fotogrametría&rdquo; en el campo
+                  de arriba para ver los días y horarios disponibles para tu solicitud.
+                </p>
+              </div>
+            )}
 
+            {/* Calendar + slot picker — visible once a service is picked */}
+            {subtipoServicio && (
+              <section
+                key={subtipoServicio}
+                aria-label="Selección de fecha y horario"
+                className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6"
+              >
+                <Card className="md:h-[420px]">
+                  <CardContent className="flex h-full flex-col p-4">
+                    <h4 className="mb-2 text-sm font-semibold text-foreground">
+                      Seleccioná una fecha{" "}
+                      <span className="text-destructive">*</span>
+                    </h4>
+                    <SchedulingCalendar
+                      selectedDate={fechaSlot}
+                      onSelectDate={(date) => setFechaSlot(date)}
+                      workDays={workDays}
+                      blockedDates={blockedDates}
+                    />
+                  </CardContent>
+                </Card>
+
+                <Card className="md:h-[420px]">
+                  <CardContent className="flex h-full flex-col p-4">
+                    <div className="mb-3 border-b pb-2">
+                      <h4 className="text-sm font-semibold text-foreground">
+                        Horarios disponibles
+                      </h4>
+                      <p className="mt-0.5 text-xs text-muted-foreground">
+                        {fechaSlot
+                          ? format(fechaSlot, "EEEE d 'de' MMMM", { locale: es })
+                          : "Seleccioná un día en el calendario"}
+                      </p>
+                    </div>
+                    <div className="flex flex-1 flex-col overflow-y-auto">
+                      <SlotSelector
+                        slots={slots}
+                        selectedTime={horaSlot}
+                        onSelectTime={setHoraSlot}
+                        isLoading={isLoadingSlots}
+                        hasDate={Boolean(fechaSlot)}
+                        serviceLabel={SUBTIPOS_SERVICIO[subtipoServicio]}
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+              </section>
+            )}
+
+            {/* Observaciones */}
             <div className="space-y-2">
               <Label htmlFor="observaciones">Observaciones</Label>
               <Textarea
@@ -447,7 +461,7 @@ export function CrearSolicitudDialog({
                 value={observaciones}
                 onChange={(e) => setObservaciones(e.target.value)}
                 placeholder="Agregá cualquier detalle adicional..."
-                rows={3}
+                rows={2}
               />
             </div>
           </div>
@@ -468,7 +482,14 @@ export function CrearSolicitudDialog({
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Volver
               </Button>
-              <Button onClick={handleSubmit} disabled={isLoading}>
+              <Button
+                onClick={handleSubmit}
+                disabled={
+                  isLoading ||
+                  (tipoSolicitud === "alquiler_equipos" &&
+                    (!subtipoServicio || !fechaSlot || !horaSlot))
+                }
+              >
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />

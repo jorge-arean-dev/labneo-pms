@@ -321,7 +321,6 @@ export function SolicitudesTable({
         <CrearSolicitudDialog
           open={dialogOpen}
           onOpenChange={setDialogOpen}
-          userProfile={userProfile}
           odontologoPerfil={odontologoPerfil}
           onSolicitudCreated={handleSolicitudCreated}
         />

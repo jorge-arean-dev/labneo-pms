@@ -116,7 +116,8 @@
       "Bash(node:*)",
       "Bash(pnpm:*)",
       "Bash(git:*)",
-      "Bash(gh api:*)"
+      "Bash(gh api:*)",
+      "Bash(echo \"---exit $?---\")"
     ],
     "deny": [],
     "ask": []

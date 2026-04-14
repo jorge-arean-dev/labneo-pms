@@ -31,6 +31,17 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+
+    /* Scheduling calendar tokens */
+    --cal-available: 215 90% 96%;
+    --cal-available-fg: 215 47% 20%;
+    --cal-available-hover: 215 85% 92%;
+    --cal-available-ring: 215 60% 82%;
+    --cal-selected: 215 47% 20%;
+    --cal-selected-fg: 0 0% 100%;
+    --cal-selected-hover: 215 47% 26%;
+    --cal-disabled-fg: 0 0% 60%;
+    --cal-today-ring: 215 47% 20%;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -57,6 +68,17 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+
+    /* Scheduling calendar tokens */
+    --cal-available: 215 45% 18%;
+    --cal-available-fg: 215 60% 85%;
+    --cal-available-hover: 215 45% 24%;
+    --cal-available-ring: 215 45% 32%;
+    --cal-selected: 215 58% 58%;
+    --cal-selected-fg: 215 47% 10%;
+    --cal-selected-hover: 215 58% 64%;
+    --cal-disabled-fg: 0 0% 45%;
+    --cal-today-ring: 215 58% 58%;
   }
 }
 

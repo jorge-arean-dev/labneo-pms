@@ -75,6 +75,17 @@ export default {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+        cal: {
+          available: "hsl(var(--cal-available))",
+          "available-fg": "hsl(var(--cal-available-fg))",
+          "available-hover": "hsl(var(--cal-available-hover))",
+          "available-ring": "hsl(var(--cal-available-ring))",
+          selected: "hsl(var(--cal-selected))",
+          "selected-fg": "hsl(var(--cal-selected-fg))",
+          "selected-hover": "hsl(var(--cal-selected-hover))",
+          "disabled-fg": "hsl(var(--cal-disabled-fg))",
+          "today-ring": "hsl(var(--cal-today-ring))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

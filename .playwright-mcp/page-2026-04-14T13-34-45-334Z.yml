@@ -1,0 +1,96 @@
+- generic:
+  - generic:
+    - generic:
+      - generic:
+        - generic: Labneo
+        - button:
+          - img
+      - navigation:
+        - link:
+          - /url: /solicitudes
+          - img
+          - generic: Solicitudes
+        - link:
+          - /url: /acceso-vevi
+          - img
+          - generic: Acceso Vevi
+        - link:
+          - /url: /configuracion
+          - img
+          - generic: Configuración
+        - button:
+          - img
+          - generic: Ayuda
+      - generic:
+        - button:
+          - img
+          - generic: "Tema: Sistema"
+          - img
+      - generic:
+        - button:
+          - generic:
+            - generic: JP
+          - generic:
+            - paragraph: Jose Paez
+            - paragraph: Odontólogo
+            - paragraph: jorge.arean.dev+odontologo3@gmail.com
+    - main:
+      - generic:
+        - generic:
+          - generic:
+            - heading [level=1]: Mis Solicitudes
+            - paragraph: Seguí el estado de tus solicitudes de servicio
+          - button:
+            - img
+            - text: Nueva Solicitud
+        - generic:
+          - generic:
+            - img
+            - textbox:
+              - /placeholder: Buscar por nombre, email o localidad...
+          - combobox:
+            - img
+            - generic: Todos los tipos
+            - img
+          - combobox:
+            - img
+            - generic: Todos los estados
+            - img
+        - paragraph: 1 solicitud
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - generic: Jose Paez
+                - generic: Pendiente
+              - paragraph: jorge.arean.dev+odontologo3@gmail.com
+              - generic:
+                - generic: Prótesis
+                - generic: 13/04/2026
+              - paragraph: Ciudad Autónoma de Buenos Aires
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e96] [cursor=pointer]:
+    - img [ref=e97]
+  - alert
+  - dialog "Nueva Solicitud" [ref=e701]:
+    - generic [ref=e702]:
+      - heading "Nueva Solicitud" [level=2] [ref=e703]
+      - paragraph [ref=e704]: Seleccioná el tipo de solicitud que querés crear
+    - generic [ref=e706]:
+      - generic [ref=e707]: "1"
+      - generic [ref=e709]: "2"
+    - generic [ref=e710]:
+      - generic [ref=e712] [cursor=pointer]:
+        - img [ref=e714]
+        - generic [ref=e718]:
+          - heading "Prótesis" [level=3] [ref=e719]
+          - paragraph [ref=e720]: Solicitud de prótesis dental
+      - generic [ref=e722] [cursor=pointer]:
+        - img [ref=e724]
+        - generic [ref=e726]:
+          - heading "Alquiler de equipos" [level=3] [ref=e727]
+          - paragraph [ref=e728]: Escáner Intraoral o Fotogrametría
+    - button "Cancelar" [active] [ref=e730] [cursor=pointer]
+    - button "Close" [ref=e731] [cursor=pointer]:
+      - img
+      - generic [ref=e732]: Close

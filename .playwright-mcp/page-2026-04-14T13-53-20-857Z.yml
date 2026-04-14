@@ -1,0 +1,249 @@
+- generic:
+  - generic:
+    - generic:
+      - generic:
+        - generic: Labneo
+        - button:
+          - img
+      - navigation:
+        - link:
+          - /url: /solicitudes
+          - img
+          - generic: Solicitudes
+        - link:
+          - /url: /acceso-vevi
+          - img
+          - generic: Acceso Vevi
+        - link:
+          - /url: /configuracion
+          - img
+          - generic: Configuración
+        - button:
+          - img
+          - generic: Ayuda
+      - generic:
+        - button:
+          - img
+          - generic: "Tema: Sistema"
+          - img
+      - generic:
+        - button:
+          - generic:
+            - generic: JP
+          - generic:
+            - paragraph: Jose Paez
+            - paragraph: Odontólogo
+            - paragraph: jorge.arean.dev+odontologo3@gmail.com
+    - main:
+      - generic:
+        - generic:
+          - generic:
+            - heading [level=1]: Mis Solicitudes
+            - paragraph: Seguí el estado de tus solicitudes de servicio
+          - button:
+            - img
+            - text: Nueva Solicitud
+        - generic:
+          - generic:
+            - img
+            - textbox:
+              - /placeholder: Buscar por nombre, email o localidad...
+          - combobox:
+            - img
+            - generic: Todos los tipos
+            - img
+          - combobox:
+            - img
+            - generic: Todos los estados
+            - img
+        - paragraph: 1 solicitud
+        - generic:
+          - generic:
+            - generic:
+              - table:
+                - rowgroup:
+                  - row:
+                    - columnheader: Nombre
+                    - columnheader: Email
+                    - columnheader: Tipo
+                    - columnheader: Localidad
+                    - columnheader: Estado
+                    - columnheader: Fecha
+                - rowgroup:
+                  - row:
+                    - cell: Jose Paez
+                    - cell: jorge.arean.dev+odontologo3@gmail.com
+                    - cell:
+                      - generic: Prótesis
+                    - cell: Ciudad Autónoma de Buenos Aires
+                    - cell:
+                      - generic: Pendiente
+                    - cell: 13/04/2026
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e87] [cursor=pointer]:
+    - img [ref=e88]
+  - alert
+  - dialog "Nueva Solicitud":
+    - generic:
+      - heading [level=2]: Nueva Solicitud
+      - paragraph: Completá los datos para tu solicitud de Alquiler de equipos
+    - generic:
+      - generic:
+        - generic: "1"
+        - generic: "2"
+    - generic:
+      - generic:
+        - generic:
+          - text: Tipo de servicio
+          - generic: "*"
+        - combobox [expanded]:
+          - generic: Escáner Intraoral
+          - img
+      - region "Selección de fecha y horario":
+        - generic:
+          - text: Fecha y horario propuesto
+          - generic: "*"
+        - generic:
+          - generic:
+            - generic:
+              - heading [level=4]: Seleccioná una fecha
+              - generic:
+                - generic:
+                  - generic:
+                    - navigation:
+                      - button:
+                        - img
+                      - button:
+                        - img
+                    - generic:
+                      - generic:
+                        - status: abril 2026
+                      - grid:
+                        - rowgroup:
+                          - row:
+                            - columnheader: lu
+                            - columnheader: ma
+                            - columnheader: mi
+                            - columnheader: ju
+                            - columnheader: vi
+                            - columnheader: sá
+                            - columnheader: do
+                        - rowgroup:
+                          - row:
+                            - gridcell:
+                              - button [disabled]: "30"
+                            - gridcell:
+                              - button [disabled]: "31"
+                            - gridcell:
+                              - button [disabled]: "1"
+                            - gridcell:
+                              - button [disabled]: "2"
+                            - gridcell:
+                              - button [disabled]: "3"
+                            - gridcell:
+                              - button [disabled]: "4"
+                            - gridcell:
+                              - button [disabled]: "5"
+                          - row:
+                            - gridcell:
+                              - button [disabled]: "6"
+                            - gridcell:
+                              - button [disabled]: "7"
+                            - gridcell:
+                              - button [disabled]: "8"
+                            - gridcell:
+                              - button [disabled]: "9"
+                            - gridcell:
+                              - button [disabled]: "10"
+                            - gridcell:
+                              - button [disabled]: "11"
+                            - gridcell:
+                              - button [disabled]: "12"
+                          - row:
+                            - gridcell:
+                              - button [disabled]: "13"
+                            - gridcell:
+                              - button: "14"
+                            - gridcell [selected]:
+                              - button: "15"
+                            - gridcell:
+                              - button: "16"
+                            - gridcell:
+                              - button: "17"
+                            - gridcell:
+                              - button [disabled]: "18"
+                            - gridcell:
+                              - button [disabled]: "19"
+                          - row:
+                            - gridcell:
+                              - button: "20"
+                            - gridcell:
+                              - button: "21"
+                            - gridcell:
+                              - button [disabled]: "22"
+                            - gridcell:
+                              - button: "23"
+                            - gridcell:
+                              - button: "24"
+                            - gridcell:
+                              - button [disabled]: "25"
+                            - gridcell:
+                              - button [disabled]: "26"
+                          - row:
+                            - gridcell:
+                              - button: "27"
+                            - gridcell:
+                              - button: "28"
+                            - gridcell:
+                              - button: "29"
+                            - gridcell:
+                              - button: "30"
+                            - gridcell:
+                              - button [disabled]: "1"
+                            - gridcell:
+                              - button [disabled]: "2"
+                            - gridcell:
+                              - button [disabled]: "3"
+                - generic:
+                  - generic:
+                    - generic: Disponible
+                  - generic:
+                    - generic: No disponible
+          - generic:
+            - generic:
+              - generic:
+                - heading [level=4]: Horarios disponibles
+                - paragraph: miércoles 15 de abril
+              - generic:
+                - generic:
+                  - group "Horarios disponibles":
+                    - button "Horario 09:00, Escáner Intraoral, disponible": 09:00
+                    - button "Horario 10:00, Escáner Intraoral, disponible": 10:00
+                    - button "Horario 11:00, Escáner Intraoral, disponible": 11:00
+                    - button "Horario 12:00, Escáner Intraoral, no disponible" [disabled]: 12:00
+                    - button "Horario 13:00, Escáner Intraoral, disponible": 13:00
+                    - button "Horario 14:00, Escáner Intraoral, disponible": 14:00
+                    - button "Horario 15:00, Escáner Intraoral, no disponible" [disabled]: 15:00
+                    - button "Horario 16:00, Escáner Intraoral, no disponible" [disabled]: 16:00
+                    - button "Horario 17:00, Escáner Intraoral, disponible": 17:00
+      - generic:
+        - generic: Observaciones
+        - textbox:
+          - /placeholder: Agregá cualquier detalle adicional...
+    - generic:
+      - button:
+        - img
+        - text: Volver
+      - button [disabled]:
+        - text: Enviar Solicitud
+        - img
+    - button:
+      - img
+      - generic: Close
+  - listbox [ref=e329]:
+    - option "Escáner Intraoral" [active] [selected] [ref=e330]:
+      - generic [ref=e332]:
+        - img
+      - generic [ref=e333]: Escáner Intraoral
+    - option "Fotogrametría" [ref=e334]:
+      - generic [ref=e336]: Fotogrametría
